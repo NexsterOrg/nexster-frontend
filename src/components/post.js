@@ -46,19 +46,22 @@ export default function TimelinePost({profInfo, postInfo}) {
         title={profInfo.name}
         subheader={profInfo.postDate}
       />
+      {/* TODO: when click on profile picture, this should redirect to his personal profile */}
       <CardMedia
         component="img"
         height="500"
         image={postInfo.imgUrl}
         alt={`${profInfo.name}-${profInfo.postDate}`}
       />
+      
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-            {postInfo.caption}
+          {postInfo.caption}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
 
+      {/* Reactions Sections */}
+      <CardActions disableSpacing>
         <IconButton aria-label="like">
           <ThumbUpOutlinedIcon />
         </IconButton>
@@ -70,6 +73,7 @@ export default function TimelinePost({profInfo, postInfo}) {
           <InsertEmoticonOutlinedIcon />
         </IconButton>
 
+        {postInfo.description  ? 
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -77,8 +81,9 @@ export default function TimelinePost({profInfo, postInfo}) {
           aria-label="show more"
         >
           <ExpandMoreIcon />
-        </ExpandMore>
+        </ExpandMore> : null}
       </CardActions>
+
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>

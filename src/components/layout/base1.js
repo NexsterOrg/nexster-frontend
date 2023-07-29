@@ -93,7 +93,7 @@ export function Base1(){
                     </ListItemButton>
                 </ListItem>
 
-                <Typography variant="body" sx={{position: "fixed", bottom: 10, marginLeft: "0.7%"}}> © 2023 Namal Sanjaya </Typography>
+                <Typography variant="caption" sx={{position: "fixed", bottom: 10, marginLeft: "0.7%"}}> © 2023 Namal Sanjaya </Typography>
             </Drawer>
 
             <Box
