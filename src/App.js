@@ -15,14 +15,13 @@ const darkTheme = createTheme({
 function App() {
   return (
     // <ThemeProvider theme={darkTheme}>
-    //   <Base1 />
-    // </ThemeProvider>
     <Routes>
       <Route path="/" element={<Timeline />} />
       <Route path="/friends" element={<FriendsPanel />} />
       <Route path="/message" element={<MsgPanel />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
+  //  </ThemeProvider>
   );
 }
 

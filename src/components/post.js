@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { styled } from '@mui/material/styles';
-import {Card, CardHeader, CardMedia, CardContent, CardActions, 
+import {Card, CardHeader, CardMedia, CardContent, CardActions, Box,
   Collapse, Avatar, IconButton, Typography} from "@mui/material"
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -15,6 +15,8 @@ import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
 
+import { MkReactionUpdateUrl } from '../apis/fetch';
+
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -26,9 +28,13 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function TimelinePost({profInfo, postInfo}) {
+export default function TimelinePost({profInfo, postInfo, reactsCnt}) {
   const [expanded, setExpanded] = useState(false);
   const [reactions, setReactions] = useState({like: false, love: false, laugh: false})
+
+  if(reactions.like) reactsCnt ++
+  if(reactions.love) reactsCnt ++
+  if(reactions.laugh) reactsCnt ++
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -61,13 +67,17 @@ export default function TimelinePost({profInfo, postInfo}) {
         alt={`${profInfo.name}-${profInfo.postDate}`}
       />
       
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
+      <CardContent sx={{paddingBottom: 0}}>
+        <Typography variant="body1" color="text.secondary" >
           {postInfo.caption}
         </Typography>
+        <Box sx={{display: "flex", justifyContent: "flex-end", marginTop: "5px"}}>
+           <Typography  variant="body1"> 👍❤️🙂</Typography>
+           <Typography  variant="body2" sx={{marginLeft: "4px", paddingTop: "1px"}}> {reactsCnt} </Typography>
+        </Box>
       </CardContent>
 
-      {/* Reactions Sections */}
+
       <CardActions disableSpacing>
         <IconButton aria-label="like" onClick={changeLikes}>
           {reactions.like ? <ThumbUpRoundedIcon/>: <ThumbUpOutlinedIcon/>}

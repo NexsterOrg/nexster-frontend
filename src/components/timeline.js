@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react"
 import {List, ListItem, Typography} from '@mui/material'
 
 import TimelinePost from  "./post"
-import { fetchData } from "../apis/fetch"
+import { fetchData, MkPostsFetchUrl } from "../apis/fetch"
 import Base1 from "./layout/base1"
 
 /** 
@@ -26,7 +26,7 @@ function ListTimelinePosts({userId}){
 
         (async () => {
             try {
-              let data = await fetchData(mkPostsFetchUrl(userId, new Date().toISOString(), postCnt));
+              let data = await fetchData(MkPostsFetchUrl(userId, new Date().toISOString(), postCnt));
               if (data == null) {
                 return;
               }
@@ -50,7 +50,7 @@ function ListTimelinePosts({userId}){
                     if (lastObj === null) {
                         return;
                     }
-                    let fetchedPosts = await fetchData(mkPostsFetchUrl(userId, lastObj.media.created_date, postCnt));
+                    let fetchedPosts = await fetchData(MkPostsFetchUrl(userId, lastObj.media.created_date, postCnt));
 
                     if (fetchedPosts) {
                         addPostsInfo(prevPosts => {
@@ -81,8 +81,11 @@ function ListTimelinePosts({userId}){
             postsInfo.data.map((each) => {
                 return(
                 <ListItem sx={{ marginY: "5px"}} key={each.media._key}>
-                    <TimelinePost postInfo={{imgUrl: each.media.link, caption: each.media.title, description: each.media.description}} 
-                    profInfo={{name: each.owner.name, postDate: timeDiffWithNow(each.media.created_date), profUrl: each.owner.image_url }}/>
+                    <TimelinePost postInfo={{imgUrl: each.media.link, caption: each.media.title, description: each.media.description,
+                    mediaKey: each.media._key}} 
+                    profInfo={{name: each.owner.name, postDate: timeDiffWithNow(each.media.created_date), profUrl: each.owner.image_url }}
+                    reactsCnt={each.reactions.like + each.reactions.love + each.reactions.laugh}
+                    />
                 </ListItem>
                 )
             })
@@ -93,13 +96,8 @@ function ListTimelinePosts({userId}){
 
 export default function Timeline(){
     return (
-        <Base1 SideComponent={<ListTimelinePosts userId={"482197"}/>}/>
+        <Base1 SideComponent={<ListTimelinePosts userId={"482191"}/>}/>
     )
-}
-
-const apiDomain = "http://192.168.1.101"
-function mkPostsFetchUrl(userId, sinceDate, postCount){
-    return `${apiDomain}/recent_posts/${userId}?last_post_at=${sinceDate}&max_post_count=${postCount}`
 }
 
 const hrLimit = 60
