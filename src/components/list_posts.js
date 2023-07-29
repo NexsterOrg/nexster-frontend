@@ -9,24 +9,24 @@ import { fetchData } from "../apis/fetch"
  * fetch n posts. (n-odd)
  * Gap between two fetch = (n//2)*700
 */
-const userId = "482191"
 const postCnt = 3
 
 const gap = Math.floor(postCnt/2)*700  // To fetch 5 posts. gap should be (5//2)*700
 let limit = gap
 
-export default function ListTimelinePosts(){
-    const [posts, addPosts] = useState({preLn: 0, data: []})
+export default function ListTimelinePosts({userId}){
+    const [postsInfo, addPostsInfo] = useState({preLn: 0, data: []})
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+
         (async () => {
             try {
               let data = await fetchData(mkPostsFetchUrl(userId, new Date().toISOString(), postCnt));
               if (data == null) {
-                console.log("No data to fetch");
                 return;
               }
-              addPosts({preLn: data.length, data: data});
+              addPostsInfo({preLn: data.length, data: data});
             } catch (err) {
               console.error('Error fetching posts:', err);
             }
@@ -36,38 +36,30 @@ export default function ListTimelinePosts(){
     useEffect(() => {      
         const handleScroll = async () => {
             if (window.scrollY > limit) {
-                console.log("exceedd..")
-                limit += gap;
-
-                if(posts.preLn == 0) {
-                    console.log("You read all")
+                limit += gap
+                if(postsInfo.preLn == 0) {
+                    // All posts have been read
                     return
                 }
-            
                 try {
-                    console.log("nice: ", posts)
-                    let lastObj = posts.data[posts.data.length - 1];
+                    let lastObj = postsInfo.data[postsInfo.data.length - 1];
                     if (lastObj == null) {
                         return;
                     }
                     let lastDate = lastObj.media.created_date;
-                    console.log("last_date: ", lastDate)
                     let murl = mkPostsFetchUrl(userId, lastDate, postCnt);
                     let fetchedPosts = await fetchData(murl);
-                    console.log('Fetched data:', fetchedPosts);
                     
                     if (fetchedPosts) {
-                        addPosts(prevPosts => {
+                        addPostsInfo(prevPosts => {
                             return {
                                 preLn: fetchedPosts.length,
                                 data: prevPosts.data.concat(fetchedPosts)
                             }
                         });
-                    } else {
-                        console.log('Data is null. There was an error during fetching.');
                     }
-                } catch (error) {
-                    console.error('Unhandled error:', error);
+                } catch (err) {
+                    console.error('Unhandled error:', err);
                 }
             }
         };
@@ -78,14 +70,13 @@ export default function ListTimelinePosts(){
         return () => {
           window.removeEventListener('scroll', handleScroll);
         };
-    }, [posts]);
+    }, [postsInfo]);
       
-    console.log("outside the return: ", posts)
-    if(posts == undefined) {return <Typography> Error Occuried</Typography>}
+    if(postsInfo == undefined) {return <Typography> Error Occuried</Typography>}
     return (
         <List>
         {
-            posts.data.map((each) => {
+            postsInfo.data.map((each) => {
                 return(
                 <ListItem sx={{ marginY: "5px"}} key={each.media._key}>
                     <TimelinePost postInfo={ {imgUrl: each.media.link, caption: each.media.title, description: each.media.description}} 

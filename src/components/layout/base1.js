@@ -19,6 +19,7 @@ import ListTimelinePosts  from "../list_posts";
 import profImage from "../../static/profile1.jpg"
 
 const drawerWidth = 210;
+const userId = "482191"
 
 export function Base1(){
 
@@ -98,7 +99,7 @@ export function Base1(){
             <Box
                 component="main"
                 sx={{display: "flex", alignItems: "center", flexDirection: "column",flexGrow: 1, bgcolor: 'background.default'}}>
-                <ListTimelinePosts />
+                <ListTimelinePosts userId={userId}/>
             </Box>
         </Stack>
     )
