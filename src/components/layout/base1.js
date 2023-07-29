@@ -14,6 +14,8 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 
+import ListTimelinePosts  from "../list_posts";
+
 import profImage from "../../static/profile1.jpg"
 
 const drawerWidth = 210;
@@ -21,7 +23,7 @@ const drawerWidth = 210;
 export function Base1(){
 
     return (
-        <Stack direction="row" spacing={0} sx={{height: "100%"}}>
+        <Stack direction="row" spacing={0} sx={{height: "auto"}}>
             <Drawer
                 sx={{
                 width: drawerWidth,
@@ -56,7 +58,7 @@ export function Base1(){
                             <ListItemIcon>
                                 <PeopleAltOutlinedIcon sx={{width: "30px", height: "30px"}}/>
                             </ListItemIcon>
-                            <ListItemText primary={"Friend"} disableTypography sx={{fontSize: 18}}/>
+                            <ListItemText primary={"Friends"} disableTypography sx={{fontSize: 18}}/>
                         </ListItemButton>
                     </ListItem>
 
@@ -80,11 +82,6 @@ export function Base1(){
 
                 </List>
                 <Divider />
-                {/* <Box sx={{display: "flex", flexDirection: "row", justifyContent: "flex-start", 
-                alignItems: "center", paddingLeft: "6%", marginTop: "15%"}}>
-                    <Avatar alt="Namal-Sanjaya" src={profImage}  />
-                    <Typography variant="body" sx={{marginLeft: "12%"}}> Namal </Typography>
-                </Box> */}
 
                 <ListItem key={5} disablePadding sx={{marginTop: "15%"}}> 
                     <ListItemButton>
@@ -98,20 +95,12 @@ export function Base1(){
                 <Typography variant="body" sx={{position: "fixed", bottom: 10, marginLeft: "0.7%"}}> © 2023 Namal Sanjaya </Typography>
             </Drawer>
 
-            {/* <Box sx={{width: "80%", border: "1px solid #000"}}>
-
-            </Box> */}
-
-        <Box
-            component="main"
-            sx={{display: "flex", justifyContent: "center", flexGrow: 1, bgcolor: 'background.default'}}>
-            <Box  sx={{border: "1px solid red", height: "100%", width: "40%"}}>
-
+            <Box
+                component="main"
+                sx={{display: "flex", alignItems: "center", flexDirection: "column",flexGrow: 1, bgcolor: 'background.default'}}>
+                <ListTimelinePosts />
             </Box>
-
-        </Box>
-
         </Stack>
     )
 }
-// border: "1px solid #000", z
+// border: "1px solid #000"
