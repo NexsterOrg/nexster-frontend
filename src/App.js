@@ -1,6 +1,10 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {Routes, Route} from "react-router-dom"
 
-import { Base1 } from "./components/layout/base1";
+import Timeline from "./components/timeline"
+import FriendsPanel from './components/friends_panel';
+import MsgPanel from './components/message_panel';
+import NotFound from './components/layout/notfound';
 
 const darkTheme = createTheme({
   palette: {
@@ -13,8 +17,12 @@ function App() {
     // <ThemeProvider theme={darkTheme}>
     //   <Base1 />
     // </ThemeProvider>
-
-    <Base1 />
+    <Routes>
+      <Route path="/" element={<Timeline />} />
+      <Route path="/friends" element={<FriendsPanel />} />
+      <Route path="/message" element={<MsgPanel />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 

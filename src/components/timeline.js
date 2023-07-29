@@ -3,6 +3,7 @@ import {List, ListItem, Typography} from '@mui/material'
 
 import TimelinePost from  "./post"
 import { fetchData } from "../apis/fetch"
+import Base1 from "./layout/base1"
 
 /** 
  * gap between two post - 700
@@ -14,7 +15,7 @@ const postCnt = 3
 const gap = Math.floor(postCnt/2)*700  // To fetch 5 posts. gap should be (5//2)*700
 let limit = gap
 
-export default function ListTimelinePosts({userId}){
+function ListTimelinePosts({userId}){
     // TODO:
     // data array should only contain unique values. But due to some uncertainty nature, this can have 
     // same value twice. check this.
@@ -46,7 +47,7 @@ export default function ListTimelinePosts({userId}){
                 }
                 try {
                     let lastObj = postsInfo.data[postsInfo.data.length - 1];
-                    if (lastObj == null) {
+                    if (lastObj === null) {
                         return;
                     }
                     let fetchedPosts = await fetchData(mkPostsFetchUrl(userId, lastObj.media.created_date, postCnt));
@@ -73,7 +74,7 @@ export default function ListTimelinePosts({userId}){
         };
     }, [postsInfo]);
       
-    if(postsInfo == undefined) {return <Typography> Error Occuried</Typography>}
+    if(postsInfo === undefined) {return <Typography> Error Occuried</Typography>}
     return (
         <List>
         {
@@ -90,8 +91,15 @@ export default function ListTimelinePosts({userId}){
     )
 }
 
+export default function Timeline(){
+    return (
+        <Base1 SideComponent={<ListTimelinePosts userId={"482197"}/>}/>
+    )
+}
+
+const apiDomain = "http://192.168.1.101"
 function mkPostsFetchUrl(userId, sinceDate, postCount){
-    return `http://localhost:8000/timeline/recent_posts/${userId}?last_post_at=${sinceDate}&max_post_count=${postCount}`
+    return `${apiDomain}/recent_posts/${userId}?last_post_at=${sinceDate}&max_post_count=${postCount}`
 }
 
 const hrLimit = 60

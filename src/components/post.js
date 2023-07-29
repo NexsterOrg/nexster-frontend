@@ -1,20 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import {Card, CardHeader, CardMedia, CardContent, CardActions, 
+  Collapse, Avatar, IconButton, Typography} from "@mui/material"
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 // Filled Icons
-// import ThumbUpRoundedIcon from '@mui/icons-material/ThumbUpRounded';
-// import FavoriteIcon from '@mui/icons-material/Favorite';
-// import InsertEmoticonRoundedIcon from '@mui/icons-material/InsertEmoticonRounded';
+import ThumbUpRoundedIcon from '@mui/icons-material/ThumbUpRounded';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import InsertEmoticonRoundedIcon from '@mui/icons-material/InsertEmoticonRounded';
 
 // outlined icons
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
@@ -33,11 +27,24 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function TimelinePost({profInfo, postInfo}) {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [reactions, setReactions] = useState({like: false, love: false, laugh: false})
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const changeLikes = () => {
+    setReactions(preReaction => ({ ... preReaction, like: !preReaction.like}) )
+  }
+
+  const changeLove = () => {
+    setReactions(preReaction => ({ ... preReaction, love: !preReaction.love}) )
+  }
+
+  const changeLaugh = () => {
+    setReactions(preReaction => ({ ... preReaction, laugh: !preReaction.laugh}) )
+  }
 
   return (
     <Card sx={{ maxWidth: 475 }} elevation={4}>
@@ -62,15 +69,14 @@ export default function TimelinePost({profInfo, postInfo}) {
 
       {/* Reactions Sections */}
       <CardActions disableSpacing>
-        <IconButton aria-label="like">
-          <ThumbUpOutlinedIcon />
+        <IconButton aria-label="like" onClick={changeLikes}>
+          {reactions.like ? <ThumbUpRoundedIcon/>: <ThumbUpOutlinedIcon/>}
         </IconButton>
-        <IconButton aria-label="love">
-          <FavoriteBorderOutlinedIcon />
+        <IconButton aria-label="love" onClick={changeLove}>
+         {reactions.love ? <FavoriteIcon/> : <FavoriteBorderOutlinedIcon/>}
         </IconButton>
-
-        <IconButton aria-label="laugh">
-          <InsertEmoticonOutlinedIcon />
+        <IconButton aria-label="laugh" onClick={changeLaugh}>
+          {reactions.laugh ? <InsertEmoticonRoundedIcon/> : <InsertEmoticonOutlinedIcon />}
         </IconButton>
 
         {postInfo.description  ? 

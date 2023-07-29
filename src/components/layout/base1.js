@@ -14,14 +14,12 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 
-import ListTimelinePosts  from "../list_posts";
-
 import profImage from "../../static/profile1.jpg"
 
 const drawerWidth = 210;
 const userId = "482191"
 
-export function Base1(){
+export default function Base1({SideComponent}){
 
     return (
         <Stack direction="row" spacing={0} sx={{height: "auto"}}>
@@ -46,7 +44,7 @@ export function Base1(){
             
                 <List > 
                     <ListItem key={1} disablePadding >
-                        <ListItemButton onClick={() => console.log("home-clicked")}>
+                        <ListItemButton href="/" >
                             <ListItemIcon>
                                 <HomeOutlinedIcon sx={{width: "30px", height: "30px"}}/>
                             </ListItemIcon>
@@ -55,7 +53,7 @@ export function Base1(){
                     </ListItem>
 
                     <ListItem key={2} disablePadding>
-                        <ListItemButton onClick={() => console.log("friend-clicked")}>
+                        <ListItemButton href="/friends">
                             <ListItemIcon>
                                 <PeopleAltOutlinedIcon sx={{width: "30px", height: "30px"}}/>
                             </ListItemIcon>
@@ -64,7 +62,7 @@ export function Base1(){
                     </ListItem>
 
                     <ListItem key={3} disablePadding>
-                        <ListItemButton>
+                        <ListItemButton href="/message">
                             <ListItemIcon>
                                 <TextsmsOutlinedIcon sx={{width: "30px", height: "30px"}}/>
                             </ListItemIcon>
@@ -77,7 +75,7 @@ export function Base1(){
                             <ListItemIcon>
                                 <AddCircleOutlineRoundedIcon  sx={{width: "30px", height: "30px"}}/>
                             </ListItemIcon>
-                            <ListItemText primary={"Add"}  disableTypography sx={{fontSize: 18}}/>
+                            <ListItemText primary={"Share"}  disableTypography sx={{fontSize: 18}}/>
                         </ListItemButton>
                     </ListItem>
 
@@ -93,13 +91,13 @@ export function Base1(){
                     </ListItemButton>
                 </ListItem>
 
-                <Typography variant="caption" sx={{position: "fixed", bottom: 10, marginLeft: "0.7%"}}> © 2023 Namal Sanjaya </Typography>
+                <Typography variant="caption" sx={{position: "fixed", bottom: 10, marginLeft: "0.8%"}}> © 2023 Namal Sanjaya </Typography>
             </Drawer>
 
             <Box
                 component="main"
                 sx={{display: "flex", alignItems: "center", flexDirection: "column",flexGrow: 1, bgcolor: 'background.default'}}>
-                <ListTimelinePosts userId={userId}/>
+                {SideComponent}
             </Box>
         </Stack>
     )
