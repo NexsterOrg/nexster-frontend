@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { styled } from '@mui/material/styles';
 import {Card, CardHeader, CardMedia, CardContent, CardActions, Box,
   Collapse, Avatar, IconButton, Typography} from "@mui/material"
@@ -31,10 +31,7 @@ const ExpandMore = styled((props) => {
 export default function TimelinePost({profInfo, postInfo, reactsCnt, viewerId, viewerReaction}) {
   const [expanded, setExpanded] = useState(false);
   const [reactions, setReactions] = useState({like: viewerReaction.like, love: viewerReaction.love, laugh: viewerReaction.laugh})
-
-  if(reactions.like) reactsCnt ++
-  if(reactions.love) reactsCnt ++
-  if(reactions.laugh) reactsCnt ++
+  const [reactionCount, setReactionCount] = useState(reactsCnt)
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -52,6 +49,10 @@ export default function TimelinePost({profInfo, postInfo, reactsCnt, viewerId, v
     } else {
       await UpdateReactions(postInfo.mediaKey, viewerReaction.key, viewerId, { ... reactions, like: !reactions.like})
     }
+  
+    setReactionCount( preCount => {
+      return reactions.like ? preCount-1 : preCount+1
+    })
     setReactions(preReaction => ({ ... preReaction, like: !preReaction.like}) )
   }
 
@@ -65,6 +66,10 @@ export default function TimelinePost({profInfo, postInfo, reactsCnt, viewerId, v
     } else {
       await UpdateReactions(postInfo.mediaKey, viewerReaction.key, viewerId, { ... reactions, love: !reactions.love})
     }
+
+    setReactionCount(preCount => {
+      return reactions.love ? preCount-1 : preCount+1
+    })
     setReactions(preReaction => ({ ... preReaction, love: !preReaction.love}) )
   }
 
@@ -78,6 +83,10 @@ export default function TimelinePost({profInfo, postInfo, reactsCnt, viewerId, v
     } else {
       await UpdateReactions(postInfo.mediaKey, viewerReaction.key, viewerId, { ... reactions, laugh: !reactions.laugh})
     }
+
+    setReactionCount(preCount => {
+      return reactions.laugh ? preCount-1 : preCount+1
+    })
     setReactions(preReaction => ({ ... preReaction, laugh: !preReaction.laugh}) )
   }
 
@@ -102,7 +111,7 @@ export default function TimelinePost({profInfo, postInfo, reactsCnt, viewerId, v
         </Typography>
         <Box sx={{display: "flex", justifyContent: "flex-end", marginTop: "5px"}}>
            <Typography  variant="body1"> 👍❤️🙂</Typography>
-           <Typography  variant="body2" sx={{marginLeft: "4px", paddingTop: "1px"}}> {reactsCnt} </Typography>
+           <Typography  variant="body2" sx={{marginLeft: "4px", paddingTop: "1px"}}> {reactionCount} </Typography>
         </Box>
       </CardContent>
 
