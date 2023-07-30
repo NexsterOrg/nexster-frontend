@@ -1,5 +1,5 @@
 import React from "react";
-import {Stack, Typography, Drawer, List, Avatar, Divider, Box, 
+import {Stack, Typography, Drawer, List, Avatar, Divider, Box, TextField,
     ListItem, ListItemButton, ListItemIcon, ListItemText} from '@mui/material'
 
 // filled icons
@@ -97,6 +97,8 @@ export default function Base1({SideComponent}){
             <Box
                 component="main"
                 sx={{display: "flex", alignItems: "center", flexDirection: "column",flexGrow: 1, bgcolor: 'background.default'}}>
+                <TextField id="outlined-search" type="search" size="small" label="Find Friends..." variant="filled"
+                sx={{position: "fixed", right: "8px", marginTop: "5px"}}/>
                 {SideComponent}
             </Box>
         </Stack>
