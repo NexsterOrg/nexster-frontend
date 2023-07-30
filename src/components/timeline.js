@@ -81,10 +81,13 @@ function ListTimelinePosts({userId}){
             postsInfo.data.map((each) => {
                 return(
                 <ListItem sx={{ marginY: "5px"}} key={each.media._key}>
-                    <TimelinePost postInfo={{imgUrl: each.media.link, caption: each.media.title, description: each.media.description,
+                    <TimelinePost 
+                    postInfo={{imgUrl: each.media.link, caption: each.media.title, description: each.media.description,
                     mediaKey: each.media._key}} 
                     profInfo={{name: each.owner.name, postDate: timeDiffWithNow(each.media.created_date), profUrl: each.owner.image_url }}
                     reactsCnt={each.reactions.like + each.reactions.love + each.reactions.laugh}
+                    viewerId={userId}
+                    viewerReaction={each.viewer_reaction}
                     />
                 </ListItem>
                 )

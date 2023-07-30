@@ -15,7 +15,7 @@ import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
 
-import { MkReactionUpdateUrl } from '../apis/fetch';
+import { UpdateReactions, CreateReaction } from '../apis/fetch';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -28,9 +28,9 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function TimelinePost({profInfo, postInfo, reactsCnt}) {
+export default function TimelinePost({profInfo, postInfo, reactsCnt, viewerId, viewerReaction}) {
   const [expanded, setExpanded] = useState(false);
-  const [reactions, setReactions] = useState({like: false, love: false, laugh: false})
+  const [reactions, setReactions] = useState({like: viewerReaction.like, love: viewerReaction.love, laugh: viewerReaction.laugh})
 
   if(reactions.like) reactsCnt ++
   if(reactions.love) reactsCnt ++
@@ -40,15 +40,44 @@ export default function TimelinePost({profInfo, postInfo, reactsCnt}) {
     setExpanded(!expanded);
   };
 
-  const changeLikes = () => {
+  const changeLikes = async () => {
+    if(viewerReaction.key === ""){
+      // create new link
+      let newRctKey = await CreateReaction(postInfo.mediaKey, viewerId, { ... reactions, like: !reactions.like})
+      
+      // error occuried, don't update the reaction state
+      if (newRctKey === "") return
+
+      viewerReaction.key = newRctKey
+    } else {
+      await UpdateReactions(postInfo.mediaKey, viewerReaction.key, viewerId, { ... reactions, like: !reactions.like})
+    }
     setReactions(preReaction => ({ ... preReaction, like: !preReaction.like}) )
   }
 
-  const changeLove = () => {
+  const changeLove = async () => {
+    if(viewerReaction.key === ""){
+      let newRctKey = await CreateReaction(postInfo.mediaKey, viewerId, { ... reactions, love: !reactions.love})
+      
+      if (newRctKey === "") return
+
+      viewerReaction.key = newRctKey
+    } else {
+      await UpdateReactions(postInfo.mediaKey, viewerReaction.key, viewerId, { ... reactions, love: !reactions.love})
+    }
     setReactions(preReaction => ({ ... preReaction, love: !preReaction.love}) )
   }
 
-  const changeLaugh = () => {
+  const changeLaugh = async () => {
+    if(viewerReaction.key === ""){
+      let newRctKey = await CreateReaction(postInfo.mediaKey, viewerId, { ... reactions, laugh: !reactions.laugh})
+      
+      if (newRctKey === "") return
+      
+      viewerReaction.key = newRctKey
+    } else {
+      await UpdateReactions(postInfo.mediaKey, viewerReaction.key, viewerId, { ... reactions, laugh: !reactions.laugh})
+    }
     setReactions(preReaction => ({ ... preReaction, laugh: !preReaction.laugh}) )
   }
 
