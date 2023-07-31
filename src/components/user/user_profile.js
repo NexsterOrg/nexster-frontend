@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Avatar, Typography, Paper } from "@mui/material";
 import ImageGrid from "./img_grid";
 import Base1 from "../layout/base1";
+import FriendsSuggSidePanel from "../friend/friends_sugg_side_panel";
 
 const userImgUrl = "https://picsum.photos/id/58/200/300"
 
@@ -71,6 +72,7 @@ function ProfileSection(){
             <ProfileHeader />
             <AboutSection />
             <ImageGrid images={testImg}/>
+            <FriendsSuggSidePanel argStyle={styles.friendSuggPanel}/>
         </Box>
     )
 }
@@ -103,13 +105,17 @@ const styles = {
     },
     profContainer: {
         padding: "10px",
-        width: "746px",
-        border: "1px solid #000"
+        width: "746px"
     },
     name: {
         fontWeight: "bold"
     },
     friendCount: {
         marginTop: "8px"
+    },
+    friendSuggPanel: {
+        position: "fixed",
+        top: "100px",
+        right: 0
     }
 }

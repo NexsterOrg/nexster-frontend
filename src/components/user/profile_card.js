@@ -36,7 +36,7 @@ export default function ProfileCard({username, imgUrl, facOrField, year, isReqte
         
         <Typography variant="body1" sx={{marginY: "4%", marginLeft: "4%"}}> {newUsername} </Typography>
         <Typography variant="body2" sx={{marginLeft: "4%"}}> {newFacField} </Typography>
-        <Typography variant="caption" sx={{marginLeft: "4%"}}> {year}th Year </Typography>
+        <Typography variant="caption" sx={{marginLeft: "4%"}}> {year} Year </Typography>
       </Paper>
     )
 }

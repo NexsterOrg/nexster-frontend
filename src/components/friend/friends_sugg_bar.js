@@ -5,7 +5,7 @@ export default function FriendSuggBar(){
 
     let username = "Namal Sanjaya Fernando"
     let field = "Electronic & Telecommunication Engineering"
-    let year = 4
+    let year = "4th"
     let imgUrl = "https://picsum.photos/id/58/100/100"
 
     return <ProfileCard username={username} facOrField={field} 
