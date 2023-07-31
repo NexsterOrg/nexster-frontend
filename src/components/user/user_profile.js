@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Avatar, Typography, Paper } from "@mui/material";
 import ImageGrid from "./img_grid";
-import Base1 from "./layout/base1";
+import Base1 from "../layout/base1";
 
 const userImgUrl = "https://picsum.photos/id/58/200/300"
 
@@ -64,8 +64,6 @@ function AboutSection(){
         </Paper>
     )
 }
-
-
 
 function ProfileSection(){
     return (

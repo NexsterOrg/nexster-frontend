@@ -15,7 +15,7 @@ import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
 
-import { UpdateReactions, CreateReaction } from '../apis/fetch';
+import { UpdateReactions, CreateReaction } from '../../apis/fetch';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;

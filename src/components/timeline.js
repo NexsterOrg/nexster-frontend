@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react"
 import {List, ListItem, Typography} from '@mui/material'
 
-import TimelinePost from  "./post"
+import TimelinePost from  "./media/post"
 import { fetchData, MkPostsFetchUrl } from "../apis/fetch"
 import Base1 from "./layout/base1"
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-import Base1 from "./layout/base1";
+import Base1 from "../layout/base1";
 
 function SideFriendsPanel(){
     return (

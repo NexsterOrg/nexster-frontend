@@ -3,7 +3,6 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 
-
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
   height: 200,
@@ -36,7 +35,6 @@ const ImageSrc = styled('span')({
   backgroundSize: 'cover',
   backgroundPosition: 'center 40%',
 });
-
 
 export default function ImageGrid({images}) {
   return (
