@@ -69,3 +69,7 @@ export async function CreateReaction(mediaKey, viewerKey, reqBody){
   }
   return ""
 }
+
+export function MkFriendSuggUrl(userKey, startAt, noOfSuggs){
+  return `${apiDomain}/friend_sugs?userid=${userKey}&started_at=${startAt}&max_sugs=${noOfSuggs}`
+}

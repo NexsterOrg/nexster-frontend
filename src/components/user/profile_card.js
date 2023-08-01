@@ -5,7 +5,7 @@ const nameLimit = 24 // for 27 length
 const facOrFieldLimit = 30 // for 33 length
 
 // imgUrl, request OR pending, username(first name + second name), faculty or field (if Engineering), studying year
-export default function ProfileCard({username, imgUrl, facOrField, year, isReqted}){
+export default function ProfileCard({username, imgUrl, facOrField, batch, isReqted}){
     const [isRequested, isRequestedState] = useState(isReqted)
     let newUsername = username
     let newFacField = facOrField
@@ -36,7 +36,7 @@ export default function ProfileCard({username, imgUrl, facOrField, year, isReqte
         
         <Typography variant="body1" sx={{marginY: "4%", marginLeft: "4%"}}> {newUsername} </Typography>
         <Typography variant="body2" sx={{marginLeft: "4%"}}> {newFacField} </Typography>
-        <Typography variant="caption" sx={{marginLeft: "4%"}}> {year} Year </Typography>
+        <Typography variant="caption" sx={{marginLeft: "4%"}}> {batch} batch </Typography>
       </Paper>
     )
 }

@@ -1,31 +1,29 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Stack, Typography, List, ListItem, useTheme} from "@mui/material";
 import ProfileCard from "../user/profile_card";
+import {MkFriendSuggUrl, fetchData} from "../../apis/fetch"
 
-const suggFriends = [
-    {
-        username : "Namal Sanjaya Fernando",
-        field : "Electronic & Telecommunication Engineering",
-        year : "4th",
-        imgUrl : "https://picsum.photos/id/58/100/100",
-    },
-    {
-        username : "Alexandra Johns",
-        field : "Medical Undergraduate",
-        year : "2nd",
-        imgUrl : "https://picsum.photos/id/64/100/100",
-    },
-    {
-        username : "Rebeca Kelly",
-        field : "IT Undergraduate",
-        year : "1st",
-        imgUrl : "https://picsum.photos/id/65/100/100",
-    }
-]
+const Undergrad = " Undergraduate"
+const engi = "Engineering"
+const milieForYear = 31557600000
+const userKey = "482191"
 
 export default function FriendsSuggSidePanel({argStyle}){
     const theme = useTheme();
+    const [suggFriends, setSuggFriends] = useState([])
+
     const isDarkMode = theme.palette.mode === 'dark';
+
+    useEffect(() => {
+        (async () => {
+            try {
+                let results = await fetchData(MkFriendSuggUrl(userKey, "", 3))
+                setSuggFriends(results.data)
+            } catch (err) {
+                console.error(err)
+            }
+        })();
+    }, [])
 
     return (
         <Stack sx={[styles.container, argStyle]}>
@@ -34,10 +32,15 @@ export default function FriendsSuggSidePanel({argStyle}){
             <List>
             {
                 suggFriends.map((each) => {
+                    let facOrField = each.faculty +  Undergrad
+                    if (each.faculty == engi) {
+                        facOrField = each.field 
+                    }
+
                     return (
                     <ListItem>
-                        <ProfileCard username={each.username} facOrField={each.field} 
-                            imgUrl={each.imgUrl} year={each.year} isReqted={false}/>
+                        <ProfileCard username={each.username} facOrField={facOrField} 
+                            imgUrl={each.image_url} batch={each.batch} isReqted={false}/>
                     </ListItem>
                     )
                 })
