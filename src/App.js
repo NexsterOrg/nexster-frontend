@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {Routes, Route} from "react-router-dom"
+
+import Timeline from "./components/timeline"
+import FriendsPanel from './components/friend/friends_panel';
+import MsgPanel from './components/message_panel';
+import NotFound from './components/layout/notfound';
+import Profile from './components/user/user_profile';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark"
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // <ThemeProvider theme={darkTheme}>
+    <Routes>
+      <Route path="/" element={<Timeline />} />
+      <Route path="/friends" element={<FriendsPanel />} />
+      <Route path="/message" element={<MsgPanel />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  //  </ThemeProvider>
   );
 }
 
