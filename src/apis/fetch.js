@@ -1,17 +1,35 @@
 
 const apiDomain = "http://192.168.1.101"
 
+// Status codes
+const unAuthCode = 401
+
+export class UnAuthorizedError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "UnAuthorizedError";
+  }
+}
+
+// TODO: 
+// Do we need try-catch blocks in each places. Check whether having
+// try-catch block in one place is enough or not.
 export async function fetchData(url) {
-    try {
-      const resp = await fetch(url);
-      if (!resp.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return await resp.json();
-    } catch (err) {
-      console.error('Error fetching data:', err);
-      return null;
+  let bearTkn = localStorage.getItem("token")
+  if(bearTkn === null) return
+  const resp = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': bearTkn
     }
+  });
+  if(resp.status === unAuthCode) {
+    throw new UnAuthorizedError("Attempted to access unauthorized resources")
+  }
+  if (!resp.ok) {
+    return null
+  }
+  return await resp.json();
 }
 
 // URL to fetch recent posts for timeline
@@ -58,7 +76,7 @@ export async function CreateReaction(mediaKey, viewerKey, reqBody){
         body: JSON.stringify(reqBody)
     });
     // if failed to create resource
-    if (resp.status != 201) {
+    if (resp.status !== 201) {  // TODO: for 200 should not return an error.
       throw new Error('Failed to update the reaction state');
     }
     let respData = await resp.json();
