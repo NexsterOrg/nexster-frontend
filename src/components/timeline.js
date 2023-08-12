@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react"
 import {List, ListItem, Typography} from '@mui/material'
+import { useNavigate } from 'react-router-dom';
 
 import TimelinePost from  "./media/post"
-import { fetchData, MkPostsFetchUrl } from "../apis/fetch"
+import { UnAuthorizedError, ListRecentPosts } from "../apis/fetch"
 import Base1 from "./layout/base1"
 
 /** 
@@ -16,6 +17,7 @@ const gap = Math.floor(postCnt/2)*700  // To fetch 5 posts. gap should be (5//2)
 let limit = gap
 
 function ListTimelinePosts({userId}){
+    const navigate = useNavigate();
     // TODO:
     // data array should only contain unique values. But due to some uncertainty nature, this can have 
     // same value twice. check this.
@@ -26,13 +28,17 @@ function ListTimelinePosts({userId}){
 
         (async () => {
             try {
-              let data = await fetchData(MkPostsFetchUrl(userId, new Date().toISOString(), postCnt));
-              if (data == null) {
+              let data = await ListRecentPosts(userId, new Date().toISOString(), postCnt);
+              if (data == []) {
                 return;
               }
               addPostsInfo({preLn: data.length, data: data});
             } catch (err) {
-              console.error('Error fetching posts:', err);
+                if (err instanceof UnAuthorizedError) {
+                    navigate('/login', { replace: true });
+                    return
+                } 
+                console.error('Error fetching posts:', err); // TODO : Remove this in production
             }
         })();
     }, [])
@@ -41,7 +47,7 @@ function ListTimelinePosts({userId}){
         const handleScroll = async () => {
             if (window.scrollY > limit) {
                 limit += gap
-                if(postsInfo.preLn == 0) {
+                if(postsInfo.preLn === 0) {
                     // All posts have been read
                     return
                 }
@@ -50,7 +56,7 @@ function ListTimelinePosts({userId}){
                     if (lastObj === null) {
                         return;
                     }
-                    let fetchedPosts = await fetchData(MkPostsFetchUrl(userId, lastObj.media.created_date, postCnt));
+                    let fetchedPosts = await ListRecentPosts(userId, lastObj.media.created_date, postCnt);
 
                     if (fetchedPosts) {
                         addPostsInfo(prevPosts => {
@@ -61,7 +67,11 @@ function ListTimelinePosts({userId}){
                         });
                     }
                 } catch (err) {
-                    console.error('Unhandled error:', err);
+                    if (err instanceof UnAuthorizedError) {  
+                        navigate('/login', { replace: true });
+                        return
+                    } 
+                    console.error('Error fetching posts:', err);  // TODO : Remove this in production
                 }
             }
         };
