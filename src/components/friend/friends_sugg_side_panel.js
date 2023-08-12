@@ -1,26 +1,32 @@
 import React, {useState, useEffect} from "react";
 import { Stack, Typography, List, ListItem, useTheme} from "@mui/material";
 import ProfileCard from "../user/profile_card";
-import {MkFriendSuggUrl, fetchData} from "../../apis/fetch"
+import { useNavigate } from 'react-router-dom';
+
+import {ListFriendSuggs, UnAuthorizedError} from "../../apis/fetch"
 
 const Undergrad = " Undergraduate"
 const engi = "Engineering"
-const milieForYear = 31557600000
 const userKey = "482191"
 
 export default function FriendsSuggSidePanel({argStyle}){
     const theme = useTheme();
     const [suggFriends, setSuggFriends] = useState([])
+    const navigate = useNavigate();
 
     const isDarkMode = theme.palette.mode === 'dark';
 
     useEffect(() => {
         (async () => {
             try {
-                let results = await fetchData(MkFriendSuggUrl(userKey, "", 3))
-                setSuggFriends(results.data)
+                let results = await ListFriendSuggs(userKey, "", 3)
+                setSuggFriends(results)
             } catch (err) {
-                console.error(err)
+                if (err instanceof UnAuthorizedError) {
+                    navigate('/login', { replace: true });
+                    return
+                } 
+                console.error('Error fetching posts:', err); // TODO : Remove this in production
             }
         })();
     }, [])
@@ -38,7 +44,7 @@ export default function FriendsSuggSidePanel({argStyle}){
                     }
 
                     return (
-                    <ListItem>
+                    <ListItem key={each.key}>
                         <ProfileCard username={each.username} facOrField={facOrField} 
                             imgUrl={each.image_url} batch={each.batch} isReqted={false}/>
                     </ListItem>

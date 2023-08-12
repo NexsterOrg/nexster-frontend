@@ -22,19 +22,19 @@ const testImg = [
     },
     {
       url: 'https://picsum.photos/id/46/200/300',
-      title: 'Breakfast'
+      title: 'Breakfast2'
     },
     {
       url: 'https://picsum.photos/id/49/200/300',
-      title: 'Burgers'
+      title: 'Burgers2'
     },
     {
       url: 'https://picsum.photos/id/59/200/300',
-      title: 'Camera'
+      title: 'Camera2'
     },
     {
       url: 'https://picsum.photos/id/51/200/300',
-      title: 'Burgers'
+      title: 'Burgers3'
     },
   
   ];

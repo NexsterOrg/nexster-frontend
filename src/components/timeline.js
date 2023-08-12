@@ -3,7 +3,7 @@ import {List, ListItem, Typography} from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 
 import TimelinePost from  "./media/post"
-import { fetchData, MkPostsFetchUrl, UnAuthorizedError } from "../apis/fetch"
+import { UnAuthorizedError, ListRecentPosts } from "../apis/fetch"
 import Base1 from "./layout/base1"
 
 /** 
@@ -28,14 +28,13 @@ function ListTimelinePosts({userId}){
 
         (async () => {
             try {
-              let data = await fetchData(MkPostsFetchUrl(userId, new Date().toISOString(), postCnt));
-              if (data == null) {
+              let data = await ListRecentPosts(userId, new Date().toISOString(), postCnt);
+              if (data == []) {
                 return;
               }
               addPostsInfo({preLn: data.length, data: data});
             } catch (err) {
                 if (err instanceof UnAuthorizedError) {
-                    // TODO: before naviagating to /login, we need to remove JWT token from local stroage()
                     navigate('/login', { replace: true });
                     return
                 } 
@@ -57,7 +56,7 @@ function ListTimelinePosts({userId}){
                     if (lastObj === null) {
                         return;
                     }
-                    let fetchedPosts = await fetchData(MkPostsFetchUrl(userId, lastObj.media.created_date, postCnt));
+                    let fetchedPosts = await ListRecentPosts(userId, lastObj.media.created_date, postCnt);
 
                     if (fetchedPosts) {
                         addPostsInfo(prevPosts => {
@@ -68,11 +67,11 @@ function ListTimelinePosts({userId}){
                         });
                     }
                 } catch (err) {
-                    if (err instanceof UnAuthorizedError) {  // TODO : Remove this in production
+                    if (err instanceof UnAuthorizedError) {  
                         navigate('/login', { replace: true });
                         return
                     } 
-                    console.error('Error fetching posts:', err);
+                    console.error('Error fetching posts:', err);  // TODO : Remove this in production
                 }
             }
         };
