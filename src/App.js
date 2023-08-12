@@ -7,6 +7,14 @@ import MsgPanel from './components/message_panel';
 import NotFound from './components/layout/notfound';
 import Profile from './components/user/user_profile';
 
+function Login() {
+  return (
+    <div>
+      <h1> Login Page </h1>
+    </div>
+  )
+}
+
 const darkTheme = createTheme({
   palette: {
     mode: "dark"
@@ -21,6 +29,7 @@ function App() {
       <Route path="/friends" element={<FriendsPanel />} />
       <Route path="/message" element={<MsgPanel />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/login" element={<Login />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   //  </ThemeProvider>
