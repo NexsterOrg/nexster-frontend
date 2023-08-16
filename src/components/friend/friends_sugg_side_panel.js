@@ -7,9 +7,8 @@ import {ListFriendSuggs, UnAuthorizedError} from "../../apis/fetch"
 
 const Undergrad = " Undergraduate"
 const engi = "Engineering"
-const userKey = "482191"
 
-export default function FriendsSuggSidePanel({argStyle}){
+export default function FriendsSuggSidePanel({argStyle, userId}){
     const theme = useTheme();
     const [suggFriends, setSuggFriends] = useState([])
     const navigate = useNavigate();
@@ -19,7 +18,7 @@ export default function FriendsSuggSidePanel({argStyle}){
     useEffect(() => {
         (async () => {
             try {
-                let results = await ListFriendSuggs(userKey, "", 3)
+                let results = await ListFriendSuggs(userId, "", 3)
                 setSuggFriends(results)
             } catch (err) {
                 if (err instanceof UnAuthorizedError) {
@@ -29,7 +28,7 @@ export default function FriendsSuggSidePanel({argStyle}){
                 console.error('Error fetching posts:', err); // TODO : Remove this in production
             }
         })();
-    }, [])
+    }, [userId])
 
     return (
         <Stack sx={[styles.container, argStyle]}>

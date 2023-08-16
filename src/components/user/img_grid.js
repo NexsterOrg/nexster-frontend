@@ -1,7 +1,10 @@
-import * as React from 'react';
+import {useState, useEffect} from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
+import { useNavigate } from 'react-router-dom';
+
+import {ListMediaRoleBased, UnAuthorizedError} from "../../apis/fetch"
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
@@ -36,18 +39,38 @@ const ImageSrc = styled('span')({
   backgroundPosition: 'center 40%',
 });
 
-export default function ImageGrid({images}) {
+export default function ImageGrid({userId}) {
+  const [imgList, setImgList] = useState([])
+  const navigate = useNavigate();
+
+  useEffect( () => {
+    if (userId === "") return 
+    (async () => {
+      try {
+        let imgs = await ListMediaRoleBased(userId, 1, 10)   // TODO: images should be loaded with the scroll.
+        setImgList(imgs)
+      } catch (err) {
+        if (err instanceof UnAuthorizedError) {
+          navigate('/login', { replace: true });
+          return
+        } 
+        console.error("failed to list images: ", err)
+      }
+
+    })()
+  }, [userId])
+
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%'}}>
-      {images.map((image) => (
+      {imgList.map((image) => (
         <ImageButton
           focusRipple
-          key={image.title}
+          key={image.key}
           style={{
             width: "30%",
           }}
         >
-          <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+          <ImageSrc style={{ backgroundImage: `url(${image.image_url})` }} />
         </ImageButton>
       ))}
     </Box>

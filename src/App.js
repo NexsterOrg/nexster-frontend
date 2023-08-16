@@ -28,8 +28,11 @@ function App() {
       <Route path="/" element={<Timeline />} />
       <Route path="/friends" element={<FriendsPanel />} />
       <Route path="/message" element={<MsgPanel />} />
-      <Route path="/profile" element={<Profile />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/page-not-found" element={<NotFound />} />
+
+      <Route path="/index/:indexNo" element={<Profile />} />
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   //  </ThemeProvider>
@@ -37,3 +40,5 @@ function App() {
 }
 
 export default App;
+
+//

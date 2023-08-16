@@ -29,7 +29,7 @@ function ListTimelinePosts({userId}){
         (async () => {
             try {
               let data = await ListRecentPosts(userId, new Date().toISOString(), postCnt);
-              if (data == []) {
+              if (data === []) {
                 return;
               }
               addPostsInfo({preLn: data.length, data: data});
