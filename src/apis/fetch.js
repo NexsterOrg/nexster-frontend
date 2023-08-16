@@ -105,3 +105,28 @@ export async function ListFriendSuggs(userKey, startAt, noOfSuggs){
   if(friends === null) return []
   return friends.data
 }
+
+export async function GetProfileInfo(userId){
+  let info = await get(`${apiDomain}/u/users/${userId}`)
+  if(info === null) return {}
+  return info.data
+}
+
+export async function GetFriendCount(userId){
+  let countObj = await get(`${apiDomain}/u/friends/${userId}/count`)
+  if(countObj === null) return 0
+  return countObj.data.count
+}
+
+///u/indexnos/:index_no
+export async function GetUserKeyByIndexNo(indexNo) {
+  let respBody = await get(`${apiDomain}/u/indexnos/${indexNo}`)
+  if(respBody === null) return ""
+  return respBody.data.key
+}
+
+export async function ListMediaRoleBased(imgOwnerId, page, pageSize){
+  let respBody = await get(`${apiDomain}/t/r/media/${imgOwnerId}?page=${page}&page_size=${pageSize}`)
+  if(respBody === null) return []
+  return respBody.data
+}
