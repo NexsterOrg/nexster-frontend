@@ -100,10 +100,10 @@ export async function CreateReaction(mediaKey, viewerKey, reqBody){
   return res.data.key
 }
 
-export async function ListFriendSuggs(userKey, startAt, noOfSuggs){
-  let friends = await get(`${apiDomain}/friend_sugs?userid=${userKey}&started_at=${startAt}&max_sugs=${noOfSuggs}`)
-  if(friends === null) return []
-  return friends.data
+export async function ListFriendSuggs(page, pageSize){
+  let respBody = await get(`${apiDomain}/friend_sugs?page=${page}&page_size=${pageSize}`)
+  if(respBody === null) return {data: [], resultsCount: 0}
+  return { data: respBody.data, resultsCount: respBody.results_count}
 }
 
 export async function GetProfileInfo(userId){
@@ -129,4 +129,19 @@ export async function ListMediaRoleBased(imgOwnerId, page, pageSize){
   let respBody = await get(`${apiDomain}/t/r/media/${imgOwnerId}?page=${page}&page_size=${pageSize}`)
   if(respBody === null) return []
   return respBody.data
+}
+
+export async function ListFriendReqs(page, pageSize){
+  let respBody = await get(`http://localhost:8000/usrmgmt/friend_req?page=${page}&page_size=${pageSize}`)
+  if(respBody === null) return {data: [], size: 0}
+  return {
+    data: respBody.data,
+    size: respBody.results_count
+  }
+}
+
+export async function GetAllFriendReqsCount(){
+  let respBody = await get("http://localhost:8000/usrmgmt/friend_req/count")
+  if(respBody === null) return 0
+  return respBody.data.count
 }
