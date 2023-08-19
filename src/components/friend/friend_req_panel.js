@@ -2,7 +2,7 @@ import { Paper , Avatar, Typography, Box, Button, Tooltip, Card,
     CardContent, List, ListItem} from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 
-import { TimeDiffWithNow } from "../../helper.js/date"
+import { TimeDiffWithNow } from "../../helper/date"
 
 const reqLimit = 3
 const nameLimit = 30

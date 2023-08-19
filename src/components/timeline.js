@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import TimelinePost from  "./media/post"
 import { UnAuthorizedError, ListRecentPosts } from "../apis/fetch"
 import Base1 from "./layout/base1"
-import { TimeDiffWithNow } from "../helper.js/date";
+import { TimeDiffWithNow } from "../helper/date";
 
 /** 
  * gap between two post - 700
