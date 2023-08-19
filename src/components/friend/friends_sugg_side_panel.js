@@ -18,8 +18,8 @@ export default function FriendsSuggSidePanel({argStyle, userId}){
     useEffect(() => {
         (async () => {
             try {
-                let results = await ListFriendSuggs(userId, "", 3)
-                setSuggFriends(results)
+                let results = await ListFriendSuggs(1, 3)
+                setSuggFriends(results.data)
             } catch (err) {
                 if (err instanceof UnAuthorizedError) {
                     navigate('/login', { replace: true });
