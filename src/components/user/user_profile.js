@@ -97,7 +97,7 @@ function ProfileSection({indexNo}){
 // TODO: If index_no is not found, redirect to page not found (404)
 export default function Profile(){
     const {indexNo} = useParams()
-    return <Base1 SideComponent={ <ProfileSection indexNo={indexNo}/> }/>
+    return <Base1 styles={{alignItems: "center"}} SideComponent={ <ProfileSection indexNo={indexNo}/> }/>
 }
 
 const styles = {

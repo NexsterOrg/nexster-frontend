@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from "react"
+import {useState, useEffect} from "react"
 import {List, ListItem, Typography} from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 
 import TimelinePost from  "./media/post"
 import { UnAuthorizedError, ListRecentPosts } from "../apis/fetch"
 import Base1 from "./layout/base1"
+import { TimeDiffWithNow } from "../helper.js/date";
 
 /** 
  * gap between two post - 700
@@ -94,7 +95,7 @@ function ListTimelinePosts({userId}){
                     <TimelinePost 
                     postInfo={{imgUrl: each.media.link, caption: each.media.title, description: each.media.description,
                     mediaKey: each.media._key}} 
-                    profInfo={{name: each.owner.name, postDate: timeDiffWithNow(each.media.created_date), profUrl: each.owner.image_url }}
+                    profInfo={{name: each.owner.name, postDate: TimeDiffWithNow(each.media.created_date), profUrl: each.owner.image_url }}
                     reactsCnt={each.reactions.like + each.reactions.love + each.reactions.laugh}
                     viewerId={userId}
                     viewerReaction={each.viewer_reaction}
@@ -109,39 +110,6 @@ function ListTimelinePosts({userId}){
 
 export default function Timeline(){
     return (
-        <Base1 SideComponent={<ListTimelinePosts userId={"482191"}/>}/>
+        <Base1 styles={{alignItems: "center"}} SideComponent={<ListTimelinePosts userId={"482191"}/>}/>
     )
-}
-
-const hrLimit = 60
-const dayLimit = 1440
-const weekLimit = 10080
-const monthLimit = 40320
-
-function timeDiffWithNow(timeIsoStr){
-    let givenDate = new Date(timeIsoStr);
-    let currentDate = new Date();
-
-    let timeDiffMin = Math.floor((currentDate - givenDate)/60000);
-
-    if(timeDiffMin >= monthLimit) {
-        return `${Math.floor(timeDiffMin/monthLimit)}m`
-    }
-
-    if(timeDiffMin >= weekLimit) {
-        return `${Math.floor(timeDiffMin/weekLimit)}w`
-    }
-
-    if(timeDiffMin >= dayLimit) {
-        return `${Math.floor(timeDiffMin/dayLimit)}d`
-    }
-
-    if(timeDiffMin >= hrLimit) {
-        return `${Math.floor(timeDiffMin/hrLimit)}h`
-    }
-
-    if(timeDiffMin < 1) {
-        return "now"
-    }
-    return `${timeDiffMin}min`
 }

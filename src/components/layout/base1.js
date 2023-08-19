@@ -19,7 +19,7 @@ import profImage from "../../static/profile1.jpg"
 const drawerWidth = 210;
 const userId = "482191"
 
-export default function Base1({SideComponent}){
+export default function Base1({styles, SideComponent}){
 
     return (
         <Stack direction="row" spacing={0} sx={{height: "auto"}}>
@@ -96,7 +96,7 @@ export default function Base1({SideComponent}){
 
             <Box
                 component="main"
-                sx={{display: "flex", alignItems: "center", flexDirection: "column",flexGrow: 1, bgcolor: 'background.default'}}>
+                sx={[{display: "flex", flexDirection: "column",flexGrow: 1, bgcolor: 'background.default'}, styles]}>
                 <TextField id="outlined-search" type="search" size="small" label="Find Friends..." variant="filled"
                 sx={{position: "fixed", right: "8px", marginTop: "5px"}}/>
                 {SideComponent}
