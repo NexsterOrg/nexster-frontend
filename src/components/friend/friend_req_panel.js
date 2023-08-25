@@ -3,6 +3,7 @@ import { Paper , Avatar, Typography, Box, Button, Tooltip, Card,
 import { useNavigate } from 'react-router-dom';
 
 import { TimeDiffWithNow } from "../../helper/date"
+import { AcceptFriendReq } from "../../apis/fetch";
 
 const reqLimit = 3
 const nameLimit = 30
@@ -11,7 +12,6 @@ const engi = "Engineering"
 
 export default function FriendReqsPanel({reqCount, reqList, rootStyles, showButton}){
     const navigate = useNavigate();
-
     const getMoreReqInfo = () => {
         navigate('/friends/request', { replace: true });
     }
@@ -31,7 +31,8 @@ export default function FriendReqsPanel({reqCount, reqList, rootStyles, showButt
                     reqList.map((info) => (
                         <ListItem key={info.user_key} >
                             <FriendReqCard imgUrl={info.image_url} username={info.username} faculty={info.faculty} 
-                                    field={info.field} batch={info.batch} reqDate={info.req_date} reqId={info.req_key}/>
+                                    field={info.field} batch={info.batch} reqDate={info.req_date} 
+                                    friendReqId={info.req_key} reqstorId={info.user_key}/>
                         </ListItem>
                     ))
                 }  
@@ -50,7 +51,7 @@ export default function FriendReqsPanel({reqCount, reqList, rootStyles, showButt
 
 // lengths
 // name: 30 , facOrField: 42, batch: 
-function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, reqId}){
+function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, friendReqId, reqstorId}){
     let newUsername = username
     let newFacField = faculty
     if (newFacField === engi){
@@ -61,6 +62,19 @@ function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, reqId}
     }
     if(newFacField.length > facOrFieldLimit){
         newFacField = newFacField.substring(0, facOrFieldLimit) + "..."
+    }
+
+    const onAccept = async () => {
+        try {
+            await AcceptFriendReq(friendReqId, {"reqstor_id": reqstorId})
+            // Need to remove this slot
+        } catch (err) {
+            console.error("failed to accept friend req: ", friendReqId, reqstorId)
+        }
+    }
+
+    if (friendReqId === "" || reqstorId === "") {
+        return null
     }
 
     return (
@@ -75,7 +89,7 @@ function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, reqId}
                 </Box>
             </Box>
             <Box sx={{display: "flex", alignItems: "center", marginLeft: "50px"}}>
-                    <Button sx={{marginRight: "7px", textTransform: "none"}} variant="outlined">Accept</Button>
+                    <Button sx={{marginRight: "7px", textTransform: "none"}} variant="outlined" onClick={onAccept}>Accept</Button>
                     <Tooltip title="Requestor won't notice">
                         <Button sx={{marginLeft: "7px", marginRight: "15px", textTransform: "none"}} variant="outlined" color="error">Ignore</Button>
                     </Tooltip>

@@ -132,7 +132,7 @@ export async function ListMediaRoleBased(imgOwnerId, page, pageSize){
 }
 
 export async function ListFriendReqs(page, pageSize){
-  let respBody = await get(`http://localhost:8000/usrmgmt/friend_req?page=${page}&page_size=${pageSize}`)
+  let respBody = await get(`${apiDomain}/u/friend_req?page=${page}&page_size=${pageSize}`)
   if(respBody === null) return {data: [], size: 0}
   return {
     data: respBody.data,
@@ -141,7 +141,12 @@ export async function ListFriendReqs(page, pageSize){
 }
 
 export async function GetAllFriendReqsCount(){
-  let respBody = await get("http://localhost:8000/usrmgmt/friend_req/count")
+  let respBody = await get(`${apiDomain}/u/friend_req/count`)
   if(respBody === null) return 0
   return respBody.data.count
+}
+
+export async function AcceptFriendReq(friendReqId, data){
+  let respBody = await post(`http://localhost:8000/usrmgmt/friend_req/${friendReqId}`, data)
+  // TODO: return necessary data if required in the future
 }
