@@ -84,6 +84,29 @@ async function post(url, reqBody) {
   return await resp.json();
 }
 
+export async function del(url){
+  let bearTkn = localStorage.getItem(token)
+  if(bearTkn === null) {
+    throw new UnAuthorizedError("token is not existed")
+  }
+  let resp = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': bearTkn,
+      }
+  });
+
+  if(resp.status === unAuthCode) {
+    localStorage.removeItem(token)
+    throw new UnAuthorizedError("Attempted to access unauthorized resources")
+  }
+
+  if (!resp.ok) {
+    throw new Error('DELETE request is failed');
+  }
+
+}
+
 export async function ListRecentPosts(userId, sinceDate, postCount){
   let posts = await get(`${apiDomain}/recent_posts/${userId}?last_post_at=${sinceDate}&max_post_count=${postCount}`)
   if(posts === null) return []
