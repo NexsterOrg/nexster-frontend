@@ -170,6 +170,11 @@ export async function GetAllFriendReqsCount(){
 }
 
 export async function AcceptFriendReq(friendReqId, data){
-  let respBody = await post(`http://localhost:8000/usrmgmt/friend_req/${friendReqId}`, data)
+  await post(`${apiDomain}/u/friend_req/${friendReqId}`, data)
+  // TODO: return necessary data if required in the future
+}
+
+export async function IgnoreFriendReq(friendReqId, otherId){
+  await del(`${apiDomain}/u/friend_req/${friendReqId}/ignore?other_id=${otherId}`)
   // TODO: return necessary data if required in the future
 }
