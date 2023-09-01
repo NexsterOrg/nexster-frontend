@@ -44,7 +44,7 @@ export default function FriendsSuggSidePanel({argStyle, userId}){
 
                     return (
                     <ListItem key={each.key}>
-                        <ProfileCard username={each.username} facOrField={facOrField} 
+                        <ProfileCard username={each.username} facOrField={facOrField} isFriend={false}
                             imgUrl={each.image_url} batch={each.batch} isReqted={false}/>
                     </ListItem>
                     )
@@ -65,3 +65,5 @@ const styles = {
         fontWeight: "bold"
     }
 }
+
+// TODO: friend state need to be include in the json response.

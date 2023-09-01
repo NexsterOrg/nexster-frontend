@@ -25,6 +25,7 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
     }
 
     const onRemove = async () => {
+        if(pageNo <= 0) return
         try {
             if(showButton && totalReqCount > 3){
                 const newReqs = await ListFriendReqs(pageNo+1, pageSize)
@@ -58,7 +59,7 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
     }, [])
 
     useEffect(() => {
-        if(pageNo === initPageNo) return
+        if(pageNo <= initPageNo) return
 
         if(showButton) return
 
