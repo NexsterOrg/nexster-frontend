@@ -123,6 +123,13 @@ export async function CreateReaction(mediaKey, viewerKey, reqBody){
   return res.data.key
 }
 
+// http://localhost:8001/timeline/friend_sugs/v2/:faculty?page=1&page_size=10&gender=male&birthday=2001-04-27
+export async function ListFriendsForPool(faculty, gender, birthday, page, pageSize) {
+  let respBody = await get(`http://localhost:8001/timeline/friend_sugs/v2/${faculty}?page=${page}&page_size=${pageSize}&gender=${gender}&birthday=${birthday}`)
+  if(respBody === null) return {data: [], resultsCount: 0}
+  return { data: respBody.data, resultsCount: respBody.results_count}
+}
+
 export async function ListFriendSuggs(page, pageSize){
   let respBody = await get(`${apiDomain}/friend_sugs?page=${page}&page_size=${pageSize}`)
   if(respBody === null) return {data: [], resultsCount: 0}
@@ -177,4 +184,10 @@ export async function AcceptFriendReq(friendReqId, data){
 export async function IgnoreFriendReq(friendReqId, otherId){
   await del(`${apiDomain}/u/friend_req/${friendReqId}/ignore?other_id=${otherId}`)
   // TODO: return necessary data if required in the future
+}
+
+export async function SendFriendReq(data){
+  let respBody = await post(`http://localhost:8000/usrmgmt/friend_req`, data)
+  if(respBody === null) return ""
+  return respBody.data.friend_req_id
 }
