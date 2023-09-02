@@ -17,7 +17,6 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import profImage from "../../static/profile1.jpg"
 
 const drawerWidth = 210;
-const userId = "482191"
 
 export default function Base1({styles, SideComponent}){
 
@@ -104,4 +103,3 @@ export default function Base1({styles, SideComponent}){
         </Stack>
     )
 }
-// border: "1px solid #000"

@@ -4,7 +4,6 @@ import {Card, CardHeader, CardMedia, CardContent, CardActions, Box,
   Collapse, Avatar, IconButton, Typography} from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 
-
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 // Filled Icons
@@ -54,6 +53,7 @@ export default function TimelinePost({profInfo, postInfo, reactsCnt, viewerId, v
         await UpdateReactions(postInfo.mediaKey, viewerReaction.key, viewerId, { ... reactions, like: !reactions.like})
       }
     
+      // TODO: We should handle properly above API calls.(fail path)
       setReactionCount( preCount => {
         return reactions.like ? preCount-1 : preCount+1
       })

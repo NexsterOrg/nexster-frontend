@@ -13,6 +13,7 @@ const engi = "Engineering"
 // name: 30, fac/field: 42: 
 // about: 
 
+// TODO: Get current logged in user info to provide to component as necessary
 function ProfileHeader({userId}){
     const [profInfo, setProfInfo] = useState({imgUrl:"", username: "", about: "", batch: "", facOrField: "", key: ""})
     const [friendCount, setFriendCount] = useState(0)
@@ -37,7 +38,6 @@ function ProfileHeader({userId}){
             }
         })()
     }, [userId])
-
 
     return (
         <>
@@ -112,12 +112,10 @@ const styles = {
         padding: "18px", 
         marginLeft: "30px",
         width: "576px",
-        // backgroundColor: "#D9D9D9"
     },
     aboutContainer : {
         padding: "15px",
         marginY: "20px",
-        // backgroundColor: "#D9D9D9"
     },
     about: {
         fontWeight: "bold"
@@ -126,7 +124,8 @@ const styles = {
         width: "710px", height: "auto", overflow: "hidden" 
     },
     aboutPara: { 
-        fontSize: "100%", overflow: "auto", whiteSpace: "pre-wrap", wordWrap: "break-word", width: "100%" 
+        fontSize: "100%", overflow: "auto", whiteSpace: "pre-wrap", 
+        wordWrap: "break-word", width: "100%" 
     },
     profContainer: {
         padding: "10px",
