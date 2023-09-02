@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from "react";
 import { Stack, Typography, List, ListItem, useTheme} from "@mui/material";
-import ProfileCard from "../user/profile_card";
 import { useNavigate } from 'react-router-dom';
 
-import {ListFriendSuggs, UnAuthorizedError} from "../../apis/fetch"
+import ProfileCard from "../user/profile_card";
+import {ListFriendSuggs, UnAuthorizedError, LoginPath} from "../../apis/fetch"
 
 const Undergrad = " Undergraduate"
 const engi = "Engineering"
@@ -22,7 +22,7 @@ export default function FriendsSuggSidePanel({argStyle, userId}){
                 setSuggFriends(results.data)
             } catch (err) {
                 if (err instanceof UnAuthorizedError) {
-                    navigate('/login', { replace: true });
+                    navigate(LoginPath, { replace: true });
                     return
                 } 
                 console.error('Error fetching posts:', err); // TODO : Remove this in production
@@ -66,4 +66,4 @@ const styles = {
     }
 }
 
-// TODO: friend state need to be include in the json response.
+// TODO: friend state need to be passed with `ProfileCard` component.

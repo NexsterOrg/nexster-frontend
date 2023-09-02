@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Paper , Avatar, Typography, Box, Button, Tooltip, Card, 
-    CardContent, List, ListItem} from "@mui/material"
+    CardContent, List } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 
 import { TimeDiffWithNow } from "../../helper/date"
-import { AcceptFriendReq, ListFriendReqs, GetAllFriendReqsCount, IgnoreFriendReq } from "../../apis/fetch";
+import { AcceptFriendReq, ListFriendReqs, GetAllFriendReqsCount, LoginPath,
+    IgnoreFriendReq, UnAuthorizedError } from "../../apis/fetch";
 
 const reqLimit = 3
 const nameLimit = 30
@@ -14,6 +15,7 @@ const engi = "Engineering"
 const gap = 330
 let limit = 0
 
+// TODO: Check the response from API call and handl it properly.
 export default function FriendReqsPanel({rootStyles, showButton, initPageNo, initPageSize, pageSize}){
     const navigate = useNavigate();
     const [reqList, addReqToList] = useState([])
@@ -21,7 +23,7 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
     const [pageNo, setPageNo] = useState(initPageNo)
 
     const getMoreReqInfo = () => {
-        navigate('/friends/request', { replace: true });
+        navigate('/friends/request');
     }
 
     const onRemove = async () => {
@@ -33,6 +35,10 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
             }
             setTotalReqCount(preVal => preVal-1)
         } catch (err) {
+            if (err instanceof UnAuthorizedError) {  
+                navigate(LoginPath, { replace: true });
+                return
+            } 
             console.error("err onRemove: ", err)   
         }
     }
@@ -53,6 +59,10 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
                 }
                 setPageNo(2)
             } catch (err) {
+                if (err instanceof UnAuthorizedError) {  
+                    navigate(LoginPath, { replace: true });
+                    return
+                } 
                 console.error(err)
             }
         })()
@@ -79,6 +89,10 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
                     }
                     setPageNo(preVal => preVal + 1)
                 } catch (err) {
+                    if (err instanceof UnAuthorizedError) {  
+                        navigate(LoginPath, { replace: true });
+                        return
+                    } 
                     console.error("after scroll event", err)
                 }
             }
@@ -126,7 +140,7 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
 // name: 30 , facOrField: 42, batch: 
 // TODO: Add alert msgs after accept/ignore actions
 function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, friendReqId, reqstorId, onRemoveFunc}){
-
+    const navigate = useNavigate();
     const [fId, setFId] = useState(friendReqId)
 
     let newUsername = username
@@ -147,6 +161,10 @@ function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, friend
             setFId("")
             onRemoveFunc()
         } catch (err) {
+            if (err instanceof UnAuthorizedError) {  
+                navigate(LoginPath, { replace: true });
+                return
+            } 
             console.error("failed to accept friend req: ", friendReqId, reqstorId)
         }
     }
@@ -156,6 +174,10 @@ function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, friend
             setFId("")
             onRemoveFunc()
         } catch (err) {
+            if (err instanceof UnAuthorizedError) {  
+                navigate(LoginPath, { replace: true });
+                return
+            } 
             console.error("failed to ignore friend req: ", friendReqId, reqstorId)
         }
     }

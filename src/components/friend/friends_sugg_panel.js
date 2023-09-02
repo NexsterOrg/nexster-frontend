@@ -3,7 +3,7 @@ import { Box, Card, CardContent, Typography, Button } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 
 import ProfileCard from "../user/profile_card"
-import { ListFriendsForPool } from "../../apis/fetch";
+import { ListFriendsForPool, UnAuthorizedError, LoginPath } from "../../apis/fetch";
 import { GetUserInfoFromLS } from "../../apis/store";
 
 const gap = 330
@@ -16,7 +16,7 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
     const [pageNo, setPageNo] = useState(1)
 
     const getMoreSuggs = () => {
-        navigate('/friends/suggs', { replace: true });
+        navigate('/friends/suggs');
     }
 
     const {gender, faculty, birthday} = useMemo(GetUserInfoFromLS, [])
@@ -24,7 +24,7 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
     useEffect(()=> {
         window.scrollTo(0, 0);
         if(gender === undefined || faculty === undefined || birthday === undefined) {
-            navigate('/login', { replace: true });
+            navigate(LoginPath, { replace: true });
             return
         }
 
@@ -40,6 +40,10 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
                 }
                 setPageNo(2)
             } catch (err) {
+                if (err instanceof UnAuthorizedError) {  
+                    navigate(LoginPath, { replace: true });
+                    return
+                } 
                 console.error(err)
             }
         })()
@@ -66,6 +70,10 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
                     }
                     setPageNo(preVal => preVal + 1)
                 } catch (err) {
+                    if (err instanceof UnAuthorizedError) {  
+                        navigate(LoginPath, { replace: true });
+                        return
+                    }
                     console.error(err)
                 }
             }

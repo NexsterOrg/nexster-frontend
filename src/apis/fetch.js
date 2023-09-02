@@ -1,6 +1,9 @@
-
 const apiDomain = "http://192.168.1.101"
 const token = "token"
+
+// Paths
+export const LoginPath = "/login"
+export const FriendsRoute = "/friends"
 
 // Status codes
 const unAuthCode = 401
