@@ -3,8 +3,8 @@ import { Box, Card, CardContent, Typography, Button } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 
 import ProfileCard from "../user/profile_card"
-import { ListFriendsForPool, UnAuthorizedError, LoginPath } from "../../apis/fetch";
-import { GetUserInfoFromLS } from "../../apis/store";
+import { ListFriendsForPool, UnAuthorizedError, LoginPath, FriendSuggsRoute } from "../../apis/fetch";
+import { GetUserInfoFromLS, RemoveJwtToken } from "../../apis/store";
 
 const gap = 330
 let limit = 0
@@ -16,7 +16,7 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
     const [pageNo, setPageNo] = useState(1)
 
     const getMoreSuggs = () => {
-        navigate('/friends/suggs');
+        navigate(FriendSuggsRoute);
     }
 
     const {gender, faculty, birthday} = useMemo(GetUserInfoFromLS, [])
@@ -24,6 +24,8 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
     useEffect(()=> {
         window.scrollTo(0, 0);
         if(gender === undefined || faculty === undefined || birthday === undefined) {
+            // TODO: Do we need to indicate relavent message to user and then redirect to login page.
+            RemoveJwtToken();
             navigate(LoginPath, { replace: true });
             return
         }

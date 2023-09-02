@@ -15,7 +15,7 @@ export default function FriendSuggsSite(){
         navigate(FriendsRoute);
     }
     const comp = <Box> 
-        <Button sx={styles.butn} startIcon={<ArrowBackIcon />} onClick={backHandler}>Back to Friends</Button>
+        <Button disableRipple sx={styles.butn} startIcon={<ArrowBackIcon />} onClick={backHandler}>Back to Friends</Button>
         <FriendSuggPanel rootStyles={{marginX: "30px", marginBottom: "30px", marginTop: "8px"}} showButton={false} pageSize={suggsSitePageSize}/>
     </Box>
     return <Base1 SideComponent={comp} styles={{alignItems: "flex-start"}}/>

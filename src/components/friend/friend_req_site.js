@@ -16,9 +16,9 @@ export default function FriendReqSite(){
     }
 
     const comp = <Box> 
-        <Button sx={styles.butn} startIcon={<ArrowBackIcon />} onClick={backHandler}>Back to Friends</Button>
-        <FriendReqsPanel rootStyles={{marginX: "30px", marginBottom: "30px", marginTop: "8px"}} showButton={false} initPageNo={1} initPageSize={reqCountPerFetch} 
-        pageSize={reqCountPerFetch}/>
+        <Button disableRipple sx={styles.butn} startIcon={<ArrowBackIcon />} onClick={backHandler}>Back to Friends</Button>
+        <FriendReqsPanel rootStyles={{marginX: "30px", marginBottom: "30px", marginTop: "8px"}} showButton={false} initPageNo={1} 
+        initPageSize={reqCountPerFetch} pageSize={reqCountPerFetch}/>
     </Box>
 
     return <Base1 SideComponent={comp} styles={{alignItems: "flex-start"}}/>

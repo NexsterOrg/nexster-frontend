@@ -4,6 +4,8 @@ const token = "token"
 // Paths
 export const LoginPath = "/login"
 export const FriendsRoute = "/friends"
+export const FriendsRequest = "/friends/request"
+export const FriendSuggsRoute = "/friends/suggs"
 
 // Status codes
 const unAuthCode = 401
@@ -105,9 +107,9 @@ export async function del(url){
   }
 
   if (!resp.ok) {
-    throw new Error('DELETE request is failed');
+    return null;
   }
-
+  return await resp.json();
 }
 
 export async function ListRecentPosts(userId, sinceDate, postCount){
@@ -180,13 +182,15 @@ export async function GetAllFriendReqsCount(){
 }
 
 export async function AcceptFriendReq(friendReqId, data){
-  await post(`${apiDomain}/u/friend_req/${friendReqId}`, data)
-  // TODO: return necessary data if required in the future
+  let respBody = await post(`${apiDomain}/u/friend_req/${friendReqId}`, data)
+  if(respBody === null) return false 
+  return true
 }
 
 export async function IgnoreFriendReq(friendReqId, otherId){
-  await del(`${apiDomain}/u/friend_req/${friendReqId}/ignore?other_id=${otherId}`)
-  // TODO: return necessary data if required in the future
+  let respBody = await del(`${apiDomain}/u/friend_req/${friendReqId}/ignore?other_id=${otherId}`)
+  if(respBody === null) return false 
+  return true
 }
 
 export async function SendFriendReq(data){

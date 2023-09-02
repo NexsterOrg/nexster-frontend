@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { TimeDiffWithNow } from "../../helper/date"
 import { AcceptFriendReq, ListFriendReqs, GetAllFriendReqsCount, LoginPath,
-    IgnoreFriendReq, UnAuthorizedError } from "../../apis/fetch";
+    IgnoreFriendReq, UnAuthorizedError, FriendsRequest } from "../../apis/fetch";
 
 const reqLimit = 3
 const nameLimit = 30
@@ -23,11 +23,10 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
     const [pageNo, setPageNo] = useState(initPageNo)
 
     const getMoreReqInfo = () => {
-        navigate('/friends/request');
+        navigate(FriendsRequest);
     }
 
     const onRemove = async () => {
-        if(pageNo <= 0) return
         try {
             if(showButton && totalReqCount > 3){
                 const newReqs = await ListFriendReqs(pageNo+1, pageSize)
@@ -157,9 +156,14 @@ function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, friend
 
     const onAccept = async () => {
         try {
-            await AcceptFriendReq(friendReqId, {"reqstor_id": reqstorId})
+            const isSucceed = await AcceptFriendReq(friendReqId, {"reqstor_id": reqstorId})
+            if(!isSucceed) {
+                // TODO: Display faliure alert
+                console.log("falied")
+                return
+            } 
+            await onRemoveFunc()
             setFId("")
-            onRemoveFunc()
         } catch (err) {
             if (err instanceof UnAuthorizedError) {  
                 navigate(LoginPath, { replace: true });
@@ -170,9 +174,14 @@ function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, friend
     }
     const onIgnore = async () => {
         try {
-            await IgnoreFriendReq(friendReqId, reqstorId)
+            const isSucceed = await IgnoreFriendReq(friendReqId, reqstorId)
+            if(!isSucceed) {
+                // TODO: Display faliure alert
+                console.log("falied")
+                return
+            } 
+            await onRemoveFunc()
             setFId("")
-            onRemoveFunc()
         } catch (err) {
             if (err instanceof UnAuthorizedError) {  
                 navigate(LoginPath, { replace: true });
