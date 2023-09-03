@@ -2,8 +2,8 @@ import {Box, Button} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 
+import FriendsBase from './friends_base';
 import FriendReqsPanel from "./friend_req_panel"
-import Base1 from "../layout/base1";
 import { FriendsRoute } from '../../apis/fetch';
 
 const reqCountPerFetch = 15
@@ -21,7 +21,7 @@ export default function FriendReqSite(){
         initPageSize={reqCountPerFetch} pageSize={reqCountPerFetch}/>
     </Box>
 
-    return <Base1 SideComponent={comp} styles={{alignItems: "flex-start"}}/>
+    return <FriendsBase mainComponent={comp}/>
 }
 
 const styles = {

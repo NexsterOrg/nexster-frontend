@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
 
-import Base1 from "../layout/base1";
 import FriendReqsPanel from "./friend_req_panel";
 import FriendSuggPanel from "./friends_sugg_panel";
+import FriendsBase from "./friends_base";
 
 const initReqCount = 3
 const regReqCount = 1
@@ -16,7 +16,5 @@ export default function FriendsPanel(){
         <FriendSuggPanel rootStyles={{marginTop: "30px", marginBottom: "30px"}} showButton={true} pageSize={friendPanelSuggs}/>
     </Box>
 
-    return (
-        <Base1 SideComponent={comp} styles={{alignItems: "flex-start"}}/>
-    )
+    return <FriendsBase mainComponent={comp}/>
 }

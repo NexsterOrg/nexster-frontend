@@ -2,7 +2,7 @@ import {Box, Button} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 
-import Base1 from "../layout/base1";
+import FriendsBase from './friends_base';
 import FriendSuggPanel from "./friends_sugg_panel"
 import { FriendsRoute } from '../../apis/fetch';
 
@@ -18,7 +18,7 @@ export default function FriendSuggsSite(){
         <Button disableRipple sx={styles.butn} startIcon={<ArrowBackIcon />} onClick={backHandler}>Back to Friends</Button>
         <FriendSuggPanel rootStyles={{marginX: "30px", marginBottom: "30px", marginTop: "8px"}} showButton={false} pageSize={suggsSitePageSize}/>
     </Box>
-    return <Base1 SideComponent={comp} styles={{alignItems: "flex-start"}}/>
+    return <FriendsBase mainComponent={comp}/>
 }
 
 const styles = {

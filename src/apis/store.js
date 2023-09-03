@@ -19,6 +19,8 @@ export function GetUserInfoFromLS(){
     return res
 }
 
-export function RemoveJwtToken(){
+// Remove token and user data from local storage
+export function CleanLS(){
     localStorage.removeItem(token)
+    localStorage.removeItem(userDataKey)
 }

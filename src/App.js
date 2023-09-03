@@ -6,7 +6,7 @@ import FriendsPanel from './components/friend/friends_panel';
 import MsgPanel from './components/message_panel';
 import NotFound from './components/layout/notfound';
 import Profile from './components/user/user_profile';
-import FriendSuggPanel from './components/friend/friends_sugg_panel';
+import FriendsBase from './components/friend/friends_base';
 import FriendReqSite from './components/friend/friend_req_site';
 import FriendSuggsSite from './components/friend/friend_sugg_site';
 
@@ -29,7 +29,7 @@ function App() {
     // <ThemeProvider theme={darkTheme}>
     <Routes>
       <Route path="/" element={<Timeline />} />
-      <Route path="/test" element={<FriendSuggPanel />} />
+      <Route path="/test" element={<FriendsBase />} />
 
       <Route path="/friends" element={<FriendsPanel />} />
       <Route path="/friends/request" element={<FriendReqSite />} />

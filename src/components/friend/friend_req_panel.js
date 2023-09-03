@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { TimeDiffWithNow } from "../../helper/date"
 import { AcceptFriendReq, ListFriendReqs, GetAllFriendReqsCount, LoginPath,
-    IgnoreFriendReq, UnAuthorizedError, FriendsRequest } from "../../apis/fetch";
+    IgnoreFriendReq, UnAuthorizedError, FriendsRequestRoute } from "../../apis/fetch";
 
 const reqLimit = 3
 const nameLimit = 30
@@ -23,7 +23,7 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
     const [pageNo, setPageNo] = useState(initPageNo)
 
     const getMoreReqInfo = () => {
-        navigate(FriendsRequest);
+        navigate(FriendsRequestRoute);
     }
 
     const onRemove = async () => {

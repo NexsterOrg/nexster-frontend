@@ -1,10 +1,12 @@
+import { CleanLS } from "./store"
+
 const apiDomain = "http://192.168.1.101"
 const token = "token"
 
 // Paths
 export const LoginPath = "/login"
 export const FriendsRoute = "/friends"
-export const FriendsRequest = "/friends/request"
+export const FriendsRequestRoute = "/friends/request"
 export const FriendSuggsRoute = "/friends/suggs"
 
 // Status codes
@@ -30,7 +32,7 @@ async function get(url) {
     }
   });
   if(resp.status === unAuthCode) {
-    localStorage.removeItem(token)
+    CleanLS()
     throw new UnAuthorizedError("Attempted to access unauthorized resources")
   }
   if (!resp.ok) {
@@ -55,7 +57,7 @@ async function put(url, reqBody) {
   });
 
   if(resp.status === unAuthCode) {
-    localStorage.removeItem(token)
+    CleanLS()
     throw new UnAuthorizedError("Attempted to access unauthorized resources")
   }
   if (!resp.ok && resp.status !== 201) {
@@ -80,7 +82,7 @@ async function post(url, reqBody) {
   });
 
   if(resp.status === unAuthCode) {
-    localStorage.removeItem(token)
+    CleanLS()
     throw new UnAuthorizedError("Attempted to access unauthorized resources")
   }
   if (!resp.ok && resp.status !== 201) {
@@ -102,7 +104,7 @@ export async function del(url){
   });
 
   if(resp.status === unAuthCode) {
-    localStorage.removeItem(token)
+    CleanLS()
     throw new UnAuthorizedError("Attempted to access unauthorized resources")
   }
 
@@ -149,7 +151,7 @@ export async function GetProfileInfo(userId){
 
 export async function GetFriendCount(userId){
   let countObj = await get(`${apiDomain}/u/friends/${userId}/count`)
-  if(countObj === null) return 0
+  if(countObj === null) return -1  // to indicate an error
   return countObj.data.count
 }
 
