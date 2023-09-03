@@ -6,6 +6,9 @@ import FriendsPanel from './components/friend/friends_panel';
 import MsgPanel from './components/message_panel';
 import NotFound from './components/layout/notfound';
 import Profile from './components/user/user_profile';
+import FriendsBase from './components/friend/friends_base';
+import FriendReqSite from './components/friend/friend_req_site';
+import FriendSuggsSite from './components/friend/friend_sugg_site';
 
 function Login() {
   return (
@@ -26,14 +29,24 @@ function App() {
     // <ThemeProvider theme={darkTheme}>
     <Routes>
       <Route path="/" element={<Timeline />} />
+      <Route path="/test" element={<FriendsBase />} />
+
       <Route path="/friends" element={<FriendsPanel />} />
+      <Route path="/friends/request" element={<FriendReqSite />} />
+      <Route path="/friends/suggs" element={<FriendSuggsSite />} />
+
       <Route path="/message" element={<MsgPanel />} />
-      <Route path="/profile" element={<Profile />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/page-not-found" element={<NotFound />} />
+
+      <Route path="/index/:indexNo" element={<Profile />} />
+
       <Route path="*" element={<NotFound />} />
     </Routes>
-  //  </ThemeProvider>
+  // </ThemeProvider>
   );
 }
 
 export default App;
+
+//

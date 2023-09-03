@@ -1,15 +1,14 @@
 import React, {useState, useEffect} from "react";
 import { Stack, Typography, List, ListItem, useTheme} from "@mui/material";
-import ProfileCard from "../user/profile_card";
 import { useNavigate } from 'react-router-dom';
 
-import {ListFriendSuggs, UnAuthorizedError} from "../../apis/fetch"
+import ProfileCard from "../user/profile_card";
+import {ListFriendSuggs, UnAuthorizedError, LoginPath} from "../../apis/fetch"
 
 const Undergrad = " Undergraduate"
 const engi = "Engineering"
-const userKey = "482191"
 
-export default function FriendsSuggSidePanel({argStyle}){
+export default function FriendsSuggSidePanel({argStyle, userId}){
     const theme = useTheme();
     const [suggFriends, setSuggFriends] = useState([])
     const navigate = useNavigate();
@@ -19,17 +18,17 @@ export default function FriendsSuggSidePanel({argStyle}){
     useEffect(() => {
         (async () => {
             try {
-                let results = await ListFriendSuggs(userKey, "", 3)
-                setSuggFriends(results)
+                let results = await ListFriendSuggs(1, 3)
+                setSuggFriends(results.data)
             } catch (err) {
                 if (err instanceof UnAuthorizedError) {
-                    navigate('/login', { replace: true });
+                    navigate(LoginPath, { replace: true });
                     return
                 } 
                 console.error('Error fetching posts:', err); // TODO : Remove this in production
             }
         })();
-    }, [])
+    }, [userId])
 
     return (
         <Stack sx={[styles.container, argStyle]}>
@@ -45,7 +44,7 @@ export default function FriendsSuggSidePanel({argStyle}){
 
                     return (
                     <ListItem key={each.key}>
-                        <ProfileCard username={each.username} facOrField={facOrField} 
+                        <ProfileCard username={each.username} facOrField={facOrField} isFriend={false}
                             imgUrl={each.image_url} batch={each.batch} isReqted={false}/>
                     </ListItem>
                     )
@@ -66,3 +65,5 @@ const styles = {
         fontWeight: "bold"
     }
 }
+
+// TODO: friend state need to be passed with `ProfileCard` component.

@@ -13,6 +13,6 @@ function SideMsgPanel(){
 export default function MsgPanel(){
 
     return (
-        <Base1 SideComponent={<SideMsgPanel />}/>
+        <Base1 SideComponent={<SideMsgPanel />} styles={{alignItems: "center"}}/>
     )
 }
