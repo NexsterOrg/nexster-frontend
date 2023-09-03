@@ -1,11 +1,12 @@
 import {useState, useEffect} from "react"
-import {List, ListItem, Typography} from '@mui/material'
+import {List, ListItem, Typography, Card} from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 
 import TimelinePost from  "./media/post"
-import { UnAuthorizedError, ListRecentPosts } from "../apis/fetch"
+import { UnAuthorizedError, ListRecentPosts, LoginPath } from "../apis/fetch"
 import Base1 from "./layout/base1"
 import { TimeDiffWithNow } from "../helper/date";
+import { CleanLS, GetUserInfoFromLS } from "../apis/store";
 
 /** 
  * gap between two post - 700
@@ -23,6 +24,7 @@ function ListTimelinePosts({userId}){
     // data array should only contain unique values. But due to some uncertainty nature, this can have 
     // same value twice. check this.
     const [postsInfo, addPostsInfo] = useState({preLn: 0, data: []})
+    const [noData, setNoData] = useState(false)
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -30,7 +32,8 @@ function ListTimelinePosts({userId}){
         (async () => {
             try {
               let data = await ListRecentPosts(userId, new Date().toISOString(), postCnt);
-              if (data === []) {
+              if (data.length === 0) {
+                setNoData(true)
                 return;
               }
               addPostsInfo({preLn: data.length, data: data});
@@ -84,14 +87,19 @@ function ListTimelinePosts({userId}){
           window.removeEventListener('scroll', handleScroll);
         };
     }, [postsInfo]);
-      
-    if(postsInfo === undefined) {return <Typography> Error Occuried</Typography>}
+    
+    if(noData) return (
+        <Card sx={{width: "870px", height: "100px", borderRadius: "10px", paddingLeft: "25px", display: "flex", 
+            alignItems: "center", justifyContent:"center", marginTop: "20px"}} spacing={1}> 
+            <Typography> Make some friends and start seeing new posts </Typography>
+        </Card>
+    )
     return (
         <List>
         {
-            postsInfo.data.map((each) => {
+            postsInfo.data.map((each, index) => {
                 return(
-                <ListItem sx={{ marginY: "5px"}} key={each.media._key}>
+                <ListItem sx={{ marginY: "5px"}} key={`${index}#${each.media._key}`}>
                     <TimelinePost 
                     postInfo={{imgUrl: each.media.link, caption: each.media.title, description: each.media.description,
                     mediaKey: each.media._key}} 
@@ -109,7 +117,14 @@ function ListTimelinePosts({userId}){
 }
 
 export default function Timeline(){
+    const navigate = useNavigate();
+    const {userid} = GetUserInfoFromLS()
+    if(userid === undefined){
+        CleanLS()
+        navigate(LoginPath, { replace: true });
+        return
+    }
     return (
-        <Base1 styles={{alignItems: "center"}} SideComponent={<ListTimelinePosts userId={"482191"}/>}/>
+        <Base1 styles={{alignItems: "center"}} SideComponent={<ListTimelinePosts userId={userid}/>}/>
     )
 }

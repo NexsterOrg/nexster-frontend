@@ -30,6 +30,10 @@ export default function FriendsSuggSidePanel({argStyle, userId}){
         })();
     }, [userId])
 
+    if (suggFriends.length === 0) {
+        return null
+    }
+
     return (
         <Stack sx={[styles.container, argStyle]}>
             <Typography sx={[styles.text, {color: isDarkMode ? 'white' : 'black'}]}> 

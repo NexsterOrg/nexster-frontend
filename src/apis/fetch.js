@@ -23,6 +23,7 @@ export class UnAuthorizedError extends Error {
 async function get(url) {
   let bearTkn = localStorage.getItem(token)
   if(bearTkn === null) {
+    CleanLS()
     throw new UnAuthorizedError("token is not existed")
   }
   const resp = await fetch(url, {
@@ -45,6 +46,7 @@ async function get(url) {
 async function put(url, reqBody) {
   let bearTkn = localStorage.getItem(token)
   if(bearTkn === null) {
+    CleanLS()
     throw new UnAuthorizedError("token is not existed")
   }
   const resp = await fetch(url, {
@@ -70,6 +72,7 @@ async function put(url, reqBody) {
 async function post(url, reqBody) {
   let bearTkn = localStorage.getItem(token)
   if(bearTkn === null) {
+    CleanLS()
     throw new UnAuthorizedError("token is not existed")
   }
   const resp = await fetch(url, {
@@ -91,9 +94,10 @@ async function post(url, reqBody) {
   return await resp.json();
 }
 
-export async function del(url){
+async function del(url){
   let bearTkn = localStorage.getItem(token)
   if(bearTkn === null) {
+    CleanLS()
     throw new UnAuthorizedError("token is not existed")
   }
   let resp = await fetch(url, {

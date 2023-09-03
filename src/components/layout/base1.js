@@ -95,7 +95,7 @@ export default function Base1({styles, SideComponent}){
 
             <Box
                 component="main"
-                sx={[{display: "flex", flexDirection: "column",flexGrow: 1, bgcolor: 'background.default'}, styles]}>
+                sx={[{display: "flex", flexDirection: "column",flexGrow: 1, bgcolor: 'background.default', minHeight: "100vh"}, styles]}>
                 <TextField id="outlined-search" type="search" size="small" label="Find Friends..." variant="filled"
                 sx={{position: "fixed", right: "8px", marginTop: "5px"}}/>
                 {SideComponent}
