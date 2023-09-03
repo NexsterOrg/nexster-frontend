@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Box, Avatar, Typography, Paper } from "@mui/material";
 import ImageGrid from "./img_grid";
+import { useNavigate, useParams } from 'react-router-dom';
+
 import Base1 from "../layout/base1";
 import FriendsSuggSidePanel from "../friend/friends_sugg_side_panel";
-import {GetProfileInfo, UnAuthorizedError, GetFriendCount, GetUserKeyByIndexNo} from "../../apis/fetch"
-import { useNavigate, useParams } from 'react-router-dom';
+import {GetProfileInfo, UnAuthorizedError, GetFriendCount, GetUserKeyByIndexNo, LoginPath} from "../../apis/fetch"
+import { CleanLS, GetUserInfoFromLS } from "../../apis/store";
 
 const engi = "Engineering"
 
@@ -62,11 +64,19 @@ function ProfileHeader({userId}){
     )
 }
 
+// TODO: When friend count is zero, no suggestions is for the users. (Need to get some default suggestions)
 function ProfileSection({indexNo}){
     const navigate = useNavigate();
-    const [userId, setUserId] = useState("")
+    const [userId, setUserId] = useState("") // user of current viewing profile
 
-    useEffect( () => {
+    const {userid} = GetUserInfoFromLS() // owner id
+    if(userid === undefined){
+        CleanLS()
+        navigate(LoginPath, { replace: true });
+    }
+
+    useEffect(() => {
+
         (async () => {
             try {
                 let fetchedUserId = await GetUserKeyByIndexNo(indexNo) // index_no
@@ -83,13 +93,14 @@ function ProfileSection({indexNo}){
                 console.error("failed to get userId: ", err)
             }
         })()
+
     }, [])
 
     return (
         <Box sx={styles.profContainer}>
             <ProfileHeader userId={userId}/>
             <ImageGrid userId={userId}/>
-            <FriendsSuggSidePanel argStyle={styles.friendSuggPanel} userId={"482191"}/>
+            <FriendsSuggSidePanel argStyle={styles.friendSuggPanel} userId={userid}/>
         </Box>
     )
 }
