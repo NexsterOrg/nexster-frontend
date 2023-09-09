@@ -1,5 +1,3 @@
-
-
 const hrLimit = 60
 const dayLimit = 1440
 const weekLimit = 10080

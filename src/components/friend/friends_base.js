@@ -7,7 +7,7 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useNavigate } from 'react-router-dom';
 
 import Base1 from '../layout/base1';
-import { LoginPath, UnAuthorizedError, GetFriendCount, FriendsRequestRoute, FriendSuggsRoute } from '../../apis/fetch';
+import { LoginPath, UnAuthorizedError, GetFriendCount, FriendsRequestRoute, FriendSuggsRoute, AllFriendsRoute } from '../../apis/fetch';
 import { GetUserInfoFromLS, CleanLS } from '../../apis/store';
 
 export default function FriendsBase({mainComponent}) {
@@ -30,6 +30,10 @@ function QuickFriendNav({rootStyles}){
 
   const onSuggsLinkClick = () => {
     navigate(FriendSuggsRoute)
+  }
+
+  const onAllFriendsLinkClick = () => {
+    navigate(AllFriendsRoute)
   }
 
   useEffect(() => {
@@ -59,7 +63,7 @@ function QuickFriendNav({rootStyles}){
       <Paper sx={[{ width: 260, maxWidth: '100%', padding: "10px" }, rootStyles]}>
           <Typography sx={{fontWeight: "bold", marginTop: "5px", marginLeft: "10px"}}>Quick Navigation</Typography>
         <MenuList>
-          <MenuItem >
+          <MenuItem onClick={onAllFriendsLinkClick} >
             <ListItemIcon>
               <PeopleAltIcon />
             </ListItemIcon>
