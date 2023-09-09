@@ -96,6 +96,7 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
                 }
             }
         }
+        window.addEventListener('scroll', handleFriendReqsScroll)
         // do the cleanup
         return () => {
           window.removeEventListener('scroll', handleFriendReqsScroll);
@@ -115,9 +116,9 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
                 <Typography variant="h6" sx={{marginBottom: "5px"}}> Friend Requests ({totalReqCount})</Typography>
                 <List>
                 {
-                    reqList.map((info) => (
+                    reqList.map((info, index) => (
                        
-                            <FriendReqCard key={info.user_key} imgUrl={info.image_url} username={info.username} faculty={info.faculty} 
+                            <FriendReqCard key={`${index}#${info.user_key}`} imgUrl={info.image_url} username={info.username} faculty={info.faculty} 
                                     field={info.field} batch={info.batch} reqDate={info.req_date} 
                                     friendReqId={info.req_key} reqstorId={info.user_key} onRemoveFunc={onRemove}/>
                     ))
