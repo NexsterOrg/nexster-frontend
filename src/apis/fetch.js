@@ -8,6 +8,8 @@ export const LoginPath = "/login"
 export const FriendsRoute = "/friends"
 export const FriendsRequestRoute = "/friends/request"
 export const FriendSuggsRoute = "/friends/suggs"
+export const AllFriendsRoute = "/friends/my"
+
 
 // Status codes
 const unAuthCode = 401
@@ -203,4 +205,21 @@ export async function SendFriendReq(data){
   let respBody = await post(`http://localhost:8000/usrmgmt/friend_req`, data)
   if(respBody === null) return ""
   return respBody.data.friend_req_id
+}
+
+export async function RemoveFriendship(otherFriendId){
+  let respBody = await del(`http://localhost:8000/usrmgmt/friend/${otherFriendId}`)
+  if(respBody === null) return false
+  if(respBody.data.id1 === "") return false
+  return true
+}
+
+export async function ListMyFriends(pageNo, pageSize) {
+  let respBody = await get(`http://localhost:8000/usrmgmt/all/friends?page=${pageNo}&page_size=${pageSize}`)
+  if(respBody === null) return {data: [], size: 0, total: 0}
+  return { 
+    data: respBody.data,
+    size: respBody.results_count,
+    total: respBody.total_count
+  }
 }
