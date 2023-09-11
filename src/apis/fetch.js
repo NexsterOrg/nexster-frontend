@@ -1,6 +1,6 @@
 import { CleanLS } from "./store"
 
-const apiDomain = "http://192.168.1.101"
+const apiDomain = "http://20.204.87.193"
 const token = "token"
 
 // Paths
@@ -136,9 +136,8 @@ export async function CreateReaction(mediaKey, viewerKey, reqBody){
   return res.data.key
 }
 
-// http://localhost:8001/timeline/friend_sugs/v2/:faculty?page=1&page_size=10&gender=male&birthday=2001-04-27
 export async function ListFriendsForPool(faculty, gender, birthday, page, pageSize) {
-  let respBody = await get(`http://localhost:8001/timeline/friend_sugs/v2/${faculty}?page=${page}&page_size=${pageSize}&gender=${gender}&birthday=${birthday}`)
+  let respBody = await get(`${apiDomain}/t/friend_sugs/v2/${faculty}?page=${page}&page_size=${pageSize}&gender=${gender}&birthday=${birthday}`)
   if(respBody === null) return {data: [], resultsCount: 0}
   return { data: respBody.data, resultsCount: respBody.results_count}
 }
@@ -202,20 +201,20 @@ export async function IgnoreFriendReq(friendReqId, otherId){
 }
 
 export async function SendFriendReq(data){
-  let respBody = await post(`http://localhost:8000/usrmgmt/friend_req`, data)
+  let respBody = await post(`${apiDomain}/p/u/friend_req`, data)
   if(respBody === null) return ""
   return respBody.data.friend_req_id
 }
 
 export async function RemoveFriendship(otherFriendId){
-  let respBody = await del(`http://localhost:8000/usrmgmt/friend/${otherFriendId}`)
+  let respBody = await del(`${apiDomain}/d/u/friend/${otherFriendId}`)
   if(respBody === null) return false
   if(respBody.data.id1 === "") return false
   return true
 }
 
 export async function ListMyFriends(pageNo, pageSize) {
-  let respBody = await get(`http://localhost:8000/usrmgmt/all/friends?page=${pageNo}&page_size=${pageSize}`)
+  let respBody = await get(`${apiDomain}/g/u/all/friends?page=${pageNo}&page_size=${pageSize}`)
   if(respBody === null) return {data: [], size: 0, total: 0}
   return { 
     data: respBody.data,
