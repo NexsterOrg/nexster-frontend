@@ -4,7 +4,7 @@ import ImageGrid from "./img_grid";
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Base1 from "../layout/base1";
-import FriendsSuggSidePanel from "../friend/friends_sugg_side_panel";
+// import FriendsSuggSidePanel from "../friend/friends_sugg_side_panel";
 import {GetProfileInfo, UnAuthorizedError, GetFriendCount, GetUserKeyByIndexNo, LoginPath} from "../../apis/fetch"
 import { CleanLS, GetUserInfoFromLS } from "../../apis/store";
 
@@ -100,7 +100,7 @@ function ProfileSection({indexNo}){
         <Box sx={styles.profContainer}>
             <ProfileHeader userId={userId}/>
             <ImageGrid userId={userId}/>
-            <FriendsSuggSidePanel argStyle={styles.friendSuggPanel} userId={userid}/>
+            {/* <FriendsSuggSidePanel argStyle={styles.friendSuggPanel} userId={userid}/> */}
         </Box>
     )
 }

@@ -14,7 +14,7 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 
-const drawerWidth = 210;
+const drawerWidth = 200;
 const firstnameLimit = 12
 
 function limitUserFirstname(firstname) {
