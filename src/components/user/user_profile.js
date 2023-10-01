@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Box, Avatar, Typography, Paper } from "@mui/material";
 import ImageGrid from "./img_grid";
 import { useNavigate, useParams } from 'react-router-dom';
@@ -69,7 +69,7 @@ function ProfileSection({indexNo}){
     const navigate = useNavigate();
     const [userId, setUserId] = useState("") // user of current viewing profile
 
-    const {userid} = GetUserInfoFromLS() // owner id
+    const {userid} =  useMemo(GetUserInfoFromLS, []) // owner id
     if(userid === undefined){
         CleanLS()
         navigate(LoginPath, { replace: true });
