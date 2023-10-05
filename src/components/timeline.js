@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react"
+import {useState, useEffect, useMemo} from "react"
 import {List, ListItem, Typography, Card} from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 
@@ -118,7 +118,7 @@ function ListTimelinePosts({userId}){
 
 export default function Timeline(){
     const navigate = useNavigate();
-    const {userid} = GetUserInfoFromLS()
+    const {userid} =  useMemo(GetUserInfoFromLS, [])
     if(userid === undefined){
         CleanLS()
         navigate(LoginPath, { replace: true });

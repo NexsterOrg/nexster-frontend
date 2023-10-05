@@ -10,7 +10,7 @@ export function TimeDiffWithNow(timeIsoStr){
     let timeDiffMin = Math.floor((currentDate - givenDate)/60000);
 
     if(timeDiffMin >= monthLimit) {
-        return `${Math.floor(timeDiffMin/monthLimit)}m`
+        return `${Math.floor(timeDiffMin/monthLimit)}mon`
     }
 
     if(timeDiffMin >= weekLimit) {

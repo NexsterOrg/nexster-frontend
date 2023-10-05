@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useMemo} from "react";
 import {Stack, Typography, Drawer, List, Avatar, Divider, Box, TextField,
     ListItem, ListItemButton, ListItemIcon, ListItemText} from '@mui/material'
-
+import { GetUserInfoFromLS } from "../../apis/store";
 // filled icons
 // import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 // import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
@@ -14,11 +14,15 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 
-import profImage from "../../static/profile1.jpg"
+const drawerWidth = 200;
+const firstnameLimit = 12
 
-const drawerWidth = 210;
+function limitUserFirstname(firstname) {
+    return firstname.length > firstnameLimit ? firstname.substring(0, firstnameLimit) + ".." : firstname
+}
 
 export default function Base1({styles, SideComponent}){
+    const {name, imgUrl} =  useMemo(GetUserInfoFromLS, [])
 
     return (
         <Stack direction="row" spacing={0} sx={{height: "auto"}}>
@@ -84,9 +88,9 @@ export default function Base1({styles, SideComponent}){
                 <ListItem key={5} disablePadding sx={{marginTop: "15%"}}> 
                     <ListItemButton>
                         <ListItemIcon>
-                            <Avatar alt="Namal-Sanjaya" src={profImage}  />
+                            <Avatar alt={name} src={imgUrl}  />
                         </ListItemIcon>
-                        <ListItemText primary={"Sanjaya"}  disableTypography sx={{fontSize: 18}}/>
+                        <ListItemText primary={limitUserFirstname(name)}  disableTypography sx={{fontSize: 18}}/>
                     </ListItemButton>
                 </ListItem>
 

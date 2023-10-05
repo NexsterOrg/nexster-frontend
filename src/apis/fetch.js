@@ -1,6 +1,6 @@
 import { CleanLS } from "./store"
 
-const apiDomain = "http://20.204.87.193"
+const apiDomain = "http://192.168.1.101"
 const token = "token"
 
 // Paths
