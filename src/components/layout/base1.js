@@ -13,6 +13,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 
 const drawerWidth = 200;
 const firstnameLimit = 12
@@ -65,11 +66,11 @@ export default function Base1({styles, SideComponent}){
                     </ListItem>
 
                     <ListItem key={3} disablePadding>
-                        <ListItemButton href="/message">
+                        <ListItemButton href="/events">
                             <ListItemIcon>
-                                <TextsmsOutlinedIcon sx={{width: "30px", height: "30px"}}/>
+                                <EventAvailableOutlinedIcon sx={{width: "30px", height: "30px"}}/>
                             </ListItemIcon>
-                            <ListItemText primary={"Message"} disableTypography sx={{fontSize: 18}}/>
+                            <ListItemText primary={"Events"} disableTypography sx={{fontSize: 18}}/>
                         </ListItemButton>
                     </ListItem>
 

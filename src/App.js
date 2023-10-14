@@ -37,7 +37,7 @@ function App() {
       <Route path="/friends/suggs" element={<FriendSuggsSite />} />
       <Route path="/friends/my" element={<AllFriendsSite rootStyles={styles.allFriendsSite}/>} />
 
-      <Route path="/message" element={<MsgPanel />} />
+      <Route path="/events" element={<MsgPanel />} />
       <Route path="/login" element={<Login />} />
       <Route path="/page-not-found" element={<NotFound />} />
 
