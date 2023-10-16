@@ -2,42 +2,57 @@ import { Card, CardMedia, CardContent, Typography, Box, Paper, Link } from '@mui
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
-import TocOutlinedIcon from '@mui/icons-material/TocOutlined';
 
 import { MonthDateCard, TimeCard } from "./DateCard"
 import { ReactionButtons } from './ReactButtons';
+import { PxFactorTotalHeight } from '../../helper/common';
 import image from "../../static/sample-events2.jpg"
 
-export default function EventCardView(){
+const contentLimit = 220
+const titleLimit = 75
+
+export default function EventCardView({ eventKey, imgUrl, title, date, description, venue, mode, eventLink,
+    ownerKey, username, indexNo, noOfLove, noOfGoing, reactionKey, isViewerLove, isViewerGoing  }){
+    const isOnline = mode === "online"
+    const cardHeight = PxFactorTotalHeight(0.28)
+
     return (
-        <Card sx={{ display: 'flex', height: "300px", width: "90%" }}>
+        <Card sx={{ display: 'flex', height: cardHeight, width: "100%" }}>
             <CardMedia
                 component="img"
-                sx={{ width: "320px" }}
+                sx={{ width: "22%", height: cardHeight }}
                 image={image}
-                alt="event-abina-poster"
+                alt={title}
             />
             <CardContent>
-                 <Typography variant='h5'> Friday Night party </Typography>
+                 <TitleCard title={title}/>
                 <Box sx={{padding: "10px", marginTop: "4px"}}>
-                    <Box sx={{display: "flex", gap: "40px" }}>
-                        <MonthDateCard utcDateString={"2023-10-14T22:30:00Z"}/>
-                        <TimeCard utcFromDate={"2023-10-14T14:30:00Z"} utcToDate={"2023-10-14T16:30:00Z"}/>
+                    <Box sx={{display: "flex", gap: "30px" }}>
+                        <MonthDateCard utcDateString={date}/>
+                        <TimeCard utcFromDate={date} />
                         {
-                            true ? <OnlineCard /> : null
+                            isOnline ? <OnlineCard /> : null
                         }
                     </Box>
                     {
-                        false ? <VenueCard location={"Civil Auditorium"}/> : <OnlineEventLink link={"https://zoom.com/meet/kytqhdAq23m"} />
+                        isOnline ?  <OnlineEventLink link={eventLink} /> : <VenueCard location={venue}/>
                     }
-                    <ContentCard content={`This is some introduction about the Abina. There are many variations of passages of Lorem Ipsum available, 
-                        but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even 
-                        slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure about it. Read More ...`}
-                    />
-                    <ReactionButtons rootStyls={{marginTop: "20px"}}/>
+                    <ContentCard content={description}/>
+                    <ReactionButtons rootStyls={{marginTop: "20px"}} author={username} 
+                        noOfLove={noOfLove} isViewerLove={isViewerLove} 
+                        isViewerGoing={isViewerGoing} noOfGoing={noOfGoing}/>
                 </Box>
             </CardContent>
         </Card>
+    )
+}
+
+function TitleCard({title}){
+    if(typeof title !== 'string') title = ""
+    else if(title.length > titleLimit)  title = title.substring(0, titleLimit) + "..."
+    
+    return (
+        <Typography variant='h5'> {title} </Typography>
     )
 }
 
@@ -72,8 +87,18 @@ function OnlineEventLink({link}){
 }
 
 function ContentCard({content}){
-    // TODO: Need to cut off exceeded part
+    if(typeof content !== 'string') content = ""
+    else if(content.length > contentLimit)  content = content.substring(0, contentLimit) + "..Read More..."
+    
     return (
         <Typography variant='body2'> {content} </Typography>
     )
 }
+
+
+// TODO: 
+/**
+ * 1. meeting link proper lenght. do we present he link or give some place holder for that.
+ * 2. once link on the  meetin link page need to redirect to some other page. 
+ * 3. posted By name should be a link where it redirect to the actual user.
+ */

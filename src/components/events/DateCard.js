@@ -2,7 +2,6 @@ import { Paper, Typography, Box } from "@mui/material"
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 
-
 import { GetMonthDate, GetTimeInAmPm } from "../../helper/date"
 
 export function MonthDateWeekCard({utcDateString}) {

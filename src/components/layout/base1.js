@@ -11,14 +11,13 @@ import { GetUserInfoFromLS } from "../../apis/store";
 // for outline icons
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
-import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 
-const drawerWidth = 200;
+const drawerWidth = "11%";
 const firstnameLimit = 12
 
-function limitUserFirstname(firstname) {
+function limitUserFirstname(firstname="") {
     return firstname.length > firstnameLimit ? firstname.substring(0, firstnameLimit) + ".." : firstname
 }
 

@@ -22,3 +22,11 @@ export function FmtUserInfo(username, uLenLimit, faculty, field, fLenLimit) {
         "facOrField": newFacField
     }
 }
+
+export function ToPxStr(val){
+    return `${val}px`
+}
+
+export function PxFactorTotalHeight(factor){
+    return `${window.innerHeight * factor}px`
+}
