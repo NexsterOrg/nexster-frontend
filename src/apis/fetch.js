@@ -222,3 +222,14 @@ export async function ListMyFriends(pageNo, pageSize) {
     total: respBody.total_count
   }
 }
+
+export async function ListEvents(pageNo, pageSize) {
+  let respBody = await get(`${apiDomain}:8003/space/events?page=${pageNo}&pageSize=${pageSize}`)
+  if(respBody === null) return {data: [], size: 0}
+  return { 
+    data: respBody.data,
+    size: respBody.resultsCount
+  }
+}
+// http://localhost:8003/space/events
+// http://192.168.1.101

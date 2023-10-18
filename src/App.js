@@ -19,20 +19,67 @@ function Login() {
   )
 }
 
-const darkTheme = createTheme({
+const theme = createTheme({
   // palette: {
   //   mode: "dark"
   // },
 
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 900,
+      md: 1100,
+      xmd: 1300,
+      lg: 1500,
+      xl: 1600,
+    },
+  },
+
+  // TODO: Need to properly add
   typography: {
 
     h5: {
-      fontSize: '1.5rem',
-      '@media (max-width: 960px)': { // 60%
       fontSize: '0.9rem',
+      '@media (min-width: 1300px)': { 
+        fontSize: '1.1rem'
       },
-      '@media (max-width: 1400px)': { // 80%
-      fontSize: '1.2rem',
+      '@media (min-width: 1600px)': { 
+        fontSize: '1.5rem',
+      },
+    },
+
+    body1: {
+      fontSize: '0.9rem',
+      '@media (min-width: 1300px)': { 
+        fontSize: '0.8rem'
+      },
+      '@media (min-width: 1600px)': { 
+        fontSize: '1rem',
+      },
+    },
+
+    body2: {
+      fontSize: '0.6rem',
+      letterSpacing: "0.008em",
+      '@media (min-width: 1300px)': { 
+        fontSize: '0.7rem',
+        letterSpacing: "0.01em"
+      },
+      '@media (min-width: 1600px)': { 
+        fontSize: '0.875rem',
+        letterSpacing: "0.0107em"
+      },
+    },
+
+    caption: {
+      fontSize: '0.1rem',
+      letterSpacing: "0.03333em",
+      '@media (min-width: 1300px)': { 
+        fontSize: '0.6rem',
+        letterSpacing: "0.02em",
+      },
+      '@media (min-width: 1600px)': { 
+        fontSize: '0.75rem',
       },
     },
 
@@ -41,7 +88,7 @@ const darkTheme = createTheme({
 
 function App() {
   return (
-    // <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
     <Routes>
       <Route path="/" element={<Timeline />} />
       <Route path="/test" element={<TestGround />} />
@@ -59,7 +106,7 @@ function App() {
 
       <Route path="*" element={<NotFound />} />
     </Routes>
-  // </ThemeProvider>
+  </ThemeProvider>
   );
 }
 

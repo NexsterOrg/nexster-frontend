@@ -1,20 +1,24 @@
-import { Card, CardMedia, CardContent, Typography, Box, Paper, Link } from '@mui/material';
+import { Card, CardMedia, CardHeader, CardContent, Typography, Box, Paper, Link } from '@mui/material';
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
 
 import { MonthDateCard, TimeCard } from "./DateCard"
 import { ReactionButtons } from './ReactButtons';
-import { PxFactorTotalHeight } from '../../helper/common';
 import image from "../../static/sample-events2.jpg"
 
 const contentLimit = 220
 const titleLimit = 75
 
+const cardHeight = {
+    xl: 275,
+    lg: 260,
+    xmd: 230
+}
+
 export default function EventCardView({ eventKey, imgUrl, title, date, description, venue, mode, eventLink,
     ownerKey, username, indexNo, noOfLove, noOfGoing, reactionKey, isViewerLove, isViewerGoing  }){
     const isOnline = mode === "online"
-    const cardHeight = PxFactorTotalHeight(0.28)
 
     return (
         <Card sx={{ display: 'flex', height: cardHeight, width: "100%" }}>
@@ -24,9 +28,9 @@ export default function EventCardView({ eventKey, imgUrl, title, date, descripti
                 image={image}
                 alt={title}
             />
-            <CardContent>
+            <CardContent sx={{paddingY: "0px !important", display: "flex", flexDirection: "column", 
+            justifyContent: "space-around", gap: "8px",  width: "100%"}}>
                  <TitleCard title={title}/>
-                <Box sx={{padding: "10px", marginTop: "4px"}}>
                     <Box sx={{display: "flex", gap: "30px" }}>
                         <MonthDateCard utcDateString={date}/>
                         <TimeCard utcFromDate={date} />
@@ -38,10 +42,9 @@ export default function EventCardView({ eventKey, imgUrl, title, date, descripti
                         isOnline ?  <OnlineEventLink link={eventLink} /> : <VenueCard location={venue}/>
                     }
                     <ContentCard content={description}/>
-                    <ReactionButtons rootStyls={{marginTop: "20px"}} author={username} 
+                    <ReactionButtons  author={username} 
                         noOfLove={noOfLove} isViewerLove={isViewerLove} 
                         isViewerGoing={isViewerGoing} noOfGoing={noOfGoing}/>
-                </Box>
             </CardContent>
         </Card>
     )
@@ -56,32 +59,63 @@ function TitleCard({title}){
     )
 }
 
+const iconSize = {
+    xl: 24,
+    lg: 22,
+    xmd: 20,
+    md: 18,
+    sm: 16
+}
+
 function OnlineCard(){
     return (
-        <Paper sx={{ width: "100px", display: "flex", gap: "8px", paddingX: "5px", paddingY: "5px", justifyContent: "center"  }} >
-            <LanguageOutlinedIcon />
-            <Typography sx={{ textAlign: "center" }}> Online </Typography>
+        <Paper sx={{ width: "12%", display: "flex", gap: "8px", paddingX: "1%", paddingY: "5px", justifyContent: "center"  }} >
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+                <LanguageOutlinedIcon sx={{width: iconSize, height: iconSize}}/>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Typography sx={{ textAlign: "center" }}> Online </Typography>
+            </Box>
         </Paper>
     )
 }
 
+// const marginForLocations = {
+//     top: {
+//         xl: 24,
+//         lg: 22,
+//         xmd: 20,
+//         md: 18,
+//         sm: 16
+//     }
+// }
+
 function VenueCard({location}){
     return (
-        <Box sx={{display: "flex", marginTop: "14px", marginBottom: "8px", gap: "10px"}}>
-            <LocationOnOutlinedIcon />
-            <Typography> {location} </Typography>
+        <Box sx={{display: "flex", gap: "10px"}}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+                <LocationOnOutlinedIcon sx={{ width: iconSize, height: iconSize}} />
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Typography> {location} </Typography>
+            </Box>
         </Box>
     )
 }
 
+// marginTop: "1.5%", marginBottom: "1%",
 function OnlineEventLink({link}){
     return (
-        <Box sx={{display: "flex", marginTop: "14px", marginBottom: "8px", gap: "10px"}}>
-            <LinkOutlinedIcon />
-            {
-                link === "" ? <Typography> meeting link is not available yet </Typography> :
-                <Link href="#" underline="hover" sx={{marginTop: "2px"}}> {link} </Link>
-            }
+        <Box sx={{display: "flex",  gap: "10px"}}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+                <LinkOutlinedIcon sx={{ width: iconSize, height: iconSize}}/>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+                {
+                    link === "" ? <Typography> meeting link is not available yet </Typography> :
+                    <Link href="#" underline="hover" sx={{marginTop: "2px", fontSize: "0.9rem"}}> {link} </Link>
+                }
+            </Box>
         </Box>
     )
 }
@@ -94,7 +128,6 @@ function ContentCard({content}){
         <Typography variant='body2'> {content} </Typography>
     )
 }
-
 
 // TODO: 
 /**

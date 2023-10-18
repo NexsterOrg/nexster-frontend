@@ -16,31 +16,78 @@ export function MonthDateWeekCard({utcDateString}) {
     )
 }
 
+const iconSize = {
+    xl: 24,
+    lg: 22,
+    xmd: 20,
+    md: 18,
+    sm: 16
+}
+
+const cardSize = {
+    xl: 105,
+    lg: 100,
+    xmd: 98,
+    md: 95
+}
+
+// const cardPaddingY = {
+//     xl: 1,
+//     lg: 0,
+//     xmd: 0,
+//     md: 0
+// }
+
 export function MonthDateCard({utcDateString}) {
     const { month, day } = GetMonthDate(utcDateString)
 
     return (
-        <Paper sx={{ width: "105px", display: "flex", gap: "8px", paddingX: "5px", paddingY: "5px",  justifyContent: "center"  }} >
-            <CalendarMonthOutlinedIcon />
-            <Typography sx={{ textAlign: "center" }}> {month} </Typography>
-            <Typography sx={{ textAlign: "center"}}> {day} </Typography>
+        <Paper sx={{ width: cardSize, display: "flex", gap: "8px", paddingX: 1, paddingY: 1, justifyContent: "center"  }} >
+            <Box sx={{ display: "flex", alignItems: "center" }}> 
+                <CalendarMonthOutlinedIcon sx={{ width: iconSize, height: iconSize }}/>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center" }} >
+                <Typography sx={{ textAlign: "center" }}> {month} </Typography>
+            </Box>
+            <Box sx={{  display: "flex", alignItems: "center" }}>
+                <Typography sx={{ textAlign: "center"}}> {day} </Typography>
+            </Box>
         </Paper>
     )
 }
 
+const timeCardSize = {
+    size1: {
+        xl: 120,
+        lg: 110,
+        xmd: 105,
+        md: 100
+    },
+    size2: {
+        xl: 220,
+        lg: 210,
+        xmd: 205,
+        md: 200
+    }
+}
+
 export function TimeCard({ utcFromDate, utcToDate = ""}){
     let pattern2 = ""
-    let width = "120px"
+    let width = timeCardSize.size1
     if (utcToDate !== "") {
         pattern2 = ` - ${GetTimeInAmPm(utcToDate)}`
-        width = "220px"
+        width = timeCardSize.size2
     }
     const pattern = GetTimeInAmPm(utcFromDate).concat(pattern2)
     
     return (
-        <Paper sx={{ width: width, display: "flex", gap: "8px", paddingX: "10px", paddingY: "5px", justifyContent: "center"  }} >
-            <ScheduleOutlinedIcon />
-            <Typography sx={{ textAlign: "center" }}> {pattern} </Typography>
+        <Paper sx={{ width: width, display: "flex", gap: "8px", paddingX: "1%", justifyContent: "center"  }} >
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+                <ScheduleOutlinedIcon sx={{ width: iconSize, height: iconSize }}/>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center" }}> 
+                <Typography sx={{ textAlign: "center" }}> {pattern} </Typography>
+            </Box>
         </Paper>
     )
 }
