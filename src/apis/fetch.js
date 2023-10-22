@@ -223,6 +223,7 @@ export async function ListMyFriends(pageNo, pageSize) {
   }
 }
 
+// TODO: Check why this is not working via NGINX
 export async function ListEvents(pageNo, pageSize) {
   let respBody = await get(`${apiDomain}:8003/space/events?page=${pageNo}&pageSize=${pageSize}`)
   if(respBody === null) return {data: [], size: 0}
@@ -231,5 +232,15 @@ export async function ListEvents(pageNo, pageSize) {
     size: respBody.resultsCount
   }
 }
-// http://localhost:8003/space/events
-// http://192.168.1.101
+
+export async function CreateEventReaction(eventKey, reqBody) {
+  let respBody = await post(`${apiDomain}:8003/space/events/${eventKey}/reaction`, reqBody)
+  if(respBody === null) return ""
+  return respBody.data.key
+}
+
+export async function SetEventReactionState(reactionKey, reactionType, state) {
+  let respBody = await put(`${apiDomain}:8003/space/events/reactions/${reactionKey}/${reactionType}/${state}`, {})
+  if(respBody === null) return false
+  return true
+}

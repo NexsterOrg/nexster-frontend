@@ -2,37 +2,38 @@ import { useEffect, useState } from 'react';
 import { List, ListItem } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 
-
 import EventCardView from "./EventCardView";
 import Base1 from "../layout/base1";
-import { ListEvents, UnAuthorizedError } from "../../apis/fetch";
+import { ListEvents, UnAuthorizedError, LoginPath } from "../../apis/fetch";
 
-const desc = `This is some introduction about the Abina. There are many variations of passages of Lorem Ipsum available, 
-but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even .Read More ...`
-
-const tt = "Introduction to cloud computing.  any variations of passages of Lorem Ipsum more some more"
+const eventsPerFetch = 5
+const gap = 330
+let limit = 0
 
 // TODO: API resp body does not contain info about viewerLoveReaction or ViewerGoingReaction
 
 function SideEventListView(){
     const navigate = useNavigate();
 
-    const [events, addEvents] = useState({preLn: 0, data: []})
+    const [events, addEvents] = useState([])
+    const [pageNo, setPageNo] = useState(1)
 
     useEffect(() => {
         window.scrollTo(0, 0);
 
         (async () => {
+            if(pageNo <= 0) return
             try {
-              let respBody = await ListEvents(1, 5);
-              if (respBody.size === 0) {
-                // setNoData(true)
+              let newEvents = await ListEvents(pageNo, eventsPerFetch);
+              addEvents(newEvents.data);
+              if (newEvents.size < eventsPerFetch) {
+                setPageNo(-1)
                 return;
               }
-              addEvents({preLn: respBody.size, data: respBody.data});
+              setPageNo(2)
             } catch (err) {
                 if (err instanceof UnAuthorizedError) {
-                    navigate('/login', { replace: true });
+                    navigate(LoginPath, { replace: true });
                     return
                 } 
                 console.error('Error fetching events:', err); // TODO : Remove this in production
@@ -40,10 +41,43 @@ function SideEventListView(){
         })();
     }, [])
 
+    useEffect(() => {
+        if(pageNo <= 0) return
+        const handleEventsScroll = async () => {
+            if(window.scrollY >= limit){
+                limit += gap
+                if(pageNo <= 0) return
+                try {
+                    let newEvents = await ListEvents(pageNo, eventsPerFetch);
+                    addEvents(preList => preList.concat(newEvents.data));
+                    if (newEvents.size < eventsPerFetch) {
+                      setPageNo(-1)
+                      return;
+                    }
+                    setPageNo(preVal => preVal + 1)
+                } catch (err) {
+                    if (err instanceof UnAuthorizedError) {
+                        navigate(LoginPath, { replace: true });
+                        return
+                    }
+                    console.error("scroll events list: ", err)
+                }
+            }
+        }
+
+        window.addEventListener('scroll', handleEventsScroll)
+
+        // do the cleanup
+        return () => {
+          window.removeEventListener('scroll', handleEventsScroll);
+        };
+
+    }, [events])
+
     return (
         <List style={{width: "80%"}}>
         {
-            events.data.map( (each, index) => {
+            events.map( (each, index) => {
                 let {key, indexNo, username} = each.postedBy || {}
                 const ownerKey = arrangeParams(key, "")
                 indexNo = arrangeParams(indexNo, "")

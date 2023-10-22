@@ -1,13 +1,16 @@
-import { Card, CardMedia, CardHeader, CardContent, Typography, Box, Paper, Link } from '@mui/material';
+import { Card, CardMedia, Button, CardContent, Typography, Box, Paper, Link } from '@mui/material';
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
 
 import { MonthDateCard, TimeCard } from "./DateCard"
 import { ReactionButtons } from './ReactButtons';
+import ScrollPaperDialog from './DescriptionModel';
 import image from "../../static/sample-events2.jpg"
+import { useState } from 'react';
 
 const contentLimit = 220
+const linkLimit = 100
 const titleLimit = 75
 
 const cardHeight = {
@@ -44,7 +47,9 @@ export default function EventCardView({ eventKey, imgUrl, title, date, descripti
                     <ContentCard content={description}/>
                     <ReactionButtons  author={username} 
                         noOfLove={noOfLove} isViewerLove={isViewerLove} 
-                        isViewerGoing={isViewerGoing} noOfGoing={noOfGoing}/>
+                        isViewerGoing={isViewerGoing} noOfGoing={noOfGoing}
+                        reactionKey={reactionKey} eventKey={eventKey}
+                    />
             </CardContent>
         </Card>
     )
@@ -103,6 +108,14 @@ function VenueCard({location}){
     )
 }
 
+const linkFontSize = {
+    xl: 15,
+    lg: 14,
+    xmd: 13,
+    md: 10,
+    sm: 8
+}
+
 // marginTop: "1.5%", marginBottom: "1%",
 function OnlineEventLink({link}){
     return (
@@ -113,7 +126,7 @@ function OnlineEventLink({link}){
             <Box sx={{ display: "flex", alignItems: "center" }}>
                 {
                     link === "" ? <Typography> meeting link is not available yet </Typography> :
-                    <Link href="#" underline="hover" sx={{marginTop: "2px", fontSize: "0.9rem"}}> {link} </Link>
+                    <Link href={link} target="_blank" underline="hover" sx={{marginTop: "2px", fontSize: linkFontSize}}> Meeting Link </Link>
                 }
             </Box>
         </Box>
@@ -121,11 +134,28 @@ function OnlineEventLink({link}){
 }
 
 function ContentCard({content}){
-    if(typeof content !== 'string') content = ""
-    else if(content.length > contentLimit)  content = content.substring(0, contentLimit) + "..Read More..."
-    
+    const [open, setOpen] = useState(false)
+
+    let limitedContent = ""
+    let isContentCutOff = false
+    if(typeof content !== 'string') limitedContent = ""
+    else if(content.length > contentLimit)  {
+        limitedContent = content.substring(0, contentLimit)
+        isContentCutOff = true
+    }
+    else limitedContent = content
     return (
-        <Typography variant='body2'> {content} </Typography>
+        <>
+            <Typography variant='body2'> 
+                {limitedContent} 
+                { isContentCutOff ?     
+                    <Button variant="text" sx={{ textTransform: "none" }} onClick={() => setOpen(true)}>
+                        Read More...</Button> : null
+                }
+            </Typography>
+            <ScrollPaperDialog open={open} setOpen={setOpen} description={content}/>
+        </>
+            
     )
 }
 
