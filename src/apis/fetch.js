@@ -1,6 +1,7 @@
 import { CleanLS } from "./store"
 
 const apiDomain = "http://192.168.1.101"
+const webDomain = `http://localhost:3000`
 const token = "token"
 
 // Paths
@@ -13,6 +14,10 @@ export const AllFriendsRoute = "/friends/my"
 
 // Status codes
 const unAuthCode = 401
+
+export function MkUserProfilePageLink(indexNo){
+  return `${webDomain}/index/${indexNo}`
+}
 
 export class UnAuthorizedError extends Error {
   constructor(message) {
@@ -243,4 +248,13 @@ export async function SetEventReactionState(reactionKey, reactionType, state) {
   let respBody = await put(`${apiDomain}:8003/space/events/reactions/${reactionKey}/${reactionType}/${state}`, {})
   if(respBody === null) return false
   return true
+}
+
+export async function ListEventReactUsers(eventKey, reactType, pageNo, pageSize) {
+  let respBody = await get(`${apiDomain}:8003/space/events/${eventKey}/${reactType}?page=${pageNo}&pageSize=${pageSize}`)
+  if(respBody === null) return {data: [], size: 0}
+  return { 
+    data: respBody.data,
+    size: respBody.resultsCount
+  }
 }

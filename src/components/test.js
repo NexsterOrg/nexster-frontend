@@ -1,15 +1,16 @@
 import { Box } from '@mui/material';
-import EventCardView from './events/EventCardView';
-// import { MonthDateWeekCard, MonthDateCard, TimeCard } from './events/DateCard';
 
+import { EventLoveReactionModel } from './events/EventReactionModel';
+// import { UserReactionCard } from './events/EventReactionModel';
+
+const url = "http://192.168.1.101:8002/content/images/avatar/1743365.jpg?perm=viewer&ts=8406&imgMac=qPiyxTsRlOYwtqZ51v4Pct29m9ZRUeUNKD74daiemyI="
 
 export default function TestGround() {
+
   return (
     <Box sx={{padding: "20px"}}> 
-      <EventCardView />
-      {/* <MonthDateWeekCard utcDateString={"2023-10-14T14:30:00Z"}/> */}
-      {/* <MonthDateCard utcDateString={"2023-12-09T14:30:00Z"}/> */}
-      {/* <TimeCard utcFromDate={"2023-12-09T14:30:00Z"} utcToDate={"2023-12-09T16:30:00Z"}/> */}
+      {/* <UserReactionCard newUsername={"Namal Sanjaya"} newFacField={"Engineering"} imgUrl={url} batch={18}/> */}
+      <EventLoveReactionModel />
     </Box>
   );
 }

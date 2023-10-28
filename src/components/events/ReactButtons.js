@@ -1,11 +1,15 @@
 import { useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Link } from "@mui/material";
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import QuestionMarkOutlinedIcon from '@mui/icons-material/QuestionMarkOutlined';
 import CheckIcon from '@mui/icons-material/Check';
 import { useNavigate } from 'react-router-dom';
 
-import { CreateEventReaction, SetEventReactionState, UnAuthorizedError, LoginPath } from "../../apis/fetch";
+import { CreateEventReaction, SetEventReactionState, UnAuthorizedError, LoginPath, MkUserProfilePageLink } from "../../apis/fetch";
+import { EventLoveReactionModel, EventGoingReactionModel } from "./EventReactionModel";
+import { LimitStringDataLn } from "../../helper/common";
+
+const usernameLimit = 15
 
 const butnIconSize = { 
     xl: 16,
@@ -21,13 +25,25 @@ const butnSize = {
     md: 22
 }
 
-export function ReactionButtons({isViewerLove, noOfLove, isViewerGoing, noOfGoing, author, reactionKey, eventKey}){
+const postedByFontSize = {
+    xl: 12,
+    lg: 11,
+    xmd: 10,
+    md: 9,
+    sm: 7
+}
+
+export function ReactionButtons({isViewerLove, noOfLove, isViewerGoing, noOfGoing, author, reactionKey, eventKey, indexNo}){
     const [isLove, setIsLove] = useState(isViewerLove)
     const [isGoing, setIsGoing] = useState(isViewerGoing)
     const [loveCount, setLoveCount] = useState(noOfLove)
     const [goingCount, setGoingCount] = useState(noOfGoing)
     const [reactKey, setReactKey] = useState(reactionKey)
     const navigate = useNavigate();
+
+    // love, going list
+    const [loveModalOpen, setLoveModalOpen] = useState(false)
+    const [goingModalOpen, setGoingModalOpen] = useState(false)
 
     const handleLoveButnClick = async () => {
         try {
@@ -68,6 +84,14 @@ export function ReactionButtons({isViewerLove, noOfLove, isViewerGoing, noOfGoin
             }
         }
     }
+
+    const onLoveCoundClick = () => {
+        setLoveModalOpen(true)
+    }
+
+    const onGoingCoundClick = () => {
+        setGoingModalOpen(true)
+    }
   
     return (
         <Box >
@@ -88,8 +112,20 @@ export function ReactionButtons({isViewerLove, noOfLove, isViewerGoing, noOfGoin
                 > Going </Button>
             </Box>
             <Box sx={{ marginTop: "12px",display: "flex", justifyContent: "space-between"}}>
-                <Typography variant="caption"> {loveCount} loves, {goingCount} going </Typography>
-                <Typography variant="caption"> posted by: {author} </Typography>
+                <Box sx={{display: "flex", justifyContent: "flex-start"}}>
+                    <Button sx={{textTransform: "none"}} disableRipple onClick={onLoveCoundClick} >
+                        <Typography variant="caption"> {loveCount} loves </Typography> 
+                    </Button>
+                    <Button sx={{textTransform: "none"}} disableRipple onClick={onGoingCoundClick}>
+                        <Typography variant="caption"> {goingCount} going </Typography> 
+                    </Button>
+                </Box>
+                {/* <Typography variant="caption"> posted by: {LimitStringDataLn(author, usernameLimit)} </Typography> */}
+                <Link href={MkUserProfilePageLink(indexNo)} target="_blank" underline="hover" sx={{fontSize: postedByFontSize}}> posted by: {LimitStringDataLn(author, usernameLimit)}  </Link>
+
+               { loveModalOpen ? <EventLoveReactionModel open={loveModalOpen} setOpen={setLoveModalOpen} eventKey={eventKey}/> : null }
+                
+               { goingModalOpen ? <EventGoingReactionModel open={goingModalOpen} setOpen={setGoingModalOpen} eventKey={eventKey}/> : null }
             </Box>
         </Box>
     )

@@ -10,7 +10,6 @@ const eventsPerFetch = 5
 const gap = 330
 let limit = 0
 
-// TODO: API resp body does not contain info about viewerLoveReaction or ViewerGoingReaction
 
 function SideEventListView(){
     const navigate = useNavigate();

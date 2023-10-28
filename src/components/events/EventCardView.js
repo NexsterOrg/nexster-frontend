@@ -10,7 +10,6 @@ import image from "../../static/sample-events2.jpg"
 import { useState } from 'react';
 
 const contentLimit = 220
-const linkLimit = 100
 const titleLimit = 75
 
 const cardHeight = {
@@ -28,7 +27,7 @@ export default function EventCardView({ eventKey, imgUrl, title, date, descripti
             <CardMedia
                 component="img"
                 sx={{ width: "22%", height: cardHeight }}
-                image={image}
+                image={imgUrl}
                 alt={title}
             />
             <CardContent sx={{paddingY: "0px !important", display: "flex", flexDirection: "column", 
@@ -48,7 +47,7 @@ export default function EventCardView({ eventKey, imgUrl, title, date, descripti
                     <ReactionButtons  author={username} 
                         noOfLove={noOfLove} isViewerLove={isViewerLove} 
                         isViewerGoing={isViewerGoing} noOfGoing={noOfGoing}
-                        reactionKey={reactionKey} eventKey={eventKey}
+                        reactionKey={reactionKey} eventKey={eventKey} indexNo={indexNo}
                     />
             </CardContent>
         </Card>
@@ -158,10 +157,3 @@ function ContentCard({content}){
             
     )
 }
-
-// TODO: 
-/**
- * 1. meeting link proper lenght. do we present he link or give some place holder for that.
- * 2. once link on the  meetin link page need to redirect to some other page. 
- * 3. posted By name should be a link where it redirect to the actual user.
- */

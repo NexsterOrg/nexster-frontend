@@ -11,10 +11,10 @@ export function FmtUserInfo(username, uLenLimit, faculty, field, fLenLimit) {
     if (newFacField === engi){
         newFacField = field
     }
-    if(username.length > uLenLimit){
+    if(typeof(username) === "string" && username.length > uLenLimit){
         newUsername = username.substring(0, uLenLimit) + "..."
     }
-    if(newFacField.length > fLenLimit){
+    if(typeof(newFacField) === "string" && newFacField.length > fLenLimit){
         newFacField = newFacField.substring(0, fLenLimit) + "..."
     }
     return {
@@ -29,4 +29,10 @@ export function ToPxStr(val){
 
 export function PxFactorTotalHeight(factor){
     return `${window.innerHeight * factor}px`
+}
+
+// set the string data length to given length
+export function LimitStringDataLn(data="", limitedLn=0){
+    return typeof(data) === 'string' && data.length > limitedLn ? 
+        data.substring(0, limitedLn-2) + ".." : data
 }

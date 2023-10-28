@@ -40,7 +40,7 @@ const navFontSize = {
 const iconWidth = {xl: 50, lg: 45, xmd: 40}
 
 export default function Base1({styles, SideComponent}){
-    const {name, imgUrl} =  useMemo(GetUserInfoFromLS, [])
+    const {name, imgUrl, indexNo} =  useMemo(GetUserInfoFromLS, [])
 
     return (
         <Stack direction="row" spacing={0} sx={{height: "auto"}}>
@@ -105,10 +105,10 @@ export default function Base1({styles, SideComponent}){
                 <Divider />
 
                 <ListItem key={5} disablePadding sx={{marginTop: "15%"}}> 
-                    <ListItemButton>
+                    <ListItemButton href={`/index/${indexNo}`}>
                         <ListItemIcon sx={{minWidth: 35 , width: iconWidth}}>
-                            <Avatar alt={"Namal Sanjaya"} sx={{height: "80%", width: "80%"}}
-                            src={"http://192.168.1.101:8002/content/images/avatar/1743365.jpg?perm=viewer&ts=8406&imgMac=qPiyxTsRlOYwtqZ51v4Pct29m9ZRUeUNKD74daiemyI="}  />
+                            <Avatar alt={name} sx={{height: "80%", width: "80%"}}
+                            src={imgUrl}  />
                         </ListItemIcon>
                         <ListItemText primary={"Profile"}  disableTypography sx={{fontSize: navFontSize}}/>
                     </ListItemButton>
@@ -127,7 +127,3 @@ export default function Base1({styles, SideComponent}){
         </Stack>
     )
 }
-
-/**
- * http://192.168.1.101:8002/content/images/avatar/1743365.jpg?perm=viewer&ts=8406&imgMac=qPiyxTsRlOYwtqZ51v4Pct29m9ZRUeUNKD74daiemyI=
- */
