@@ -6,7 +6,6 @@ import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
 import { MonthDateCard, TimeCard } from "./DateCard"
 import { ReactionButtons } from './ReactButtons';
 import ScrollPaperDialog from './DescriptionModel';
-import image from "../../static/sample-events2.jpg"
 import { useState } from 'react';
 
 const contentLimit = 220
@@ -101,8 +100,8 @@ function VenueCard({location}){
                 <LocationOnOutlinedIcon sx={{ width: iconSize, height: iconSize}} />
             </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Typography> {location} </Typography>
-            </Box>
+                <Typography> {location ? location: "Location is not provided yet."} </Typography>
+            </Box> 
         </Box>
     )
 }

@@ -26,6 +26,20 @@ export class UnAuthorizedError extends Error {
   }
 }
 
+function dataURItoBlob(dataURI) {
+  if(typeof dataURI !== "string") return null;
+  return dataURI.split(',')[1]
+  // const byteString = atob(dataURI.split(',')[1]);
+  // const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+  // const ab = new ArrayBuffer(byteString.length);
+  // const ia = new Uint8Array(ab);
+  // for (let i = 0; i < byteString.length; i++) {
+  //   ia[i] = byteString.charCodeAt(i);
+  // }
+  // console.log("img: ", byteString)
+  // return new Blob([ab], { type: mimeString });
+}
+
 // GET request with Authorization Header
 async function get(url) {
   let bearTkn = localStorage.getItem(token)
@@ -89,6 +103,31 @@ async function post(url, reqBody) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(reqBody)
+  });
+
+  if(resp.status === unAuthCode) {
+    CleanLS()
+    throw new UnAuthorizedError("Attempted to access unauthorized resources")
+  }
+  if (!resp.ok && resp.status !== 201) {
+    return null
+  }
+  return await resp.json();
+}
+
+async function postCustom(url, headers, body) {
+  let bearTkn = localStorage.getItem(token)
+  if(bearTkn === null) {
+    CleanLS()
+    throw new UnAuthorizedError("token is not existed")
+  }
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': bearTkn,
+      ...headers
+    },
+    body: body
   });
 
   if(resp.status === unAuthCode) {
@@ -256,5 +295,41 @@ export async function ListEventReactUsers(eventKey, reactType, pageNo, pageSize)
   return { 
     data: respBody.data,
     size: respBody.resultsCount
+  }
+}
+
+export async function UploadImage(namespace, typeName, base64Image){
+  const blob = dataURItoBlob(base64Image);
+  if(blob === null) return ""
+  const respBody = await postCustom(`${apiDomain}:8002/content/images/${namespace}?type=${typeName}`, {
+    'Content-Type': `image/${typeName}`
+  }, blob)
+
+  return respBody?.data?.imageName || ""
+}
+
+export async function CreateEvent(imageName, typeName, title, date, description, venueOrLink, mode){
+  let venue = "", eventLink = "";
+  if(mode === "physical") venue = venueOrLink
+  else if(mode === "online") eventLink = venueOrLink
+
+  const respBody = await post(`${apiDomain}:8003/space/events`, {
+    "link": imageName,
+    "imgType": `image/${typeName}`,
+    "title": title,
+    "date" : date,
+    "description": description,
+    "venue" : venue,
+    "mode" : mode,
+    "eventLink": eventLink
+  })
+  const createdEventKey = respBody?.data?.eventKey || ""
+  if(createdEventKey === "") return {isErr: true, eventKey: "", authorKey: ""}
+
+  const authorKey = respBody?.data?.postedByKey || ""
+  if(authorKey === "") return {isErr: true, eventKey: "", authorKey: ""}
+
+  return {
+    isErr: false, eventKey: createdEventKey, authorKey: authorKey
   }
 }

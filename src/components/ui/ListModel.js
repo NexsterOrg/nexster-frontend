@@ -42,9 +42,7 @@ export default function ListModel({open, setOpen, eventKey, reactType}) {
 }, [])
 
   const handleScroll = async (event) => {
-    console.log("set scroll...: ", scrollPosition, limit)
     if(scrollPosition >= limit){
-        console.log("scroll, pageNo: ", pageNo)
         limit += gap
         if(pageNo <= 0) return
         try {
