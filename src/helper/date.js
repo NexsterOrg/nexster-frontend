@@ -80,3 +80,9 @@ function GetWeekDate(utcDateString){
     }
     return ""
 }
+
+export function AddMonths(date, months) {
+    const newDate = new Date(date.getTime());
+    newDate.setMonth(date.getMonth() + months);
+    return newDate;
+}
