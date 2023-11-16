@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Stack, TextField, Typography } from '@mui/material'
 
 const textTooLongErr = "input exceeds the character limit"

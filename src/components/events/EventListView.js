@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import EventCardView from "./EventCardView";
 import Base1 from "../layout/base1";
 import { ListEvents, UnAuthorizedError, LoginPath } from "../../apis/fetch";
+import { QuickEventNav } from "./QuickEventNav"
+import EventCreationDialog  from "./EventCreationDialog"
+import { BottomLeftSnackbar } from '../ui/snack_bar';
 
 const eventsPerFetch = 5
 const gap = 330
@@ -108,7 +111,15 @@ function SideEventListView(){
 }
 
 export default function EventListView(){
-    return <Base1 SideComponent={<SideEventListView />} />
+    const [ isCreateEventOpen, setIsCreateEventOpen ] = useState(false)
+
+    const completeComponent = <>
+            <SideEventListView />
+            <EventCreationDialog isCreateEventOpen={isCreateEventOpen} setIsCreateEventOpen={setIsCreateEventOpen} />
+            <QuickEventNav setCreateEventOpen={setIsCreateEventOpen}/>
+        </>
+
+    return <Base1 SideComponent={ completeComponent } />
 }
 
 function arrangeParams(param, defaultVal) {

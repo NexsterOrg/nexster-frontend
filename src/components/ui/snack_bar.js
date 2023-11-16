@@ -23,3 +23,7 @@ export function BasicSnackbar({open, setOpen, vertical, horizontal, msg, level})
 export function BottomRightSnackbar({open, setOpen, level, msg}){
     return <BasicSnackbar open={open} setOpen={setOpen} vertical="bottom" horizontal="right" level={level} msg={msg}/>
 }
+
+export function BottomLeftSnackbar({open, setOpen, level, msg}){
+  return <BasicSnackbar open={open} setOpen={setOpen} vertical="bottom" horizontal="left" level={level} msg={msg}/>
+}

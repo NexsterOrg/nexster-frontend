@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import ImageUploading from 'react-images-uploading';
 import { Dialog, Button, Typography, Stack, Divider, Avatar } from '@mui/material';
 import ImageIcon from '@mui/icons-material/Image';
@@ -7,6 +7,8 @@ import { TextFieldWithCount } from '../ui/TextComponents';
 import { BasicDateTimePicker } from '../ui/DateTimePicker';
 import { BasicSelect } from '../ui/Select';
 import { UploadImage, CreateEvent } from '../../apis/fetch';
+import { SaveLoading } from '../ui/LoadingComponents';
+import { BottomLeftSnackbar } from '../ui/snack_bar';
 
 const posterNamespace = "event-posters"
 
@@ -14,8 +16,16 @@ const posterNamespace = "event-posters"
 const titleEmptyErr = "Title field cannot be empty"
 const uploadNoImageErr = "Please upload an image"
 const dateEmptyErr = "Please provide the event date"
+const createFailed = "Failed to create. Try again."
 
-export default function EventCreationDialog() {
+// Success messages
+const createdOk = "Successfully created. View it on event page."
+
+export default function EventCreationDialog({isCreateEventOpen, setIsCreateEventOpen}) {
+
+  const [saveSpinner, startSaveSpinner] = useState(false)
+  const [snackBarOpen, setSnackBarOpen] = useState(false)
+
   const [images, setImages] = useState([]);
   const [imagesErr, setImagesErr] = useState("");
 
@@ -33,12 +43,14 @@ export default function EventCreationDialog() {
   const [date, setDate] = useState("")
   const [dateErr, setDateErr] = useState("")
 
+  const [errMsg, setErrMsg] = useState("")
+
   /** todo:
    * 1. Need to check things are not empty. (title, mode, date) - done
-   * 2. Some loading indication.
+   * 2. Some loading indication. - done
    * 3. what should happen when input field text exceeded. Will us allow to submit or not?? 
    * 4. change date picker time show format - done
-   * 
+   * 5. what should show, redirect after event error / success,
    */
 
   const onCreate = async () => {
@@ -57,55 +69,102 @@ export default function EventCreationDialog() {
     if(titleErr || descriptionErr ||  venueOrLinkErr) {
       return
     }
+  
+    startSaveSpinner(true)
 
-    const img = images[0]
-    const typeName = getImageType(img["file"]["type"])
-    const imageName = await UploadImage(posterNamespace, typeName, img["data_url"])
-    if(imageName === "") return // failed to upload the image. 
-
-    // submit data to create event.
-    const respData = await CreateEvent(imageName, typeName, title, date, description, venueOrLink, mode)
-    if(respData.isErr) {
-      return // TODO: do things required for failure. (eg:- failure popup)
+    try {
+      const img = images[0]
+      const typeName = getImageType(img["file"]["type"])
+      const imageName = await UploadImage(posterNamespace, typeName, img["data_url"])
+      // imageName === ""
+      if(imageName === "") {
+        startSaveSpinner(false)
+        setErrMsg(uploadNoImageErr)
+        setSnackBarOpen(true)
+        return
+      } 
+  
+      // submit data to create event.
+      const respData = await CreateEvent(imageName, typeName, title, date, description, venueOrLink, mode)
+      startSaveSpinner(false)
+      if(respData.isErr) {
+        setErrMsg(createFailed)
+        setSnackBarOpen(true)
+        return
+      }
+    } catch (error) {
+      startSaveSpinner(false)
+      setErrMsg(createFailed)
+      setSnackBarOpen(true)
+      return
     }
-    // TODO: what to do with eventKey and authorKey.
+    setErrMsg("")
+    setSnackBarOpen(true)
+      // TODO: what to do with eventKey and authorKey.
     setImages([])
     setTitle("")
     setDescription("")
     setVenueOrLink("")
     setMode("physical")
     setDate("")
+
+    setImagesErr("")
+    setTitleErr("")
+    setDescriptionErr("")
+    setVenueOrLinkErr("")
+    setDateErr("")
+
+    setIsCreateEventOpen(false)
+    
   }
 
-  const onCancel = () => {
+  const onCancel = useCallback(() => {
+    setErrMsg("")
     setImages([])
     setTitle("")
     setDescription("")
     setVenueOrLink("")
-  }
+    setMode("physical")
+    setDate("")
 
+    setImagesErr("")
+    setTitleErr("")
+    setDescriptionErr("")
+    setVenueOrLinkErr("")
+    setDateErr("")
+
+    setIsCreateEventOpen(false)
+  })
+
+  const snackInfo = errMsg === "" ? {level: "success", msg: createdOk} : {level: "error", msg: errMsg}
   return (
+    <>
     <Dialog
-      open={true} 
-      onClose={() => {}}
+      open={isCreateEventOpen} 
+      onClose={onCancel}
       scroll={"paper"}
       aria-labelledby="poster-upload-model-title"
       aria-describedby="poster-upload-model-description"
     > 
-    <Header />
+    {saveSpinner ? null : <Header />}
     <Stack sx={{ width: 650, minHeight: 650, marginBottom: 2 }} >
-      <PosterUpload images={images} setImages={setImages} uploadErr={imagesErr} setUploadErr={setImagesErr}/>
-      <EventInputData 
-        title={title} setTitle={setTitle} titleErr={titleErr} setTitleErr={setTitleErr}
-        description={description} setDescription={setDescription} descriptionErr={descriptionErr} setDescriptionErr={setDescriptionErr}
-        venueOrLink={venueOrLink} setVenueOrLink={setVenueOrLink} venueOrLinkErr={venueOrLinkErr} setVenueOrLinkErr={setVenueOrLinkErr}
-        mode={mode} setMode={setMode}
-        date={date} setDate={setDate} dateErr={dateErr} setDateErr={setDateErr}
-      />
-      <FormActionButtons onCreate={onCreate} onCancel={onCancel}/>
-    </Stack>
+    { saveSpinner ?  <SaveLoading rootStyles={{marginTop: 10}} /> :
+      <>
+        <PosterUpload images={images} setImages={setImages} uploadErr={imagesErr} setUploadErr={setImagesErr}/>
+        <EventInputData 
+          title={title} setTitle={setTitle} titleErr={titleErr} setTitleErr={setTitleErr}
+          description={description} setDescription={setDescription} descriptionErr={descriptionErr} setDescriptionErr={setDescriptionErr}
+          venueOrLink={venueOrLink} setVenueOrLink={setVenueOrLink} venueOrLinkErr={venueOrLinkErr} setVenueOrLinkErr={setVenueOrLinkErr}
+          mode={mode} setMode={setMode}
+          date={date} setDate={setDate} dateErr={dateErr} setDateErr={setDateErr}
+        />
+        <FormActionButtons onCreate={onCreate} onCancel={onCancel}/> 
+      </>
+    }
+    </Stack> 
   </Dialog>
-   
+  <BottomLeftSnackbar open={snackBarOpen}  setOpen={setSnackBarOpen} level={snackInfo.level} msg={snackInfo.msg}/>
+  </>
   );
 }
 
@@ -159,7 +218,6 @@ function EventInputData({title, titleErr, description, descriptionErr, venueOrLi
  * Therefore need to implement this API first.
  * 
  */
-
 
 function FormActionButtons({onCreate, onCancel}){
 
