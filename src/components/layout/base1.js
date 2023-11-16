@@ -11,18 +11,36 @@ import { GetUserInfoFromLS } from "../../apis/store";
 // for outline icons
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
-import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 
-const drawerWidth = 200;
+import { PxFactorTotalHeight } from "../../helper/common";
+
+const drawerWidth = "11%";
 const firstnameLimit = 12
 
-function limitUserFirstname(firstname) {
+function limitUserFirstname(firstname="") {
     return firstname.length > firstnameLimit ? firstname.substring(0, firstnameLimit) + ".." : firstname
 }
 
+const iconSize = {
+    xl: 30,
+    lg: 27,
+    xmd: 24,
+    md: 20
+}
+
+const navFontSize = {
+    xl: 18,
+    lg: 16,
+    xmd: 15,
+    md: 12
+}
+
+const iconWidth = {xl: 50, lg: 45, xmd: 40}
+
 export default function Base1({styles, SideComponent}){
-    const {name, imgUrl} =  useMemo(GetUserInfoFromLS, [])
+    const {name, imgUrl, indexNo} =  useMemo(GetUserInfoFromLS, [])
 
     return (
         <Stack direction="row" spacing={0} sx={{height: "auto"}}>
@@ -40,45 +58,46 @@ export default function Base1({styles, SideComponent}){
                 anchor="left"
                 open={true}>
             
+            {/* TODO: Need to replace with acutal Nexster logo and make it resposive */}
             <Typography sx={{paddingLeft: "8%", marginBottom: "15%", marginTop: "10%"
             }} variant="h4"> 
                 Nexster 
             </Typography>
             
-                <List > 
+                <List> 
                     <ListItem key={1} disablePadding >
                         <ListItemButton href="/" >
-                            <ListItemIcon>
-                                <HomeOutlinedIcon sx={{width: "30px", height: "30px"}}/>
+                            <ListItemIcon sx={{minWidth: 35 , width: iconWidth}}>
+                                <HomeOutlinedIcon sx={{width: iconSize, height: iconSize}} />
                             </ListItemIcon>
-                            <ListItemText primary={"Home"} disableTypography sx={{fontSize: 18}}/>
+                            <ListItemText primary={"Home"} disableTypography sx={{fontSize: navFontSize}}/>
                         </ListItemButton>
                     </ListItem>
 
                     <ListItem key={2} disablePadding>
                         <ListItemButton href="/friends">
-                            <ListItemIcon>
-                                <PeopleAltOutlinedIcon sx={{width: "30px", height: "30px"}}/>
+                            <ListItemIcon sx={{minWidth: 35 , width: iconWidth}}>
+                                <PeopleAltOutlinedIcon sx={{width: iconSize, height: iconSize}}/>
                             </ListItemIcon>
-                            <ListItemText primary={"Friends"} disableTypography sx={{fontSize: 18}}/>
+                            <ListItemText primary={"Friends"} disableTypography sx={{fontSize: navFontSize}}/>
                         </ListItemButton>
                     </ListItem>
 
                     <ListItem key={3} disablePadding>
-                        <ListItemButton href="/message">
-                            <ListItemIcon>
-                                <TextsmsOutlinedIcon sx={{width: "30px", height: "30px"}}/>
+                        <ListItemButton href="/events">
+                            <ListItemIcon sx={{minWidth: 35 , width: iconWidth}}>
+                                <EventAvailableOutlinedIcon sx={{width: iconSize, height: iconSize}}/>
                             </ListItemIcon>
-                            <ListItemText primary={"Message"} disableTypography sx={{fontSize: 18}}/>
+                            <ListItemText primary={"Events"} disableTypography sx={{fontSize: navFontSize}}/>
                         </ListItemButton>
                     </ListItem>
 
                     <ListItem key={4} disablePadding>
                         <ListItemButton>
-                            <ListItemIcon>
-                                <AddCircleOutlineRoundedIcon  sx={{width: "30px", height: "30px"}}/>
+                            <ListItemIcon sx={{minWidth: 35 , width: iconWidth}}>
+                                <AddCircleOutlineRoundedIcon  sx={{width: iconSize, height: iconSize}}/>
                             </ListItemIcon>
-                            <ListItemText primary={"Share"}  disableTypography sx={{fontSize: 18}}/>
+                            <ListItemText primary={"Share"}  disableTypography sx={{fontSize: navFontSize}}/>
                         </ListItemButton>
                     </ListItem>
 
@@ -86,11 +105,12 @@ export default function Base1({styles, SideComponent}){
                 <Divider />
 
                 <ListItem key={5} disablePadding sx={{marginTop: "15%"}}> 
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <Avatar alt={name} src={imgUrl}  />
+                    <ListItemButton href={`/index/${indexNo}`}>
+                        <ListItemIcon sx={{minWidth: 35 , width: iconWidth}}>
+                            <Avatar alt={name} sx={{height: "80%", width: "80%"}}
+                            src={imgUrl}  />
                         </ListItemIcon>
-                        <ListItemText primary={limitUserFirstname(name)}  disableTypography sx={{fontSize: 18}}/>
+                        <ListItemText primary={"Profile"}  disableTypography sx={{fontSize: navFontSize}}/>
                     </ListItemButton>
                 </ListItem>
 

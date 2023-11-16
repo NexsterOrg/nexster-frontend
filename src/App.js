@@ -3,12 +3,12 @@ import {Routes, Route} from "react-router-dom"
 
 import Timeline from "./components/timeline"
 import FriendsPanel from './components/friend/friends_panel';
-import MsgPanel from './components/message_panel';
 import NotFound from './components/layout/notfound';
 import Profile from './components/user/user_profile';
 import FriendReqSite from './components/friend/friend_req_site';
 import FriendSuggsSite from './components/friend/friend_sugg_site';
 import AllFriendsSite from './components/friend/friends_all';
+import EventListView from './components/events/EventListView';
 import TestGround from './components/test';
 
 function Login() {
@@ -19,15 +19,76 @@ function Login() {
   )
 }
 
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark"
+const theme = createTheme({
+  // palette: {
+  //   mode: "dark"
+  // },
+
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 900,
+      md: 1100,
+      xmd: 1300,
+      lg: 1500,
+      xl: 1600,
+    },
+  },
+
+  // TODO: Need to properly add
+  typography: {
+
+    h5: {
+      fontSize: '0.9rem',
+      '@media (min-width: 1300px)': { 
+        fontSize: '1.1rem'
+      },
+      '@media (min-width: 1600px)': { 
+        fontSize: '1.5rem',
+      },
+    },
+
+    body1: {
+      fontSize: '0.9rem',
+      '@media (min-width: 1300px)': { 
+        fontSize: '0.8rem'
+      },
+      '@media (min-width: 1600px)': { 
+        fontSize: '1rem',
+      },
+    },
+
+    body2: {
+      fontSize: '0.6rem',
+      letterSpacing: "0.008em",
+      '@media (min-width: 1300px)': { 
+        fontSize: '0.7rem',
+        letterSpacing: "0.01em"
+      },
+      '@media (min-width: 1600px)': { 
+        fontSize: '0.875rem',
+        letterSpacing: "0.0107em"
+      },
+    },
+
+    caption: {
+      fontSize: '0.1rem',
+      letterSpacing: "0.03333em",
+      '@media (min-width: 1300px)': { 
+        fontSize: '0.6rem',
+        letterSpacing: "0.02em",
+      },
+      '@media (min-width: 1600px)': { 
+        fontSize: '0.75rem',
+      },
+    },
+
   },
 });
 
 function App() {
   return (
-    // <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
     <Routes>
       <Route path="/" element={<Timeline />} />
       <Route path="/test" element={<TestGround />} />
@@ -37,7 +98,7 @@ function App() {
       <Route path="/friends/suggs" element={<FriendSuggsSite />} />
       <Route path="/friends/my" element={<AllFriendsSite rootStyles={styles.allFriendsSite}/>} />
 
-      <Route path="/message" element={<MsgPanel />} />
+      <Route path="/events" element={<EventListView />} />
       <Route path="/login" element={<Login />} />
       <Route path="/page-not-found" element={<NotFound />} />
 
@@ -45,7 +106,7 @@ function App() {
 
       <Route path="*" element={<NotFound />} />
     </Routes>
-  // </ThemeProvider>
+  </ThemeProvider>
   );
 }
 
