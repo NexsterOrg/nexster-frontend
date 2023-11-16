@@ -7,7 +7,6 @@ import Base1 from "../layout/base1";
 import { ListEvents, UnAuthorizedError, LoginPath } from "../../apis/fetch";
 import { QuickEventNav } from "./QuickEventNav"
 import EventCreationDialog  from "./EventCreationDialog"
-import { BottomLeftSnackbar } from '../ui/snack_bar';
 
 const eventsPerFetch = 5
 const gap = 330

@@ -19,7 +19,7 @@ const dateEmptyErr = "Please provide the event date"
 const createFailed = "Failed to create. Try again."
 
 // Success messages
-const createdOk = "Successfully created. View it on event page."
+const createdOk = "Successfully created. Refresh the page."
 
 export default function EventCreationDialog({isCreateEventOpen, setIsCreateEventOpen}) {
 
@@ -45,12 +45,8 @@ export default function EventCreationDialog({isCreateEventOpen, setIsCreateEvent
 
   const [errMsg, setErrMsg] = useState("")
 
-  /** todo:
-   * 1. Need to check things are not empty. (title, mode, date) - done
-   * 2. Some loading indication. - done
-   * 3. what should happen when input field text exceeded. Will us allow to submit or not?? 
-   * 4. change date picker time show format - done
-   * 5. what should show, redirect after event error / success,
+  /** TODO:
+   * 1. what should happen when input field text exceeded. Will us allow to submit or not?? 
    */
 
   const onCreate = async () => {
@@ -206,16 +202,14 @@ function EventInputData({title, titleErr, description, descriptionErr, venueOrLi
 }
 
 /** TODO: 
- * 1. Should be a future date. BasicDateTimePicker should be able to put this validation.
- * 2. Need to think about max lengths
- * 3. Change meeting link/venue based on the mode of selection
- * 4. max length of event link/venue . think about meeting link lengths. not a good idea to break meeting links.
- * 5. Check these UI in small laptop.
+ * 1. Need to think about max lengths
+ * 2. Max length of event link/venue. Think about meeting link lengths. not a good idea to break meeting links.
+ * 3. 
  */
 
-/** Current work
- * 1. I need to make sure base64 images are possible to store with backend api and cloud.
- * Therefore need to implement this API first.
+/**
+ * Issue:
+ * 1. DateTimePicker is too short in small screens.
  * 
  */
 
@@ -254,9 +248,6 @@ function getImageType(mimeType){
 function PosterUpload({images, setImages, uploadErr, setUploadErr}){
 
   const onChange = (imageList) => {
-    // const img = imageList[0] 
-    // call UploadImage() when submitting the poster
-    // UploadImage("event-posters", getImageType(img["file"]["type"]), img["data_url"])
     setUploadErr("")
     setImages(imageList);
   };
@@ -296,12 +287,6 @@ function PosterUpload({images, setImages, uploadErr, setUploadErr}){
             </Stack>
             <Button variant='contained' sx={{textTransform: "none"}} onClick={onImageUpload} size='small'> Upload image </Button>
         </Stack>
-        {/* <Stack direction={"row"} justifyContent={"space-between"}>
-            <Stack justifyContent={"center"}>
-              <Typography variant='caption' sx={{paddingLeft: 1}}> This image will be publicly available for all users on the site </Typography>
-            </Stack>
-            <Button sx={{textTransform: "none"}}> Close </Button>
-        </Stack> */}
       </>
       )}
       </ImageUploading>
