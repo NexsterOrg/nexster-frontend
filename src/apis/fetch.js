@@ -267,9 +267,9 @@ export async function ListMyFriends(pageNo, pageSize) {
   }
 }
 
-// TODO: Check why this is not working via NGINX
+
 export async function ListEvents(pageNo, pageSize) {
-  let respBody = await get(`${apiDomain}:8003/space/events?page=${pageNo}&pageSize=${pageSize}`)
+  let respBody = await get(`${apiDomain}/g/s/events?page=${pageNo}&pageSize=${pageSize}`)
   if(respBody === null) return {data: [], size: 0}
   return { 
     data: respBody.data,
@@ -278,19 +278,20 @@ export async function ListEvents(pageNo, pageSize) {
 }
 
 export async function CreateEventReaction(eventKey, reqBody) {
-  let respBody = await post(`${apiDomain}:8003/space/events/${eventKey}/reaction`, reqBody)
+  let respBody = await post(`${apiDomain}/p/s/events/${eventKey}/reaction`, reqBody)
   if(respBody === null) return ""
   return respBody.data.key
 }
 
+
 export async function SetEventReactionState(reactionKey, reactionType, state) {
-  let respBody = await put(`${apiDomain}:8003/space/events/reactions/${reactionKey}/${reactionType}/${state}`, {})
+  let respBody = await put(`${apiDomain}/pu/s/events/reactions/${reactionKey}/${reactionType}/${state}`, {})
   if(respBody === null) return false
   return true
 }
 
 export async function ListEventReactUsers(eventKey, reactType, pageNo, pageSize) {
-  let respBody = await get(`${apiDomain}:8003/space/events/${eventKey}/${reactType}?page=${pageNo}&pageSize=${pageSize}`)
+  let respBody = await get(`${apiDomain}/g/s/events/${eventKey}/${reactType}?page=${pageNo}&pageSize=${pageSize}`)
   if(respBody === null) return {data: [], size: 0}
   return { 
     data: respBody.data,
@@ -301,7 +302,7 @@ export async function ListEventReactUsers(eventKey, reactType, pageNo, pageSize)
 export async function UploadImage(namespace, typeName, base64Image){
   const blob = dataURItoBlob(base64Image);
   if(blob === null) return ""
-  const respBody = await postCustom(`${apiDomain}:8002/content/images/${namespace}?type=${typeName}`, {
+  const respBody = await postCustom(`${apiDomain}/p/c/images/${namespace}?type=${typeName}`, {
     'Content-Type': `image/${typeName}`
   }, blob)
 
@@ -313,7 +314,7 @@ export async function CreateEvent(imageName, typeName, title, date, description,
   if(mode === "physical") venue = venueOrLink
   else if(mode === "online") eventLink = venueOrLink
 
-  const respBody = await post(`${apiDomain}:8003/space/events`, {
+  const respBody = await post(`${apiDomain}/p/s/events`, {
     "link": imageName,
     "imgType": `image/${typeName}`,
     "title": title,
