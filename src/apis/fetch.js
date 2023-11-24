@@ -334,3 +334,15 @@ export async function CreateEvent(imageName, typeName, title, date, description,
     isErr: false, eventKey: createdEventKey, authorKey: authorKey
   }
 }
+
+// if failed to create image, this will return null
+export async function CreateImagePost(imageFullname, visibility, title, description) {
+  let respBody = await post(`${apiDomain}:8001/timeline/posts/image`, {
+    "link": imageFullname,
+    "visibility": visibility,
+    "title" : title, 
+    "description" : description
+  })
+  if(respBody === null) return {isErr: true, mediaKey: "", mediaOwnerKey: ""}
+  return {isErr: false, mediaKey: respBody.data?.mediaKey, mediaOwnerEdgeKey: respBody.data?.mediaOwnerKey}
+}

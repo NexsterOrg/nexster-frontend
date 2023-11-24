@@ -1,7 +1,9 @@
-import React, {useMemo} from "react";
+import React, {useMemo, useState} from "react";
 import {Stack, Typography, Drawer, List, Avatar, Divider, Box, TextField,
     ListItem, ListItemButton, ListItemIcon, ListItemText} from '@mui/material'
+
 import { GetUserInfoFromLS } from "../../apis/store";
+import PostCreationDialog from "../media/postCreation";
 // filled icons
 // import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 // import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
@@ -14,7 +16,6 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 
-import { PxFactorTotalHeight } from "../../helper/common";
 
 const drawerWidth = "11%";
 const firstnameLimit = 12
@@ -41,6 +42,7 @@ const iconWidth = {xl: 50, lg: 45, xmd: 40}
 
 export default function Base1({styles, SideComponent}){
     const {name, imgUrl, indexNo} =  useMemo(GetUserInfoFromLS, [])
+    const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
 
     return (
         <Stack direction="row" spacing={0} sx={{height: "auto"}}>
@@ -93,7 +95,7 @@ export default function Base1({styles, SideComponent}){
                     </ListItem>
 
                     <ListItem key={4} disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => setIsCreatePostOpen(preState => !preState)} >
                             <ListItemIcon sx={{minWidth: 35 , width: iconWidth}}>
                                 <AddCircleOutlineRoundedIcon  sx={{width: iconSize, height: iconSize}}/>
                             </ListItemIcon>
@@ -124,6 +126,7 @@ export default function Base1({styles, SideComponent}){
                 sx={{position: "fixed", right: "8px", marginTop: "5px"}}/>
                 {SideComponent}
             </Box>
+            <PostCreationDialog isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} />
         </Stack>
     )
 }
