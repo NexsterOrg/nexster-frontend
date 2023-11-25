@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { List, ListItem } from '@mui/material'
+import { List, ListItem , Card, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 
 import EventCardView from "./EventCardView";
@@ -12,11 +12,14 @@ const eventsPerFetch = 5
 const gap = 330
 let limit = 0
 
+const noEventAllUsersShowMsg = "No Upcoming Events. But Stay Tuned!"
+const noMyEventsShowMsg = "No Event Yet? Let's Create One"
 
-function SideEventListView(){
+export function SideEventListView({isMyEvents}){
     const navigate = useNavigate();
 
     const [events, addEvents] = useState([])
+    const [noOfEvents, setNoOfEvents] = useState(0)
     const [pageNo, setPageNo] = useState(1)
 
     useEffect(() => {
@@ -25,8 +28,9 @@ function SideEventListView(){
         (async () => {
             if(pageNo <= 0) return
             try {
-              let newEvents = await ListEvents(pageNo, eventsPerFetch);
+              let newEvents = await ListEvents(pageNo, eventsPerFetch, isMyEvents);
               addEvents(newEvents.data);
+              setNoOfEvents(newEvents.size)
               if (newEvents.size < eventsPerFetch) {
                 setPageNo(-1)
                 return;
@@ -49,8 +53,9 @@ function SideEventListView(){
                 limit += gap
                 if(pageNo <= 0) return
                 try {
-                    let newEvents = await ListEvents(pageNo, eventsPerFetch);
+                    let newEvents = await ListEvents(pageNo, eventsPerFetch, isMyEvents);
                     addEvents(preList => preList.concat(newEvents.data));
+                    setNoOfEvents(preVal => preVal + newEvents.size)
                     if (newEvents.size < eventsPerFetch) {
                       setPageNo(-1)
                       return;
@@ -78,6 +83,12 @@ function SideEventListView(){
     return (
         <List style={{width: "80%"}}>
         {
+            noOfEvents === 0 ? 
+
+            <Card sx={styles.noElementCard} spacing={1}> 
+                <Typography> { isMyEvents ? noMyEventsShowMsg : noEventAllUsersShowMsg } </Typography>
+            </Card>
+            :
             events.map( (each, index) => {
                 let {key, indexNo, username} = each.postedBy || {}
                 const ownerKey = arrangeParams(key, "")
@@ -98,7 +109,7 @@ function SideEventListView(){
                     <ListItem key={index}>
                         <EventCardView eventKey={each.key}  imgUrl={each.link} title={each.title} 
                             date={each.date} description={each.description} venue={each.venue} mode={each.mode} 
-                            ownerKey={ownerKey} eventLink={each.eventLink}
+                            ownerKey={ownerKey} eventLink={each.eventLink} permission={each.perm}
                             username={username} indexNo={indexNo} noOfLove={noOfLove} noOfGoing={noOfGoing} reactionKey={reactionKey}
                             isViewerLove={love} isViewerGoing={going}
                         />
@@ -113,7 +124,7 @@ export default function EventListView(){
     const [ isCreateEventOpen, setIsCreateEventOpen ] = useState(false)
 
     const completeComponent = <>
-            <SideEventListView />
+            <SideEventListView isMyEvents={false}/>
             <EventCreationDialog isCreateEventOpen={isCreateEventOpen} setIsCreateEventOpen={setIsCreateEventOpen} />
             <QuickEventNav setCreateEventOpen={setIsCreateEventOpen}/>
         </>
@@ -123,4 +134,11 @@ export default function EventListView(){
 
 function arrangeParams(param, defaultVal) {
     return  param ? param : defaultVal
+}
+
+const styles  = {
+    noElementCard: {
+        width: "870px", height: "100px", borderRadius: "10px", paddingLeft: "25px", 
+        display: "flex", alignItems: "center", justifyContent:"center", marginY: "30px", marginX: "30px"
+    },
 }

@@ -4,24 +4,30 @@ import { Dialog, Button, Typography, Stack, Divider, Avatar } from '@mui/materia
 import ImageIcon from '@mui/icons-material/Image';
 
 import { TextFieldWithCount } from '../ui/TextComponents';
-import { BasicDateTimePicker } from '../ui/DateTimePicker';
 import { BasicSelect } from '../ui/Select';
-import { UploadImage, CreateEvent } from '../../apis/fetch';
+import { UploadImage, CreateImagePost } from '../../apis/fetch';
 import { SaveLoading } from '../ui/LoadingComponents';
 import { BottomLeftSnackbar } from '../ui/snack_bar';
 
-const posterNamespace = "event-posters"
+const postNamespace = "post"  // namespace of post in BE
+
+const privateVisi = "private"
+const publicVisi = "public"
 
 // Error messages
 const titleEmptyErr = "Title field cannot be empty"
 const uploadNoImageErr = "Please upload an image"
-const dateEmptyErr = "Please provide the event date"
+const uploadImageFailedErr = "Failed to upload the image. Try again."
 const createFailed = "Failed to create. Try again."
 
 // Success messages
-const createdOk = "Successfully created. Refresh the page."
+const createdOk = "Successfully created. Go to Home page."
 
-export default function EventCreationDialog({isCreateEventOpen, setIsCreateEventOpen}) {
+// post visibility message
+const publicPostMsg = "Public posts are visible to all users on the site."
+const privatePostMsg = "Private posts are only visible to you."
+
+export default function PostCreationDialog({isCreatePostOpen, setIsCreatePostOpen}) {
 
   const [saveSpinner, startSaveSpinner] = useState(false)
   const [snackBarOpen, setSnackBarOpen] = useState(false)
@@ -35,13 +41,7 @@ export default function EventCreationDialog({isCreateEventOpen, setIsCreateEvent
   const [description, setDescription] = useState("")
   const [descriptionErr, setDescriptionErr] = useState("")
 
-  const [venueOrLink, setVenueOrLink] = useState("")
-  const [venueOrLinkErr, setVenueOrLinkErr] = useState("")
-
-  const [mode, setMode] = useState("physical")
-
-  const [date, setDate] = useState("")
-  const [dateErr, setDateErr] = useState("")
+  const [visibility,  setVisibility] = useState(privateVisi)
 
   const [errMsg, setErrMsg] = useState("")
 
@@ -58,11 +58,7 @@ export default function EventCreationDialog({isCreateEventOpen, setIsCreateEvent
       setTitleErr(titleEmptyErr)
       return 
     }
-    if(date === ""){
-      setDateErr(dateEmptyErr)
-      return
-    }
-    if(titleErr || descriptionErr ||  venueOrLinkErr) {
+    if(titleErr || descriptionErr) {
       return
     }
   
@@ -71,17 +67,17 @@ export default function EventCreationDialog({isCreateEventOpen, setIsCreateEvent
     try {
       const img = images[0]
       const typeName = getImageType(img["file"]["type"])
-      const imageName = await UploadImage(posterNamespace, typeName, img["data_url"])
-      // imageName === ""
+      const imageName = await UploadImage(postNamespace, typeName, img["data_url"])
+
       if(imageName === "") {
         startSaveSpinner(false)
-        setErrMsg(uploadNoImageErr)
+        setErrMsg(uploadImageFailedErr)
         setSnackBarOpen(true)
         return
       } 
   
-      // submit data to create event.
-      const respData = await CreateEvent(imageName, typeName, title, date, description, venueOrLink, mode)
+      // submit data to create post.
+      const respData = await CreateImagePost(imageName, visibility, title, description)
       startSaveSpinner(false)
       if(respData.isErr) {
         setErrMsg(createFailed)
@@ -96,21 +92,17 @@ export default function EventCreationDialog({isCreateEventOpen, setIsCreateEvent
     }
     setErrMsg("")
     setSnackBarOpen(true)
-      // TODO: what to do with eventKey and authorKey.
+      // TODO: what to do with mediaKey and mediaOwnerEdgeKey.
     setImages([])
     setTitle("")
     setDescription("")
-    setVenueOrLink("")
-    setMode("physical")
-    setDate("")
+    setVisibility(privateVisi)
 
     setImagesErr("")
     setTitleErr("")
     setDescriptionErr("")
-    setVenueOrLinkErr("")
-    setDateErr("")
 
-    setIsCreateEventOpen(false)
+    setIsCreatePostOpen(false)
     
   }
 
@@ -119,42 +111,36 @@ export default function EventCreationDialog({isCreateEventOpen, setIsCreateEvent
     setImages([])
     setTitle("")
     setDescription("")
-    setVenueOrLink("")
-    setMode("physical")
-    setDate("")
+    setVisibility(privateVisi)
 
     setImagesErr("")
     setTitleErr("")
     setDescriptionErr("")
-    setVenueOrLinkErr("")
-    setDateErr("")
 
-    setIsCreateEventOpen(false)
+    setIsCreatePostOpen(false)
   }, [])
 
   const snackInfo = errMsg === "" ? {level: "success", msg: createdOk} : {level: "error", msg: errMsg}
   return (
     <>
     <Dialog
-      open={isCreateEventOpen} 
+      open={isCreatePostOpen} 
       onClose={onCancel}
       scroll={"paper"}
-      aria-labelledby="poster-upload-model-title"
-      aria-describedby="poster-upload-model-description"
+      aria-labelledby="post-upload-model-title"
+      aria-describedby="post-upload-model-description"
     > 
     {saveSpinner ? null : <Header />}
     <Stack sx={{ width: 650, minHeight: 650, marginBottom: 2 }} >
     { saveSpinner ?  <SaveLoading rootStyles={{marginTop: 10}} /> :
       <>
-        <PosterUpload images={images} setImages={setImages} uploadErr={imagesErr} setUploadErr={setImagesErr}/>
+        <PostImageUpload images={images} setImages={setImages} uploadErr={imagesErr} setUploadErr={setImagesErr}/>
         <EventInputData 
           title={title} setTitle={setTitle} titleErr={titleErr} setTitleErr={setTitleErr}
           description={description} setDescription={setDescription} descriptionErr={descriptionErr} setDescriptionErr={setDescriptionErr}
-          venueOrLink={venueOrLink} setVenueOrLink={setVenueOrLink} venueOrLinkErr={venueOrLinkErr} setVenueOrLinkErr={setVenueOrLinkErr}
-          mode={mode} setMode={setMode}
-          date={date} setDate={setDate} dateErr={dateErr} setDateErr={setDateErr}
+          visibility={visibility} setVisibility={setVisibility}
         />
-        <FormActionButtons onCreate={onCreate} onCancel={onCancel}/> 
+        <FormActionButtons onCreate={onCreate} onCancel={onCancel} mode={visibility}/> 
       </>
     }
     </Stack> 
@@ -172,9 +158,8 @@ const selectWidth = {
   sm: 110
 }
 
-function EventInputData({title, titleErr, description, descriptionErr, venueOrLink, venueOrLinkErr,  mode, date, dateErr, setTitle, 
-  setTitleErr, setDescription, setDescriptionErr, setVenueOrLink, setVenueOrLinkErr, setMode, setDate, setDateErr}){
-  const modeParms = mode === "physical"  ? {label: "venue", maxCount: 30} : {label: "meeting link", maxCount: 100}
+function EventInputData({title, titleErr, description, descriptionErr, visibility, setTitle, setTitleErr, setDescription, 
+    setDescriptionErr, setVisibility }){
 
   return (
     <Stack sx={{paddingLeft: 2, marginBottom: 4}} spacing={2}>
@@ -184,19 +169,16 @@ function EventInputData({title, titleErr, description, descriptionErr, venueOrLi
 
       <TextFieldWithCount content={description} setContent={setDescription} textErr={descriptionErr} setTextErr={setDescriptionErr}
         textFieldStyles={{width: "90%"}} maxCount={100} required={false} multiline={true} 
-        label={"description"} maxRows={4} placeholder={"keep it short and concise"}/>
+        label={"description"} maxRows={4} />
 
       <Stack direction={"row"} spacing={3}>
-        <BasicDateTimePicker label={"date"} value={date} setValue={setDate} textErr={dateErr} setTextErr={setDateErr}/>
-        <BasicSelect value={mode} setValue={setMode}
-          label={"mode"} styles={{paddingTop: "8px", width: selectWidth}} defaultValue="physical"
+        <BasicSelect value={visibility} setValue={setVisibility}
+          label={"visibility"} styles={{paddingTop: "8px", width: selectWidth}} defaultValue={privateVisi}
           options={[
-            {label: "physical", value: "physical"},
-            {label: "online", value: "online"}
+            {label: "private", value: privateVisi},
+            {label: "public", value: publicVisi }
           ]}/>
       </Stack>
-      <TextFieldWithCount content={venueOrLink} setContent={setVenueOrLink} textErr={venueOrLinkErr} setTextErr={setVenueOrLinkErr}
-        textFieldStyles={{width: "90%"}} maxCount={modeParms.maxCount} required={false} multiline={false} label={modeParms.label}/>
     </Stack>
   )
 }
@@ -207,18 +189,14 @@ function EventInputData({title, titleErr, description, descriptionErr, venueOrLi
  * 3. 
  */
 
-/**
- * Issue:
- * 1. DateTimePicker is too short in small screens.
- * 
- */
-
-function FormActionButtons({onCreate, onCancel}){
+function FormActionButtons({onCreate, onCancel, mode}){
 
   return (
     <Stack direction={"row"} justifyContent={"space-between"} >
       <Stack justifyContent={"flex-end"} sx={{paddingLeft: 2}}>
-        <Typography variant='caption'> This event will be visible to everyone on the site </Typography>
+        <Typography variant='caption'> {
+            mode === publicVisi ? publicPostMsg : privatePostMsg
+        } </Typography>
       </Stack>
       <Stack direction={"row"} spacing={1} sx={{paddingRight: 2}}>
         <Button sx={{textTransform: "none"}} variant='contained' onClick={onCreate}> Create </Button>
@@ -232,7 +210,7 @@ function Header(){
   return (
     <>
     <Stack direction={"row"} justifyContent={"center"} sx={{paddingY: 1}}>
-        <Typography sx={{fontWeight: "bold"}} > Create new event </Typography>
+        <Typography sx={{fontWeight: "bold"}} > Create new post </Typography>
     </Stack>
     <Divider />
     </>
@@ -245,7 +223,7 @@ function getImageType(mimeType){
   return parts.length !== 2  ? "" : parts[1]
 }
 
-function PosterUpload({images, setImages, uploadErr, setUploadErr}){
+function PostImageUpload({images, setImages, uploadErr, setUploadErr}){
 
   const onChange = (imageList) => {
     setUploadErr("")
@@ -261,12 +239,7 @@ function PosterUpload({images, setImages, uploadErr, setUploadErr}){
     >
       {({
         imageList,
-        onImageUpload,
-        // onImageRemoveAll,
-        // onImageUpdate,
-        // onImageRemove,
-        // isDragging,
-        // dragProps,
+        onImageUpload
       }) => (
       <>
         <Stack alignItems="center" spacing={2}>

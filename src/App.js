@@ -9,6 +9,7 @@ import FriendReqSite from './components/friend/friend_req_site';
 import FriendSuggsSite from './components/friend/friend_sugg_site';
 import AllFriendsSite from './components/friend/friends_all';
 import EventListView from './components/events/EventListView';
+import MyEventListView from './components/events/MyEventListView';
 import TestGround from './components/test';
 
 function Login() {
@@ -99,6 +100,8 @@ function App() {
       <Route path="/friends/my" element={<AllFriendsSite rootStyles={styles.allFriendsSite}/>} />
 
       <Route path="/events" element={<EventListView />} />
+      <Route path="/events/my" element={<MyEventListView />} />
+
       <Route path="/login" element={<Login />} />
       <Route path="/page-not-found" element={<NotFound />} />
 

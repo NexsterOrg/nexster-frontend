@@ -1,10 +1,11 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import { useNavigate } from 'react-router-dom';
 
-import {ListMediaRoleBased, UnAuthorizedError} from "../../apis/fetch"
+import { ListMediaRoleBased, UnAuthorizedError } from "../../apis/fetch"
+import ImageSettingDialog from "./imgSettingDialog"
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
@@ -41,8 +42,10 @@ const ImageSrc = styled('span')({
 
 export default function ImageGrid({userId}) {
   const [imgList, setImgList] = useState([])
+  const [dialogInfo, setDialogInfo] = useState({open: false, key: ""})
   const navigate = useNavigate();
 
+  // TODO: Currently only first 10 images are loaded.
   useEffect( () => {
     if (userId === "") return 
     (async () => {
@@ -61,6 +64,7 @@ export default function ImageGrid({userId}) {
   }, [userId])
 
   return (
+    <>
     <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%'}}>
       {imgList.map((image) => (
         <ImageButton
@@ -69,10 +73,13 @@ export default function ImageGrid({userId}) {
           style={{
             width: "30%",
           }}
+          onClick={() => setDialogInfo({open: true, key: image.key})}
         >
           <ImageSrc style={{ backgroundImage: `url(${image.image_url})` }} />
         </ImageButton>
       ))}
     </Box>
+    <ImageSettingDialog imageSetting={dialogInfo} setImageSetting={setDialogInfo}/>
+    </>
   );
 }

@@ -1,4 +1,5 @@
-import { Card, CardMedia, Button, CardContent, Typography, Box, Paper, Link } from '@mui/material';
+import { useState } from 'react';
+import { Card, CardMedia, Button, CardContent, Typography, Box, Paper, Link, Stack, IconButton } from '@mui/material';
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
@@ -6,7 +7,8 @@ import LinkOutlinedIcon from '@mui/icons-material/LinkOutlined';
 import { MonthDateCard, TimeCard } from "./DateCard"
 import { ReactionButtons } from './ReactButtons';
 import ScrollPaperDialog from './DescriptionModel';
-import { useState } from 'react';
+import MenuButton from '../ui/menu_button';
+import { DeleteEvent } from '../../apis/fetch';
 
 const contentLimit = 220
 const titleLimit = 75
@@ -17,7 +19,7 @@ const cardHeight = {
     xmd: 230
 }
 
-export default function EventCardView({ eventKey, imgUrl, title, date, description, venue, mode, eventLink,
+export default function EventCardView({ eventKey, imgUrl, title, date, description, venue, mode, eventLink, permission,
     ownerKey, username, indexNo, noOfLove, noOfGoing, reactionKey, isViewerLove, isViewerGoing  }){
     const isOnline = mode === "online"
 
@@ -31,7 +33,9 @@ export default function EventCardView({ eventKey, imgUrl, title, date, descripti
             />
             <CardContent sx={{paddingY: "0px !important", display: "flex", flexDirection: "column", 
             justifyContent: "space-around", gap: "8px",  width: "100%"}}>
-                 <TitleCard title={title}/>
+                {
+                    permission === "owner" ? <TitleCardForOwner title={title} eventKey={eventKey} /> : <TitleCard title={title}/>
+                }
                     <Box sx={{display: "flex", gap: "30px" }}>
                         <MonthDateCard utcDateString={date}/>
                         <TimeCard utcFromDate={date} />
@@ -53,12 +57,39 @@ export default function EventCardView({ eventKey, imgUrl, title, date, descripti
     )
 }
 
+
 function TitleCard({title}){
     if(typeof title !== 'string') title = ""
     else if(title.length > titleLimit)  title = title.substring(0, titleLimit) + "..."
+
+    return <Typography variant='h5'> {title} </Typography>
+}
+
+const question = "Delete event ?"
+const titleMsgLimit = 10
+const eventFailedDel = "Failed to delete. Try again.."
+const eventDelOk = "Successfully deleted"
+
+function TitleCardForOwner({title, eventKey}){
+    if(typeof title !== 'string') title = ""
+    else if(title.length > titleLimit)  title = title.substring(0, titleLimit) + "..."
+
+    const onDelete = async () => {
+        try {
+            const isSucceeded = await DeleteEvent(eventKey)
+            alert( isSucceeded ? eventDelOk : eventFailedDel )
+        } catch (error) {
+            alert(eventFailedDel)
+        }
+    }
     
+    const quesContent = `Pressing Yes will delete the event with title "${title.substring(0, titleMsgLimit)}...". Press No to cancel the action`
+
     return (
-        <Typography variant='h5'> {title} </Typography>
+        <Stack direction={"row"} justifyContent={"space-between"}>
+            <Typography variant='h5'> {title} </Typography>
+            <MenuButton content={quesContent} question={question} onYes={onDelete} onNo={() => {}}/>
+        </Stack>
     )
 }
 
