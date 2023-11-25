@@ -11,6 +11,7 @@ export const FriendsRequestRoute = "/friends/request"
 export const FriendSuggsRoute = "/friends/suggs"
 export const AllFriendsRoute = "/friends/my"
 
+export const MyEventsListRoute = "/events/my"
 
 // Status codes
 const unAuthCode = 401
@@ -268,8 +269,11 @@ export async function ListMyFriends(pageNo, pageSize) {
 }
 
 
-export async function ListEvents(pageNo, pageSize) {
-  let respBody = await get(`${apiDomain}/g/s/events?page=${pageNo}&pageSize=${pageSize}`)
+export async function ListEvents(pageNo, pageSize, isMy=false) {
+  let url = `${apiDomain}/g/s/events?page=${pageNo}&pageSize=${pageSize}`
+  if(isMy) url = `${apiDomain}/g/s/my/events?page=${pageNo}&pageSize=${pageSize}`
+
+  let respBody = await get(url)
   if(respBody === null) return {data: [], size: 0}
   return { 
     data: respBody.data,
@@ -349,6 +353,12 @@ export async function CreateImagePost(imageFullname, visibility, title, descript
 
 export async function DeleteImagePost(mediaKey){
   let respBody = await del(`${apiDomain}:8001/timeline/posts/image/${mediaKey}`)
+  if(respBody === null) return false 
+  return true
+}
+
+export async function DeleteEvent(eventKey){
+  let respBody = await del(`${apiDomain}:8003/space/events/${eventKey}`)
   if(respBody === null) return false 
   return true
 }
