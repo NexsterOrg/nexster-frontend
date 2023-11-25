@@ -21,7 +21,7 @@ const uploadImageFailedErr = "Failed to upload the image. Try again."
 const createFailed = "Failed to create. Try again."
 
 // Success messages
-const createdOk = "Successfully created. Refresh the page."
+const createdOk = "Successfully created. Go to Home page."
 
 // post visibility message
 const publicPostMsg = "Public posts are visible to all users on the site."

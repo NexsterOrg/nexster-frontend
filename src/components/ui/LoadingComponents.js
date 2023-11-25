@@ -3,7 +3,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 export function SaveLoading({rootStyles}){
     rootStyles = rootStyles || {}
-    console.log("loading also rendering**....")
 
     return (
         <Stack gap={2} sx={[rootStyles]} justifyContent={"center"} alignItems={"center"} direction={"column"}>

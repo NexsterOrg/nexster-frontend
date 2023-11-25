@@ -346,3 +346,9 @@ export async function CreateImagePost(imageFullname, visibility, title, descript
   if(respBody === null) return {isErr: true, mediaKey: "", mediaOwnerKey: ""}
   return {isErr: false, mediaKey: respBody.data?.mediaKey, mediaOwnerEdgeKey: respBody.data?.mediaOwnerKey}
 }
+
+export async function DeleteImagePost(mediaKey){
+  let respBody = await del(`${apiDomain}:8001/timeline/posts/image/${mediaKey}`)
+  if(respBody === null) return false 
+  return true
+}
