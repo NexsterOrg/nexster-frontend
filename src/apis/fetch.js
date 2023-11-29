@@ -13,6 +13,8 @@ export const AllFriendsRoute = "/friends/my"
 
 export const MyEventsListRoute = "/events/my"
 
+export const SearchResultsRoute = "/search/results"
+
 // Status codes
 const unAuthCode = 401
 
@@ -339,9 +341,9 @@ export async function CreateEvent(imageName, typeName, title, date, description,
   }
 }
 
-// if failed to create image, this will return null
+// if failed to create image, this will return null 
 export async function CreateImagePost(imageFullname, visibility, title, description) {
-  let respBody = await post(`${apiDomain}:8001/timeline/posts/image`, {
+  let respBody = await post(`${apiDomain}/p/t/posts/image`, {
     "link": imageFullname,
     "visibility": visibility,
     "title" : title, 
@@ -352,13 +354,19 @@ export async function CreateImagePost(imageFullname, visibility, title, descript
 }
 
 export async function DeleteImagePost(mediaKey){
-  let respBody = await del(`${apiDomain}:8001/timeline/posts/image/${mediaKey}`)
+  let respBody = await del(`${apiDomain}/d/t/posts/image/${mediaKey}`)
   if(respBody === null) return false 
   return true
 }
 
 export async function DeleteEvent(eventKey){
-  let respBody = await del(`${apiDomain}:8003/space/events/${eventKey}`)
+  let respBody = await del(`${apiDomain}/d/s/events/${eventKey}`)
   if(respBody === null) return false 
   return true
+}
+
+export async function SearchUser(keyword) {
+  let respBody = await get(`${apiDomain}/g/se/users?q=${keyword}`)
+  if(respBody === null) return {data: [], resultsCount: 0}
+  return { data: respBody.data, resultsCount: respBody.results_count}
 }

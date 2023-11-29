@@ -1,9 +1,11 @@
-import React, {useMemo, useState} from "react";
-import {Stack, Typography, Drawer, List, Avatar, Divider, Box, TextField,
+import React, {useMemo, useRef, useState} from "react";
+import {Stack, Typography, Drawer, List, Avatar, Divider, Box, TextField, IconButton,
     ListItem, ListItemButton, ListItemIcon, ListItemText} from '@mui/material'
 
+import { useNavigate } from 'react-router-dom';
 import { GetUserInfoFromLS } from "../../apis/store";
 import PostCreationDialog from "../media/postCreation";
+import { SearchResultsRoute } from "../../apis/fetch";
 // filled icons
 // import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 // import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
@@ -15,6 +17,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
+import SearchIcon from '@mui/icons-material/Search';
 
 const drawerWidth = "11%";
 
@@ -35,8 +38,32 @@ const navFontSize = {
 const iconWidth = {xl: 50, lg: 45, xmd: 40}
 
 export default function Base1({styles, SideComponent}){
+    const navigate = useNavigate();
     const {name, imgUrl, indexNo} =  useMemo(GetUserInfoFromLS, [])
     const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
+    const searchKeywordRef = useRef(null)
+
+    const onSearch = () => {
+        const keyword = searchKeywordRef?.current?.value || ""
+        if(keyword === "") return
+
+        navigate({
+            pathname: SearchResultsRoute,
+            search: `?${new URLSearchParams({query: keyword}).toString()}`,
+          }, { replace: true });
+    }
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            const keyword = searchKeywordRef?.current?.value || ""
+            if(keyword === "") return
+    
+            navigate({
+                pathname: SearchResultsRoute,
+                search: `?${new URLSearchParams({query: keyword}).toString()}`,
+              }, { replace: true });
+        }
+      };
 
     return (
         <Stack direction="row" spacing={0} sx={{height: "auto"}}>
@@ -116,8 +143,20 @@ export default function Base1({styles, SideComponent}){
             <Box
                 component="main"
                 sx={[{display: "flex", flexDirection: "column",flexGrow: 1, bgcolor: 'background.default', minHeight: "100vh"}, styles]}>
-                <TextField id="outlined-search" type="search" size="small" label="Find Friends..." variant="filled"
-                sx={{position: "fixed", right: "8px", marginTop: "5px"}}/>
+                
+                <Box sx={{position: "fixed", right: "8px", marginTop: "5px", display: "flex"}}>
+                    <TextField id="outlined-search" type="search" size="small" label="Find Friends..." variant="filled" 
+                        inputRef={searchKeywordRef}
+                        onKeyDown={handleKeyPress}
+                    />
+
+                    <Box sx={{display: "flex", background: "#c7c7c7"}}>
+                        <IconButton aria-label="friend-search-btn" onClick={onSearch} >
+                            <SearchIcon />
+                        </IconButton>
+                    </Box>
+
+                </Box>
                 {SideComponent}
             </Box>
             <PostCreationDialog isCreatePostOpen={isCreatePostOpen} setIsCreatePostOpen={setIsCreatePostOpen} />

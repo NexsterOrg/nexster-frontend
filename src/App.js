@@ -10,6 +10,7 @@ import FriendSuggsSite from './components/friend/friend_sugg_site';
 import AllFriendsSite from './components/friend/friends_all';
 import EventListView from './components/events/EventListView';
 import MyEventListView from './components/events/MyEventListView';
+import SearchUserSite from './components/search/SearchUserSite';
 import TestGround from './components/test';
 
 function Login() {
@@ -106,6 +107,8 @@ function App() {
       <Route path="/page-not-found" element={<NotFound />} />
 
       <Route path="/index/:indexNo" element={<Profile />} />
+
+      <Route path="/search/results" element={<SearchUserSite />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>
