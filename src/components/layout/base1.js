@@ -16,13 +16,7 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 
-
 const drawerWidth = "11%";
-const firstnameLimit = 12
-
-function limitUserFirstname(firstname="") {
-    return firstname.length > firstnameLimit ? firstname.substring(0, firstnameLimit) + ".." : firstname
-}
 
 const iconSize = {
     xl: 30,
