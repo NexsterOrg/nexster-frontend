@@ -1,11 +1,8 @@
-import dayjs from 'dayjs';
 import { Box, Typography } from '@mui/material';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-
-import { AddMonths } from '../../helper/date';
 
 const pickerWidth = {
     xl: 280,
@@ -15,12 +12,14 @@ const pickerWidth = {
     sm: 180
 }
 
-const oneHour = 60 * 60 * 1000;
-const currentDate = new Date()
-const maxDate = dayjs(AddMonths(currentDate, 6))  // set max date as 6 months from now
-const minDate = dayjs(new Date(currentDate.getTime() + oneHour))
+const dateFormats = {
+    ampm: "YYYY/MM/DD: hh:mm A",
+    yymmdd: "YYYY/MM/DD"
+}
 
-export function BasicDateTimePicker({value, setValue, label, styles, textErr, setTextErr}) {
+const defaultFormat = "YYYY/MM/DD: hh:mm A"
+
+export function BasicDateTimePicker({value, setValue, label, styles, textErr, setTextErr, minDate, maxDate, formatType}) {
     if(value === "") value = minDate
 
     const handleChange = (newValue) => {
@@ -38,7 +37,7 @@ export function BasicDateTimePicker({value, setValue, label, styles, textErr, se
                 onChange={handleChange}
                 maxDate={maxDate}
                 minDate={minDate}
-                format="YYYY/MM/DD: hh:mm A"
+                format={dateFormats[formatType] || defaultFormat}
             />
             </DemoContainer>
         </LocalizationProvider>

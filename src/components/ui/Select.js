@@ -44,3 +44,35 @@ export function BasicSelect({label, options, styles, defaultValue, value, setVal
     );
 }
 
+export function SelectWithUpdateIndicator({label, options, styles, defaultValue, value, setValue, isChanged, setIsChanged}) {
+    if(!Array.isArray(options)) {
+        options = []
+    }
+
+    const handleChange = (event) => {
+        if(!isChanged) setIsChanged(true)
+        setValue(event.target.value);
+    };
+
+    return (
+    <Box sx={[{ width: selectWidth }, styles]}>
+        <FormControl fullWidth>
+            <InputLabel id="select-input">{label}</InputLabel>
+            <Select
+                labelId="basic-select-label"
+                id="basic-select"
+                value={value}
+                label={label}
+                onChange={handleChange}
+                defaultValue={defaultValue}
+            >
+            {
+                options.map((item, index) => {
+                    return  <MenuItem key={index} value={item.value}>{item.label}</MenuItem>
+                })
+            }
+            </Select>
+        </FormControl>
+    </Box>
+    );
+}

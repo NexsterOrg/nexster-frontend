@@ -11,6 +11,7 @@ import AllFriendsSite from './components/friend/friends_all';
 import EventListView from './components/events/EventListView';
 import MyEventListView from './components/events/MyEventListView';
 import SearchUserSite from './components/search/SearchUserSite';
+import SettingSite from './components/settings/Settings';
 import TestGround from './components/test';
 
 function Login() {
@@ -109,6 +110,8 @@ function App() {
       <Route path="/index/:indexNo" element={<Profile />} />
 
       <Route path="/search/results" element={<SearchUserSite />} />
+      
+      <Route path="/settings" element={<SettingSite />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>

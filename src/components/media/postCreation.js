@@ -164,11 +164,11 @@ function EventInputData({title, titleErr, description, descriptionErr, visibilit
   return (
     <Stack sx={{paddingLeft: 2, marginBottom: 4}} spacing={2}>
 
-      <TextFieldWithCount content={title} setContent={setTitle} textErr={titleErr} setTextErr={setTitleErr}
+      <TextFieldWithCount content={title} setContent={setTitle} textErr={titleErr} setTextErr={setTitleErr} variant="standard"
         textFieldStyles={{width: "90%"}} maxCount={30} required={true} multiline={false} label={"title"} maxRows={1}/>
 
       <TextFieldWithCount content={description} setContent={setDescription} textErr={descriptionErr} setTextErr={setDescriptionErr}
-        textFieldStyles={{width: "90%"}} maxCount={100} required={false} multiline={true} 
+        textFieldStyles={{width: "90%"}} maxCount={100} required={false} multiline={true} variant="standard" 
         label={"description"} maxRows={4} />
 
       <Stack direction={"row"} spacing={3}>

@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import ImageUploading from 'react-images-uploading';
 import { Dialog, Button, Typography, Stack, Divider, Avatar } from '@mui/material';
 import ImageIcon from '@mui/icons-material/Image';
+import dayjs from 'dayjs';
 
 import { TextFieldWithCount } from '../ui/TextComponents';
 import { BasicDateTimePicker } from '../ui/DateTimePicker';
@@ -9,6 +10,7 @@ import { BasicSelect } from '../ui/Select';
 import { UploadImage, CreateEvent } from '../../apis/fetch';
 import { SaveLoading } from '../ui/LoadingComponents';
 import { BottomLeftSnackbar } from '../ui/snack_bar';
+import { AddMonths } from '../../helper/date';
 
 const posterNamespace = "event-posters"
 
@@ -20,6 +22,12 @@ const createFailed = "Failed to create. Try again."
 
 // Success messages
 const createdOk = "Successfully created. Refresh the page."
+
+// dates
+const oneHour = 60 * 60 * 1000;
+const currentDate = new Date()
+const maxDate = dayjs(AddMonths(currentDate, 6))  // set max date as 6 months from now
+const minDate = dayjs(new Date(currentDate.getTime() + oneHour))
 
 export default function EventCreationDialog({isCreateEventOpen, setIsCreateEventOpen}) {
 
@@ -179,15 +187,16 @@ function EventInputData({title, titleErr, description, descriptionErr, venueOrLi
   return (
     <Stack sx={{paddingLeft: 2, marginBottom: 4}} spacing={2}>
 
-      <TextFieldWithCount content={title} setContent={setTitle} textErr={titleErr} setTextErr={setTitleErr}
+      <TextFieldWithCount content={title} setContent={setTitle} textErr={titleErr} setTextErr={setTitleErr} variant="standard" 
         textFieldStyles={{width: "90%"}} maxCount={30} required={true} multiline={false} label={"title"} maxRows={1}/>
 
       <TextFieldWithCount content={description} setContent={setDescription} textErr={descriptionErr} setTextErr={setDescriptionErr}
-        textFieldStyles={{width: "90%"}} maxCount={100} required={false} multiline={true} 
+        textFieldStyles={{width: "90%"}} maxCount={100} required={false} multiline={true} variant="standard" 
         label={"description"} maxRows={4} placeholder={"keep it short and concise"}/>
 
       <Stack direction={"row"} spacing={3}>
-        <BasicDateTimePicker label={"date"} value={date} setValue={setDate} textErr={dateErr} setTextErr={setDateErr}/>
+        <BasicDateTimePicker label={"date"} value={date} setValue={setDate} textErr={dateErr} formatType={"ampm"}
+        setTextErr={setDateErr} minDate={minDate} maxDate={maxDate}/>
         <BasicSelect value={mode} setValue={setMode}
           label={"mode"} styles={{paddingTop: "8px", width: selectWidth}} defaultValue="physical"
           options={[
@@ -195,7 +204,7 @@ function EventInputData({title, titleErr, description, descriptionErr, venueOrLi
             {label: "online", value: "online"}
           ]}/>
       </Stack>
-      <TextFieldWithCount content={venueOrLink} setContent={setVenueOrLink} textErr={venueOrLinkErr} setTextErr={setVenueOrLinkErr}
+      <TextFieldWithCount content={venueOrLink} setContent={setVenueOrLink} textErr={venueOrLinkErr} setTextErr={setVenueOrLinkErr} variant="standard"
         textFieldStyles={{width: "90%"}} maxCount={modeParms.maxCount} required={false} multiline={false} label={modeParms.label}/>
     </Stack>
   )
