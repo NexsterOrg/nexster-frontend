@@ -370,3 +370,9 @@ export async function SearchUser(keyword) {
   if(respBody === null) return {data: [], resultsCount: 0}
   return { data: respBody.data, resultsCount: respBody.results_count}
 }
+
+export async function UpdateBasicUserInfo(updatedField) {
+  let respBody = await put(`http://localhost:8000/usrmgmt/profile/edit`, updatedField)
+  if(respBody === null) return false
+  return true
+}
