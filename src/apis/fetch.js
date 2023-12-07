@@ -372,7 +372,7 @@ export async function SearchUser(keyword) {
 }
 
 export async function UpdateBasicUserInfo(updatedField) {
-  let respBody = await put(`http://localhost:8000/usrmgmt/profile/edit`, updatedField)
+  let respBody = await put(`${apiDomain}/pu/u/profile/edit`, updatedField)
   if(respBody === null) return false
   return true
 }
