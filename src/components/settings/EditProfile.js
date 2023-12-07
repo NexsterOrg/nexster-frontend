@@ -105,10 +105,8 @@ export function EditProfile({userId, initFirstName, initSecondName, initAbout, i
             return
         }
 
-        if (firstNameChanged) {
+        if (firstNameChanged || secondNameChanged) {
             updatedFields["firstName"] = firstName
-        }
-        if (secondNameChanged) {
             updatedFields["secondName"] = secondName
         }
         if (aboutChanged) {

@@ -4,6 +4,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 
 const pickerWidth = {
     xl: 280,
@@ -45,7 +46,11 @@ export function DatePickerWithUpdateIndicator({value, setValue, label, styles, t
 
     const handleChange = (newValue) => {
         if(!isChanged) setIsChanged(true)
-        setValue(newValue)
+
+        const dateOnly = dayjs(newValue); 
+        const localDate = dateOnly.format('YYYY-MM-DD');
+
+        setValue(localDate)
         setTextErr("")
     }
 
