@@ -4,6 +4,7 @@ import { Stack } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 
 import { EditProfile } from "./EditProfile"
+import { PasswordReset } from "./PasswordReset";
 import { GetProfileInfo, UnAuthorizedError, LoginPath } from "../../apis/fetch"
 import { GetUserInfoFromLS } from "../../apis/store";
 
@@ -57,6 +58,7 @@ function SideSettings({userId}) {
                 initBirthday={userInfo.birthday}    
             />
 
+            <PasswordReset />
         </Stack>
     )
 }

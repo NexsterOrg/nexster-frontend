@@ -1,12 +1,14 @@
 import { Box } from '@mui/material';
-// import { EditProfile } from './settings/EditProfile';
-import SettingSite from './settings/Settings';
+import PasswordField from './ui/PasswordField';
+import { useState } from 'react';
 
 export default function TestGround() {
+  const [content, setContent] = useState("")
+  const [err, setErr ] = useState("")
 
   return (
     <Box > 
-      <SettingSite />
+      <PasswordField maxCount={10} content={content} setContent={setContent} textErr={err} setTextErr={setErr} label={"password"}/>
     </Box>
   );
 }
