@@ -4,6 +4,9 @@ const apiDomain = "http://192.168.1.101"
 const webDomain = `http://localhost:3000`
 const token = "token"
 
+// nexster paths
+export const NxterHome = "/home"
+
 // Paths
 export const LoginPath = "/login"
 export const FriendsRoute = "/friends"

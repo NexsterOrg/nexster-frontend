@@ -1,11 +1,11 @@
 import React, {useMemo, useRef, useState} from "react";
-import {Stack, Typography, Drawer, List, Avatar, Divider, Box, TextField, IconButton,
+import {Stack, Typography, Drawer, List, Avatar, Divider, Box, TextField, IconButton, MenuItem, Menu, Button,
     ListItem, ListItemButton, ListItemIcon, ListItemText} from '@mui/material'
 
 import { useNavigate } from 'react-router-dom';
-import { GetUserInfoFromLS } from "../../apis/store";
+import { CleanLS, GetUserInfoFromLS } from "../../apis/store";
 import PostCreationDialog from "../media/postCreation";
-import { SearchResultsRoute } from "../../apis/fetch";
+import { SearchResultsRoute, NxterHome } from "../../apis/fetch";
 // filled icons
 // import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 // import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
@@ -42,6 +42,13 @@ export default function Base1({styles, SideComponent}){
     const {name, imgUrl, indexNo} =  useMemo(GetUserInfoFromLS, [])
     const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
     const searchKeywordRef = useRef(null)
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleProfileClick = (event) => {
+        setAnchorEl(event.currentTarget);
+      };
 
     const onSearch = () => {
         const keyword = searchKeywordRef?.current?.value || ""
@@ -128,15 +135,41 @@ export default function Base1({styles, SideComponent}){
                 <Divider />
 
                 <ListItem key={5} disablePadding sx={{marginTop: "15%"}}> 
-                    <ListItemButton href={`/index/${indexNo}`}>
+
+                    <ListItemButton 
+                        id="base-profile-menu-button"
+                        aria-controls={open ? 'base-profile-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleProfileClick}
+                    >
                         <ListItemIcon sx={{minWidth: 35 , width: iconWidth}}>
                             <Avatar alt={name} sx={{height: "80%", width: "80%"}}
                             src={imgUrl}  />
                         </ListItemIcon>
                         <ListItemText primary={"Profile"}  disableTypography sx={{fontSize: navFontSize}}/>
+
                     </ListItemButton>
+
                 </ListItem>
 
+                <Menu
+                    id="base-profile-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={() => setAnchorEl(null)}
+                    MenuListProps={{
+                    'aria-labelledby': 'base-profile-menu-button',
+                    }}
+                >
+                    <MenuItem onClick={() => navigate(`/index/${indexNo}`)}> Go to profile </MenuItem>
+                    <MenuItem onClick={() => navigate("/settings") }>Settings</MenuItem>
+                    <MenuItem onClick={() => {
+                        CleanLS()
+                        navigate(NxterHome)
+                    }}> Logout </MenuItem>
+                </Menu>
+ 
                 <Typography variant="caption" sx={{position: "fixed", bottom: 10, marginLeft: "0.8%"}}> © 2023 Namal Sanjaya </Typography>
             </Drawer>
 
@@ -163,3 +196,5 @@ export default function Base1({styles, SideComponent}){
         </Stack>
     )
 }
+
+// href={`/index/${indexNo}`}

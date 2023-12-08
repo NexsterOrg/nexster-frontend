@@ -122,7 +122,6 @@ export default function Timeline(){
     if(userid === undefined){
         CleanLS()
         navigate(LoginPath, { replace: true });
-        return
     }
     return (
         <Base1 styles={{alignItems: "center"}} SideComponent={<ListTimelinePosts userId={userid}/>}/>
