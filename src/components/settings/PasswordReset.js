@@ -25,11 +25,11 @@ export function PasswordReset(){
                 <Stack spacing={3} direction={"row"} >
 
                     <PasswordField content={currentPassword} setContent={setCurrentPassword} textErr={curErr} setTextErr={setCurErr} 
-                        maxCount={maxPasswordLn} label={"Current Password"}/>
+                        maxCount={maxPasswordLn} label={"Current Password"} htmlId={"cur-password"}/>
                     <PasswordField content={newPassword} setContent={setNewPassword} textErr={newErr} setTextErr={setNewErr} 
-                        maxCount={maxPasswordLn} label={"New Password"}/>
+                        maxCount={maxPasswordLn} label={"New Password"} htmlId={"new-password"}/>
                     <PasswordField content={reNewPassword} setContent={setReNewPassword} textErr={reNewErr} setTextErr={setReNewErr} 
-                        maxCount={maxPasswordLn} label={"Retype New Password"}/>
+                        maxCount={maxPasswordLn} label={"Retype New Password"} htmlId={"retyped-new-password"}/>
                     
                 </Stack>
 

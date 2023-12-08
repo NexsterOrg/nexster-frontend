@@ -376,3 +376,9 @@ export async function UpdateBasicUserInfo(updatedField) {
   if(respBody === null) return false
   return true
 }
+
+export async function DeleteUser(){
+  let respBody = await del(`${apiDomain}/d/u/profile`)
+  if(respBody === null) return false 
+  return true
+}

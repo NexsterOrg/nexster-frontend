@@ -7,6 +7,7 @@ import { EditProfile } from "./EditProfile"
 import { PasswordReset } from "./PasswordReset";
 import { GetProfileInfo, UnAuthorizedError, LoginPath } from "../../apis/fetch"
 import { GetUserInfoFromLS } from "../../apis/store";
+import { DeleteAccount } from "./DeleteAccount";
 
 // side setting contains : Edit Profile, Reset password, Delete Account
 function SideSettings({userId}) {
@@ -59,6 +60,7 @@ function SideSettings({userId}) {
             />
 
             <PasswordReset />
+            <DeleteAccount />
         </Stack>
     )
 }
