@@ -382,3 +382,12 @@ export async function DeleteUser(){
   if(respBody === null) return false 
   return true
 }
+
+export async function UpdatePassword(oldPassword, newPassword) {
+  let respBody = await put(`${apiDomain}/pu/u/profile/password`, {
+    "cp": oldPassword,
+    "np": newPassword
+  })
+  if(respBody === null) return false
+  return true
+}
