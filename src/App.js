@@ -12,6 +12,7 @@ import EventListView from './components/events/EventListView';
 import MyEventListView from './components/events/MyEventListView';
 import SearchUserSite from './components/search/SearchUserSite';
 import SettingSite from './components/settings/Settings';
+import LoginSite from './components/login/LoginSite';
 import TestGround from './components/test';
 
 function Login() {
@@ -104,7 +105,7 @@ function App() {
       <Route path="/events" element={<EventListView />} />
       <Route path="/events/my" element={<MyEventListView />} />
 
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<LoginSite />} />
       <Route path="/page-not-found" element={<NotFound />} />
 
       <Route path="/index/:indexNo" element={<Profile />} />
