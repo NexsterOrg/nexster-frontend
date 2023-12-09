@@ -1,8 +1,17 @@
 const userDataKey = "user_data"
 const token = "token"
+const tokenType = "Bearer"
 
-export function setObjInLocalStorage(key, data){
+export function SetObjInLocalStorage(key, data){
     localStorage.setItem(key, JSON.stringify(data))
+}
+
+export function SetAccessTokenInLS(data){
+    localStorage.setItem(token, `${tokenType} ${data}` )
+}
+
+export function SetUserDataInLS(data){
+    localStorage.setItem(userDataKey, JSON.stringify(data))
 }
 
 export function getObjFromLocalStorage(key){

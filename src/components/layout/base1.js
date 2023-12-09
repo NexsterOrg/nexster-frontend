@@ -5,7 +5,7 @@ import {Stack, Typography, Drawer, List, Avatar, Divider, Box, TextField, IconBu
 import { useNavigate } from 'react-router-dom';
 import { CleanLS, GetUserInfoFromLS } from "../../apis/store";
 import PostCreationDialog from "../media/postCreation";
-import { SearchResultsRoute, NxterHome } from "../../apis/fetch";
+import { SearchResultsRoute, NxterHome, LoginPath } from "../../apis/fetch";
 // filled icons
 // import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 // import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
@@ -166,7 +166,7 @@ export default function Base1({styles, SideComponent}){
                     <MenuItem onClick={() => navigate("/settings") }>Settings</MenuItem>
                     <MenuItem onClick={() => {
                         CleanLS()
-                        navigate(NxterHome)
+                        navigate(LoginPath)
                     }}> Logout </MenuItem>
                 </Menu>
  

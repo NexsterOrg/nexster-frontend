@@ -146,6 +146,29 @@ async function postCustom(url, headers, body) {
   return await resp.json();
 }
 
+// POST request without Authorization Header
+async function postWithoutAuth(url, reqBody) {
+
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(reqBody)
+  });
+
+  const status = resp.status
+  if( 400 <= status && status <= 499) {
+    throw new UnAuthorizedError("Attempted to access unauthorized resources")
+  }
+  if ( status <= 199 || status >= 500 ) {
+    return null
+  }
+  return await resp.json();
+}
+
+
+
 async function del(url){
   let bearTkn = localStorage.getItem(token)
   if(bearTkn === null) {
@@ -394,3 +417,13 @@ export async function UpdatePassword(oldPassword, newPassword) {
   if(respBody === null) return false
   return true
 }
+
+export async function GetAccessToken(indexNo, password) {
+  let respBody = await postWithoutAuth(`${apiDomain}/p/u/auth/token`, {
+    "index": indexNo,
+    "passwd": password
+  })
+  if(respBody === null) return { access_token: "", id: "" }
+  return { access_token: respBody.data?.access_token, id: respBody.data?.id }
+}
+
