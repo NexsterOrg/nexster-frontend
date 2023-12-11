@@ -243,7 +243,7 @@ function PostImageUpload({images, setImages, uploadErr, setUploadErr}){
       }) => (
       <>
         <Stack alignItems="center" spacing={2}>
-            <Stack sx={{width: 500, height: 300, marginTop: 2}} justifyContent={"center"} alignItems={"center"}>
+            <Stack sx={{width: 500, height: 300, marginTop: 2 }} justifyContent={"center"} alignItems={"center"}>
               {
                 imageList.length ? 
                 imageList.map((img, index) => (

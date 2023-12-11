@@ -9,8 +9,6 @@ export default function SearchUserResults({rootStyles, keyword}){
     const [resultsList, addResultsToList] = useState([])
     const [resultsCount, setResultsCount] = useState(0)
 
-    console.log("new user: ", keyword)
-
     useEffect(()=> {
         window.scrollTo(0, 0);
 

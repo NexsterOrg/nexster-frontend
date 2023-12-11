@@ -13,6 +13,7 @@ import MyEventListView from './components/events/MyEventListView';
 import SearchUserSite from './components/search/SearchUserSite';
 import SettingSite from './components/settings/Settings';
 import LoginSite from './components/login/LoginSite';
+import SignUpSite from './components/signUp/SignUp';
 import TestGround from './components/test';
 
 function Login() {
@@ -113,6 +114,8 @@ function App() {
       <Route path="/search/results" element={<SearchUserSite />} />
       
       <Route path="/settings" element={<SettingSite />} />
+
+      <Route path="/account/reg" element={<SignUpSite />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>
