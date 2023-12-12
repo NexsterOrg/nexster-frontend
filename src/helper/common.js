@@ -36,3 +36,9 @@ export function LimitStringDataLn(data="", limitedLn=0){
     return typeof(data) === 'string' && data.length > limitedLn ? 
         data.substring(0, limitedLn-2) + ".." : data
 }
+
+export function Delay(timeInMs) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, timeInMs);
+    });
+}

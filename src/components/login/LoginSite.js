@@ -124,7 +124,7 @@ export default function LoginSite(){
 
                     <Stack direction={"row"} spacing={2}>
                         <Typography> Don't have an account? </Typography>
-                        <Link href={"some url"} target="_blank" underline="hover" sx={{marginTop: "2px"}}> Sign up </Link>
+                        <Link href={"/account/reg"} target="_blank" underline="hover" sx={{marginTop: "2px"}}> Sign up </Link>
                     </Stack>
                 </Paper>
                 <Stack>

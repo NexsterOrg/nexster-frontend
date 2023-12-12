@@ -80,7 +80,6 @@ export default function EventCreationDialog({isCreateEventOpen, setIsCreateEvent
       const img = images[0]
       const typeName = getImageType(img["file"]["type"])
       const imageName = await UploadImage(posterNamespace, typeName, img["data_url"])
-      // imageName === ""
       if(imageName === "") {
         startSaveSpinner(false)
         setErrMsg(uploadNoImageErr)
@@ -152,7 +151,7 @@ export default function EventCreationDialog({isCreateEventOpen, setIsCreateEvent
     > 
     {saveSpinner ? null : <Header />}
     <Stack sx={{ width: 650, minHeight: 650, marginBottom: 2 }} >
-    { saveSpinner ?  <SaveLoading rootStyles={{marginTop: 10}} /> :
+    { saveSpinner ?  <SaveLoading rootStyles={{marginTop: 10}} label={"Saving..."} /> :
       <>
         <PosterUpload images={images} setImages={setImages} uploadErr={imagesErr} setUploadErr={setImagesErr}/>
         <EventInputData 

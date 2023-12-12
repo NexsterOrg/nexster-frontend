@@ -1,12 +1,14 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Stack, Typography, Divider, Paper, Button, Avatar} from "@mui/material"
 import ImageUploading from 'react-images-uploading';
 import PersonIcon from '@mui/icons-material/Person';
+import { useNavigate, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 import { TextFieldWithCount } from "../ui/TextComponents";
 import { BasicSelect } from "../ui/Select";
 import { BasicDatePicker } from '../ui/DatePicker';
+import { SaveLoading } from '../ui/LoadingComponents';
 
 // options 
 import { FieldOptions, FacultyOptions , defaultField, defaultFaculty, BatchOptions, defaultBatch,  GenderOptions, defaultGender,
@@ -16,7 +18,8 @@ import PasswordField from "../ui/PasswordField"
 
 import { BottomLeftSnackbar } from '../ui/snack_bar';
 
-import { UpdateBasicUserInfo, UnAuthorizedError, LoginPath } from "../../apis/fetch";
+import { LoginPath } from "../../apis/fetch";
+import { IsUnixTimeExpired } from "../../helper/date";
 
 // widths
 const selectWidth = 120
@@ -35,15 +38,35 @@ const maxPasswordLn = 30
 const minPasswordLn = 8
 
 // messages
-const createdOk = "Successfully create"
-const createFailed = "Failed to create. Try again later."
+const createdOk = "Account created successfully!. Redirecting to login page."
+const createFailed = "Account creation failed. Please try again."
 const cantEmpty = "Field cannot be empty"
 const formNotDulyFilled = "Some required fields are empty."
 
+const passwdNotEnoughLenMsg = `Passwords must at least have ${minPasswordLn} characters.`
+const bothPasswdNotSameMsg = "Both passwords should be same."
+
 // TODO: Change later
-const indexNo = "180173f"
 
 export default function SignUpSite() {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+
+    const index = searchParams.get('index') || "";
+    const expAt = searchParams.get('exp') || "";
+    const hmac = searchParams.get('hmac') || "";
+
+    // TODO: Need api to check whether given params are valid or not..
+
+    return <SignUp indexNo={index}/>
+    
+}
+
+function SignUp({indexNo}) {
+    const navigate = useNavigate();
+
+    const [saveSpinner, startSaveSpinner] = useState(false)
+    const [snackBarOpen, setSnackBarOpen] = useState(false)
 
     const [images, setImages] = useState([]);
     const [imagesErr, setImagesErr] = useState("");
@@ -82,13 +105,6 @@ export default function SignUpSite() {
 
     const passwordsNotMatched = (isPasswdNotEmpty && retypedPassword !== "" && password !== retypedPassword)  // check whether passwords are matched or not.
 
-    // console.log(firstName, secondName, about, batch, faculty, field, gender, birthday)
-
-    // const okToCreate = (password !== "" && retypedPassword !== "" && firstName !== "" && secondName !== "" && batch !== "" && 
-    //     faculty !== "" && gender !== "")
-
-    
-
     const onCancel = useCallback(() => {
         setImages([])
         setImagesErr("")
@@ -111,11 +127,25 @@ export default function SignUpSite() {
         setRetypedPasswordErr("")
     }, [])
 
-    const onCreate = () => {
-        if( !isPasswdNotEmpty || passwdNotEnoughLen || passwordsNotMatched ) {
+    const onCreate = async () => {
+        if( !isPasswdNotEmpty || retypedPassword.length === 0) {
             // passwords are not duly filled
+            setFormErr("Please set a password")
+            setSnackBarOpen(true)
             return
         }
+        if(passwdNotEnoughLen){
+            setFormErr(passwdNotEnoughLenMsg)
+            setSnackBarOpen(true)
+            return
+        }
+
+        if(passwordsNotMatched){
+            setFormErr(bothPasswdNotSameMsg)
+            setSnackBarOpen(true)
+            return
+        }
+
         if (images.length === 0) {
             setImagesErr("Please upload a profile picture")
             return
@@ -130,25 +160,52 @@ export default function SignUpSite() {
         }
         if (batch === "" || gender === "" || faculty === "" || birthday === "") {
             setFormErr(formNotDulyFilled)
+            setSnackBarOpen(true)
             return
         }
         if (faculty === FacultEngineering && field === "" ) {
             setFormErr(formNotDulyFilled)
+            setSnackBarOpen(true)
             return
         }
 
-        // todo: cotinue from here
+        // TODO: 1. Issue API a call.
+        startSaveSpinner(true)
+
+        try {
+            await delay(2000)
+            const isSucceeded = true
+            if(isSucceeded){
+                // ok - direct to login page
+                setFormErr("")
+                onCancel()
+                startSaveSpinner(false)
+                alert(createdOk)
+                navigate(LoginPath, { replace: true });
+                return
+            }
+            setFormErr(createFailed)
+            setSnackBarOpen(true)
+        } catch (error) {
+            setFormErr(createFailed)
+            setSnackBarOpen(true)
+        }
+        startSaveSpinner(false)
+        // setFormErr("")
     }
+    const snackInfo =  useMemo(() => formErr === "" ? {level: "success", msg: createdOk} : {level: "error", msg: formErr}, [formErr]) 
 
     return (
         <Stack alignItems={"center"}>
             <Stack sx={{ width: "60%", paddingY: "15px"}}>
-            <Paper sx={{ paddingX: "15px", paddingBottom: "20px" }} elevation={4}>
+            
+            {  saveSpinner ? <SaveLoading rootStyles={{marginTop: 10}} label={"Creating..."}/>  :
+                <Paper sx={{ paddingX: "15px", paddingBottom: "20px" }} elevation={4}>
                 <SignUpHeader />
 
                 <Stack spacing={2}>
                     <Typography sx={{ marginTop: "18px"}} variant="body2">
-                        Use {indexNo} for your future logins. Set a new password for your Nexster account.
+                        Use <b> {indexNo} </b> for your future logins. Set a new password for your Nexster account.
                     </Typography>
 
                     <Stack direction={"row"} spacing={2}>
@@ -167,9 +224,9 @@ export default function SignUpSite() {
                 </Stack>
                 {
                     passwdNotEnoughLen ?
-                    <Typography sx={{ color: "red" }} variant="caption"> Passwords must at least have {minPasswordLn} characters. </Typography> : 
+                    <Typography sx={{ color: "red" }} variant="caption"> {passwdNotEnoughLenMsg} </Typography> : 
                     passwordsNotMatched ? 
-                    <Typography sx={{ color: "red" }} variant="caption"> Both passwords should be same. </Typography> : null
+                    <Typography sx={{ color: "red" }} variant="caption"> {bothPasswdNotSameMsg} </Typography> : null
                 }
 
                 <ProfileImageUpload 
@@ -222,9 +279,11 @@ export default function SignUpSite() {
                     </Stack> 
 
                 </Stack>
-                </Paper>
-            </Stack>
+            </Paper>
+            }
 
+            <BottomLeftSnackbar open={snackBarOpen} setOpen={setSnackBarOpen} level={snackInfo.level} msg={snackInfo.msg}/>
+            </Stack>
         </Stack>
     )
 }
@@ -285,3 +344,9 @@ function ProfileImageUpload({images, setImages, uploadErr, setUploadErr}){
     )
   }
   
+
+function delay(timeInMs) {
+return new Promise((resolve) => {
+    setTimeout(resolve, timeInMs);
+});
+}

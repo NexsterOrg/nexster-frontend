@@ -107,7 +107,6 @@ function App() {
       <Route path="/events/my" element={<MyEventListView />} />
 
       <Route path="/login" element={<LoginSite />} />
-      <Route path="/page-not-found" element={<NotFound />} />
 
       <Route path="/index/:indexNo" element={<Profile />} />
 
@@ -117,6 +116,7 @@ function App() {
 
       <Route path="/account/reg" element={<SignUpSite />} />
 
+      <Route path="/page-not-found" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   </ThemeProvider>
