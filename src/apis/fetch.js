@@ -427,3 +427,10 @@ export async function GetAccessToken(indexNo, password) {
   return { access_token: respBody.data?.access_token, id: respBody.data?.id }
 }
 
+export async function SendAccountCreationLink(indexNo) {
+  let respBody = await postWithoutAuth(`${apiDomain}/p/u/auth/reg-link`, {
+    "index": indexNo
+  })
+  if(respBody === null) return false
+  return true
+}

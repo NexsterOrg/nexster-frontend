@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Stack, Button, Typography, TextField, Link, Paper } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 
-import { GetAccessToken, GetProfileInfo, LoginPath } from "../../apis/fetch"
+import { GetAccessToken, GetProfileInfo } from "../../apis/fetch"
 import { SetAccessTokenInLS, SetUserDataInLS, CleanLS } from "../../apis/store"
 import { BottomLeftSnackbar } from "../ui/snack_bar"
 

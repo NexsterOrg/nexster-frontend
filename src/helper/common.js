@@ -42,3 +42,11 @@ export function Delay(timeInMs) {
         setTimeout(resolve, timeInMs);
     });
 }
+
+export function ValidateUniIndex(str) {
+    // Regular expression pattern to match the specified format
+    const pattern = /^\d{6}[a-zA-Z]$/;
+  
+    // Check if the string matches the pattern
+    return pattern.test(str);
+}

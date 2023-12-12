@@ -14,6 +14,7 @@ import SearchUserSite from './components/search/SearchUserSite';
 import SettingSite from './components/settings/Settings';
 import LoginSite from './components/login/LoginSite';
 import SignUpSite from './components/signUp/SignUp';
+import UniIdentitySite from './components/signUp/UniIdentity';
 import TestGround from './components/test';
 
 function Login() {
@@ -115,6 +116,8 @@ function App() {
       <Route path="/settings" element={<SettingSite />} />
 
       <Route path="/account/reg" element={<SignUpSite />} />
+
+      <Route path="/account/uni-id" element={<UniIdentitySite />} />
 
       <Route path="/page-not-found" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
