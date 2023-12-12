@@ -29,6 +29,7 @@ const FieldOptions = [
 ]
 
 const BatchOptions = [
+    {label: "18", value: "18"},
     {label: "19", value: "19"},
     {label: "20", value: "20"},
     {label: "21", value: "21"},

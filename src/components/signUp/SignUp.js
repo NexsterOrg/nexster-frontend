@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Stack, Typography, Divider, Paper, Button, Avatar} from "@mui/material"
 import ImageUploading from 'react-images-uploading';
-import ImageIcon from '@mui/icons-material/Image';
 import PersonIcon from '@mui/icons-material/Person';
 import dayjs from 'dayjs';
 
@@ -26,15 +25,23 @@ const maxNameCount = 25
 const maxAboutCount = 250
 const maxAboutRows = 3
 
+// dates
 const maxDate = dayjs("2022-12-31")
 const minDate = dayjs("1990-01-01")
+const defaultBirthday = dayjs("2022-01-01")
 
 // password
 const maxPasswordLn = 30
 const minPasswordLn = 8
 
-const updatedOk = "Successfully updated"
-const updateFailed = "Failed to update. Try again later."
+// messages
+const createdOk = "Successfully create"
+const createFailed = "Failed to create. Try again later."
+const cantEmpty = "Field cannot be empty"
+const formNotDulyFilled = "Some required fields are empty."
+
+// TODO: Change later
+const indexNo = "180173f"
 
 export default function SignUpSite() {
 
@@ -58,11 +65,80 @@ export default function SignUpSite() {
 
     const [gender, setGender] = useState("")
 
-    const [birthday, setBirthday] = useState( dayjs("") )  // eg: initBirthday = 2002-05-24
+    const [birthday, setBirthday] = useState("")  // eg: initBirthday = 2002-05-24
     const [birthdayErr, setBirthdayErr] = useState("")
 
     const [password, setPassword] = useState("")
     const [ passwordErr, setPasswordErr ] = useState("")
+
+    const [retypedPassword, setRetypedPassword] = useState("")
+    const [ retypedPasswordErr, setRetypedPasswordErr ] = useState("")
+
+    const [formErr, setFormErr] = useState("")
+
+    const isPasswdNotEmpty = password.length !== 0
+
+    const passwdNotEnoughLen = isPasswdNotEmpty && password.length < 8
+
+    const passwordsNotMatched = (isPasswdNotEmpty && retypedPassword !== "" && password !== retypedPassword)  // check whether passwords are matched or not.
+
+    // console.log(firstName, secondName, about, batch, faculty, field, gender, birthday)
+
+    // const okToCreate = (password !== "" && retypedPassword !== "" && firstName !== "" && secondName !== "" && batch !== "" && 
+    //     faculty !== "" && gender !== "")
+
+    
+
+    const onCancel = useCallback(() => {
+        setImages([])
+        setImagesErr("")
+        setFirstName("")
+        setFirstNameErr("")
+        setSecondName("")
+        setSecondNameErr("")
+        setAbout("")
+        setAboutErr("")
+        setFaculty("")
+        setField("")
+        setBatch("")
+        setGender("")
+        setBirthday("")
+        setBirthdayErr("")
+
+        setPassword("")
+        setPasswordErr("")
+        setRetypedPassword("")
+        setRetypedPasswordErr("")
+    }, [])
+
+    const onCreate = () => {
+        if( !isPasswdNotEmpty || passwdNotEnoughLen || passwordsNotMatched ) {
+            // passwords are not duly filled
+            return
+        }
+        if (images.length === 0) {
+            setImagesErr("Please upload a profile picture")
+            return
+        }
+        if (firstName === "") {
+            setFirstNameErr(cantEmpty)
+            return
+        }
+        if (secondName === "") {
+            setSecondNameErr(cantEmpty)
+            return
+        }
+        if (batch === "" || gender === "" || faculty === "" || birthday === "") {
+            setFormErr(formNotDulyFilled)
+            return
+        }
+        if (faculty === FacultEngineering && field === "" ) {
+            setFormErr(formNotDulyFilled)
+            return
+        }
+
+        // todo: cotinue from here
+    }
 
     return (
         <Stack alignItems={"center"}>
@@ -72,20 +148,29 @@ export default function SignUpSite() {
 
                 <Stack spacing={2}>
                     <Typography sx={{ marginTop: "18px"}} variant="body2">
-                        Use 180173f for your future logins. Set a new password for your Nexster account.
+                        Use {indexNo} for your future logins. Set a new password for your Nexster account.
                     </Typography>
 
-                    <Stack direction={"row"} spacing={3}>
+                    <Stack direction={"row"} spacing={2}>
                         <PasswordField content={password} setContent={setPassword} textErr={passwordErr} setTextErr={setPasswordErr} 
-                                maxCount={maxPasswordLn} label={"Password*"} htmlId={"acc-create-new-password"}/>
-
+                                maxCount={maxPasswordLn} label={"Password*"} htmlId={"acc-create-new-passwd"}/>
+                        
+                        <PasswordField content={retypedPassword} setContent={setRetypedPassword} textErr={retypedPasswordErr} 
+                            setTextErr={setRetypedPasswordErr} maxCount={maxPasswordLn} label={"Retype Password*"} htmlId={"acc-create-confirm-passwd"}/>
 
                         <Stack justifyContent={"center"}>
-                            <Typography variant="body2"> * Use at least {minPasswordLn} characters.</Typography>
+                            <Typography variant="body2"> * Password should be {minPasswordLn} to {maxPasswordLn} characters long </Typography>
                             <Typography variant="body2"> * Include a mix of uppercase and lowercase letters, numbers, and special characters. </Typography>
+                            <Typography variant="body2"> * Retype your password again to confirm the password. </Typography>
                         </Stack>
                     </Stack>
                 </Stack>
+                {
+                    passwdNotEnoughLen ?
+                    <Typography sx={{ color: "red" }} variant="caption"> Passwords must at least have {minPasswordLn} characters. </Typography> : 
+                    passwordsNotMatched ? 
+                    <Typography sx={{ color: "red" }} variant="caption"> Both passwords should be same. </Typography> : null
+                }
 
                 <ProfileImageUpload 
                     images={images} setImages={setImages} 
@@ -108,10 +193,10 @@ export default function SignUpSite() {
                     </Stack>
 
                     <Stack direction={"row"} spacing={6}>
-                        <BasicSelect value={batch} setValue={setBatch} label={"Batch"} styles={{paddingTop: "8px", width: selectWidth}} 
+                        <BasicSelect value={batch} setValue={setBatch} label={"Batch *"} styles={{paddingTop: "8px", width: selectWidth}} 
                             defaultValue={defaultBatch} options={BatchOptions}/>
 
-                        <BasicSelect value={faculty} setValue={setFaculty} label={"Faculty"} styles={{paddingTop: "8px", width: selectWidth}} 
+                        <BasicSelect value={faculty} setValue={setFaculty} label={"Faculty *"} styles={{paddingTop: "8px", width: selectWidth}} 
                             defaultValue={defaultFaculty} options={FacultyOptions}/>
 
                         {
@@ -124,16 +209,16 @@ export default function SignUpSite() {
                     </Stack>
 
                     <Stack direction={"row"} spacing={6}>
-                        <BasicSelect value={gender} setValue={setGender} label={"Gender"} styles={{paddingTop: "8px", width: selectWidth}} 
+                        <BasicSelect value={gender} setValue={setGender} label={"Gender *"} styles={{paddingTop: "8px", width: selectWidth}} 
                             defaultValue={defaultGender} options={GenderOptions}/>
 
-                        <BasicDatePicker label={"Birthday"} value={birthday} setValue={setBirthday} textErr={birthdayErr} setTextErr={setBirthdayErr} 
-                            maxDate={maxDate} minDate={minDate} />
+                        <BasicDatePicker label={"Birthday *"} value={birthday} setValue={setBirthday} textErr={birthdayErr} setTextErr={setBirthdayErr} 
+                            maxDate={maxDate} minDate={minDate} defaultDate={defaultBirthday} />
                     </Stack>
 
                     <Stack direction={"row-reverse"} spacing={1} >
-                        <Button sx={{ textTransform: "none"}} variant="outlined" > Cancel </Button>
-                        <Button sx={{ textTransform: "none"}} variant="contained" > Create </Button>
+                        <Button sx={{ textTransform: "none"}} variant="outlined" onClick={onCancel}> Cancel </Button>
+                        <Button sx={{ textTransform: "none"}} variant="contained" onClick={onCreate}> Create </Button>
                     </Stack> 
 
                 </Stack>

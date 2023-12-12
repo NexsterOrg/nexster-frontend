@@ -14,8 +14,8 @@ const pickerWidth = {
     sm: 180
 }
 
-export function BasicDatePicker({value, setValue, label, styles, textErr, setTextErr, minDate, maxDate}) {
-    if(value === "") value = minDate
+export function BasicDatePicker({value, setValue, label, styles, textErr, setTextErr, minDate, maxDate, defaultDate}) {
+    if(value === "") value = defaultDate
 
     const handleChange = (newValue) => {
         setValue(newValue)
@@ -33,6 +33,7 @@ export function BasicDatePicker({value, setValue, label, styles, textErr, setTex
                 maxDate={maxDate}
                 minDate={minDate}
                 format='YYYY/MM/DD'
+                defaultValue={defaultDate}
              />
             </DemoContainer>
         </LocalizationProvider>   
