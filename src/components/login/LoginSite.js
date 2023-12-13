@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Stack, Button, Typography, TextField, Link, Paper } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 
-import { GetAccessToken, GetProfileInfo } from "../../apis/fetch"
+import { GetAccessToken, GetProfileInfo, accCreateLinkPath } from "../../apis/fetch"
 import { SetAccessTokenInLS, SetUserDataInLS, CleanLS } from "../../apis/store"
 import { BottomLeftSnackbar } from "../ui/snack_bar"
 
@@ -115,7 +115,7 @@ export default function LoginSite(){
                         />
 
                         <Stack sx={{ width: "100%"}}>
-                            <Link href={"some url"} target="_blank" underline="hover" sx={{marginTop: "2px"}}> Forgot password ? </Link>
+                            <Link href={"#not-yet-implemented"} target="_blank" underline="hover" sx={{marginTop: "2px"}}> Forgot password ? </Link>
                         </Stack>
 
                         <Button variant="contained" onClick={onLogin}
@@ -124,7 +124,7 @@ export default function LoginSite(){
 
                     <Stack direction={"row"} spacing={2}>
                         <Typography> Don't have an account? </Typography>
-                        <Link href={"/account/reg"} target="_blank" underline="hover" sx={{marginTop: "2px"}}> Sign up </Link>
+                        <Link href={accCreateLinkPath} target="_blank" underline="hover" sx={{marginTop: "2px"}}> Sign up </Link>
                     </Stack>
                 </Paper>
                 <Stack>

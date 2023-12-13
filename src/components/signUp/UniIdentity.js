@@ -53,8 +53,9 @@ export default function UniIdentitySite(){
         return (
             <Stack justifyContent={"center"} alignItems={"center"} sx={{ height: "100%" }} spacing={3}>
                     <MailIcon fontSize="large"/>
-                    <Typography> Account creation link has been sent to <b> {index}@uom.lk </b>. 
+                    <Typography> Account creation link has been sent to <b> {index}@uom.lk </b> <small> (might take a few minutes). </small>
                         Use the link to create your Nexster account. </Typography>
+
                     <Typography variant="body2"> Link will be expired in 30 min. </Typography>
             </Stack>
         )
@@ -67,7 +68,7 @@ export default function UniIdentitySite(){
                saveSpinner ? <SaveLoading label={"Sending..."}/> : 
             
             <>
-            <Typography variant="h6"> Get account creation link </Typography>
+            <Typography variant="h6"> Get an account creation link </Typography>
             <Stack sx={{ width: "30%" }} spacing={4}>
                 <Paper sx={{ padding: "20px", display: "flex", flexDirection: "column", gap: "20px" }} elevation={4}>
                     <Typography variant="subtitle1"> Enter your university index below : </Typography>

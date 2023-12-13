@@ -7,6 +7,9 @@ const token = "token"
 // nexster paths
 export const NxterHome = "/home"
 
+export const accCreateLinkPath = "/account/reg-link"
+export const accCreatePath = "/account/reg"
+
 // Paths
 export const LoginPath = "/login"
 export const FriendsRoute = "/friends"
@@ -430,6 +433,16 @@ export async function GetAccessToken(indexNo, password) {
 export async function SendAccountCreationLink(indexNo) {
   let respBody = await postWithoutAuth(`${apiDomain}/p/u/auth/reg-link`, {
     "index": indexNo
+  })
+  if(respBody === null) return false
+  return true
+}
+
+export async function ValidateAccountCreationLink(indexNo, expiredAt, hmac) {
+  let respBody = await postWithoutAuth(`${apiDomain}/p/u/auth/reg-link/validate`, {
+    "index": indexNo,
+    "exp": expiredAt,
+    "hmac": hmac
   })
   if(respBody === null) return false
   return true

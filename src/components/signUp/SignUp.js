@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { Stack, Typography, Divider, Paper, Button, Avatar} from "@mui/material"
 import ImageUploading from 'react-images-uploading';
 import PersonIcon from '@mui/icons-material/Person';
@@ -18,7 +18,7 @@ import PasswordField from "../ui/PasswordField"
 
 import { BottomLeftSnackbar } from '../ui/snack_bar';
 
-import { LoginPath } from "../../apis/fetch";
+import { LoginPath, ValidateAccountCreationLink, accCreateLinkPath } from "../../apis/fetch";
 
 // widths
 const selectWidth = 120
@@ -48,14 +48,39 @@ const bothPasswdNotSameMsg = "Both passwords should be same."
 // TODO: Change later
 
 export default function SignUpSite() {
+
+    const [urlValid, setUrlValid] = useState(false)
+
     const location = useLocation();
+    const navigate = useNavigate();
     const searchParams = new URLSearchParams(location.search);
 
     const index = searchParams.get('index') || "";
     const expAt = searchParams.get('exp') || "";
     const hmac = searchParams.get('hmac') || "";
 
-    // TODO: Need api to check whether given params are valid or not..
+    useEffect( () => {
+        (async () => {
+            try {
+              const isValid = await ValidateAccountCreationLink(index, expAt, hmac);
+              if(isValid) {
+                setUrlValid(true)
+                return 
+              }
+            } catch (err) {
+                console.error('Error validating URL:', err); // TODO : Remove this in production
+            }
+
+            alert("Invalid account creation URL. Get a new link.")
+            navigate(accCreateLinkPath, { replace: true });
+            return;
+
+        })();
+    }, [])
+
+    if(!urlValid){
+        return <></>
+    }
 
     return <SignUp indexNo={index}/>
     

@@ -117,7 +117,7 @@ function App() {
 
       <Route path="/account/reg" element={<SignUpSite />} />
 
-      <Route path="/account/uni-id" element={<UniIdentitySite />} />
+      <Route path="/account/reg-link" element={<UniIdentitySite />} />
 
       <Route path="/page-not-found" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
@@ -133,10 +133,3 @@ const styles = {
     marginLeft: "5%", marginTop: "10px", marginBottom: "30px"
   }
 }
-
-// TOday
-/**
- * 1. Finish friend delete part
- * 2. Think about Event of the nexster & assign work
- * 3. 
- */
