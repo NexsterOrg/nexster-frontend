@@ -447,3 +447,24 @@ export async function ValidateAccountCreationLink(indexNo, expiredAt, hmac) {
   if(respBody === null) return false
   return true
 }
+
+export async function CreateUserAccount(firstName, secondName, imageId, birthday, faculty, field, batch, about, gender, 
+  password, indexNo, expiredAt, hmac ){
+  let respBody = await postWithoutAuth(`${apiDomain}/p/u/auth/reg`, {
+    "firstName": firstName,
+    "secondName": secondName,
+    "imageId": imageId,
+    "birthday": birthday,
+    "faculty": faculty,
+    "field": field,
+    "batch": batch,
+    "about": about,
+    "gender": gender,
+    "password": password,
+    "index": indexNo,
+    "exp": expiredAt,
+    "hmac": hmac
+})
+  if(respBody === null) return false
+  return true
+}

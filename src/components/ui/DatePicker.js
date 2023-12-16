@@ -18,7 +18,9 @@ export function BasicDatePicker({value, setValue, label, styles, textErr, setTex
     if(value === "") value = defaultDate
 
     const handleChange = (newValue) => {
-        setValue(newValue)
+        const dateOnly = dayjs(newValue); 
+        const localDate = dateOnly.format('YYYY-MM-DD');
+        setValue(localDate)
         setTextErr("")
     }
 

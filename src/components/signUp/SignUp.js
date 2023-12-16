@@ -18,7 +18,10 @@ import PasswordField from "../ui/PasswordField"
 
 import { BottomLeftSnackbar } from '../ui/snack_bar';
 
-import { LoginPath, ValidateAccountCreationLink, accCreateLinkPath } from "../../apis/fetch";
+import { LoginPath, ValidateAccountCreationLink, accCreateLinkPath, UploadImage, CreateUserAccount } from "../../apis/fetch";
+
+// namespace
+const avatarNamespace = "avatar" 
 
 // widths
 const selectWidth = 120
@@ -41,6 +44,7 @@ const createdOk = "Account created successfully!. Redirecting to login page."
 const createFailed = "Account creation failed. Please try again."
 const cantEmpty = "Field cannot be empty"
 const formNotDulyFilled = "Some required fields are empty."
+const uploadImageFailedErr = "Failed to upload the image. Try again."
 
 const passwdNotEnoughLenMsg = `Passwords must at least have ${minPasswordLn} characters.`
 const bothPasswdNotSameMsg = "Both passwords should be same."
@@ -79,14 +83,14 @@ export default function SignUpSite() {
     }, [])
 
     if(!urlValid){
-        return <></>
+        return <>Error...</>
     }
 
-    return <SignUp indexNo={index}/>
+    return <SignUp indexNo={index} expiredAt={expAt} hmac={hmac}/>
     
 }
 
-function SignUp({indexNo}) {
+function SignUp({indexNo, expiredAt, hmac}) {
     const navigate = useNavigate();
 
     const [saveSpinner, startSaveSpinner] = useState(false)
@@ -193,12 +197,23 @@ function SignUp({indexNo}) {
             return
         }
 
-        // TODO: 1. Issue API a call.
         startSaveSpinner(true)
 
         try {
-            await delay(2000)
-            const isSucceeded = true
+
+            const img = images[0]
+            const typeName = getImageType(img["file"]["type"])
+            const imageName = await UploadImage(avatarNamespace, typeName, img["data_url"])
+      
+            if(imageName === "") {
+              startSaveSpinner(false)
+              setFormErr(uploadImageFailedErr)
+              setSnackBarOpen(true)
+              return
+            } 
+
+            const isSucceeded = await CreateUserAccount(firstName, secondName, imageName, birthday, faculty, field, batch, about, gender, password,
+                indexNo, expiredAt, hmac)
             if(isSucceeded){
                 // ok - direct to login page
                 setFormErr("")
@@ -367,10 +382,9 @@ function ProfileImageUpload({images, setImages, uploadErr, setUploadErr}){
         </ImageUploading>
     )
   }
-  
 
-function delay(timeInMs) {
-return new Promise((resolve) => {
-    setTimeout(resolve, timeInMs);
-});
+function getImageType(mimeType){
+    if(typeof mimeType !== "string") return ""
+    const parts = mimeType.split('/');
+    return parts.length !== 2  ? "" : parts[1]
 }
