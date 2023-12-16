@@ -29,6 +29,11 @@ const currentDate = new Date()
 const maxDate = dayjs(AddMonths(currentDate, 6))  // set max date as 6 months from now
 const minDate = dayjs(new Date(currentDate.getTime() + oneHour))
 
+// lengths
+const maxEventTitle = 50
+const maxEventDesc = 300
+const maxRowsDesc = 5
+
 export default function EventCreationDialog({isCreateEventOpen, setIsCreateEventOpen}) {
 
   const [saveSpinner, startSaveSpinner] = useState(false)
@@ -187,11 +192,11 @@ function EventInputData({title, titleErr, description, descriptionErr, venueOrLi
     <Stack sx={{paddingLeft: 2, marginBottom: 4}} spacing={2}>
 
       <TextFieldWithCount content={title} setContent={setTitle} textErr={titleErr} setTextErr={setTitleErr} variant="standard" 
-        textFieldStyles={{width: "90%"}} maxCount={30} required={true} multiline={false} label={"title"} maxRows={1}/>
+        textFieldStyles={{width: "90%"}} maxCount={maxEventTitle} required={true} multiline={false} label={"title"} maxRows={1}/>
 
       <TextFieldWithCount content={description} setContent={setDescription} textErr={descriptionErr} setTextErr={setDescriptionErr}
-        textFieldStyles={{width: "90%"}} maxCount={100} required={false} multiline={true} variant="standard" 
-        label={"description"} maxRows={4} placeholder={"keep it short and concise"}/>
+        textFieldStyles={{width: "90%"}} maxCount={maxEventDesc} required={false} multiline={true} variant="standard" 
+        label={"description"} maxRows={maxRowsDesc} placeholder={"keep it short and concise"}/>
 
       <Stack direction={"row"} spacing={3}>
         <BasicDateTimePicker label={"date"} value={date} setValue={setDate} textErr={dateErr} formatType={"ampm"}
