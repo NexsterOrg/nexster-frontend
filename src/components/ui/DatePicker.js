@@ -30,7 +30,7 @@ export function BasicDatePicker({value, setValue, label, styles, textErr, setTex
             <DemoContainer components={['DatePicker']}>
             <DatePicker 
                 label={label}
-                value={value}
+                value={dayjs(value)} // TODO: check dayjs(value)
                 onChange={handleChange}
                 maxDate={maxDate}
                 minDate={minDate}

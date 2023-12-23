@@ -1,7 +1,7 @@
 import { CleanLS } from "./store"
 
-const apiDomain = "http://20.197.49.204"  // backend nginx proxy domain
-const webDomain = `http://20.197.49.204:3000`  // front end Domain
+const apiDomain = "http://192.168.1.101"  // backend nginx proxy domain
+const webDomain = `http://192.168.1.101:3000`  // front end Domain
 const token = "token"
 
 // nexster paths
@@ -125,15 +125,9 @@ async function post(url, reqBody) {
 }
 
 async function postCustom(url, headers, body) {
-  let bearTkn = localStorage.getItem(token)
-  if(bearTkn === null) {
-    CleanLS()
-    throw new UnAuthorizedError("token is not existed")
-  }
   const resp = await fetch(url, {
     method: 'POST',
     headers: {
-      'Authorization': bearTkn,
       ...headers
     },
     body: body
