@@ -1,7 +1,7 @@
 import { CleanLS } from "./store"
 
-const apiDomain = "https://20.197.22.26"  // backend nginx proxy domain
-const webDomain = "https://exp-mora-nexster.azurewebsites.net"  // front end Domain
+const apiDomain = "https://api.nexster.xyz"  // backend nginx proxy domain
+const webDomain = "https://nexster.xyz"  // front end Domain
 const token = "token"
 
 // nexster paths
