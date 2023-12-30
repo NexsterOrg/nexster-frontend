@@ -89,7 +89,10 @@ export default function LoginSite(){
 
     return (
         <Stack justifyContent={"center"} alignItems={"center"} sx={{ height: "100%" }} spacing={3}>
-            <Typography variant="h6"> Log into Nexster </Typography>
+            <Stack direction="row" >
+                <Typography variant="h6" > Log into Nexster </Typography>
+                <Typography variant="caption"> [alpha] </Typography>
+            </Stack>
             <Stack sx={{ width: "30%" }} spacing={4}>
                 <Paper sx={{ padding: "20px", display: "flex", alignItems: "center", flexDirection: "column" }} elevation={4}>
                     <Stack spacing={2} alignItems={"center"} sx={{ width: "300px" , paddingTop: "25px", marginBottom: "60px"}}>
@@ -129,6 +132,10 @@ export default function LoginSite(){
                 </Paper>
                 <Stack>
                     <Typography variant="caption"> Nexster is a private social network that provides tools to make students lives more productive. </Typography>
+                    <Typography variant="body2" sx={{ fontWeight: "bold", marginTop: "10px"}}> Note: </Typography>
+                    <Typography variant="caption"> Please be aware that this version is in its early development phase and may contain bugs or incomplete features. 
+                        Kindly avoid submitting critical information or relying on this platform for crucial data. 
+                        We recommend backing up any essential files or data since all data will be cleaned after the testing phase. </Typography>
                 </Stack>
             </Stack>
             <BottomLeftSnackbar open={snackBarOpen}  setOpen={setSnackBarOpen} level={"error"} msg={loginErr}/>

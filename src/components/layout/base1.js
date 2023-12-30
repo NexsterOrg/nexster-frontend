@@ -89,11 +89,13 @@ export default function Base1({styles, SideComponent}){
                 open={true}>
             
             {/* TODO: Need to replace with acutal Nexster logo and make it resposive */}
-            <Typography sx={{paddingLeft: "8%", marginBottom: "15%", marginTop: "10%"
-            }} variant="h4"> 
-                Nexster 
-            </Typography>
-            
+
+            <Stack direction={"row"} sx={{ paddingLeft: "6%", marginBottom: "13%", marginTop: "10%" }}>
+                <Typography variant="h4"> 
+                    Nexster
+                </Typography>
+                <Typography variant="caption"> [alpha] </Typography>
+            </Stack>
                 <List> 
                     <ListItem key={1} disablePadding >
                         <ListItemButton href="/" >

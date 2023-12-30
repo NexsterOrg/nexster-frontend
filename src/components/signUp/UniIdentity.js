@@ -101,6 +101,10 @@ export default function UniIdentitySite(){
                 </Paper>
                 <Stack>
                     <Typography variant="caption"> Nexster is a private social network that provides tools to make students lives more productive. </Typography>
+                    <Typography variant="body2" sx={{ fontWeight: "bold", marginTop: "10px"}}> Note: </Typography>
+                    <Typography variant="caption"> Please be aware that this version is in its early development phase and may contain bugs or incomplete features. 
+                    Kindly avoid submitting critical information or relying on this platform for crucial data. 
+                    We recommend backing up any essential files or data since all data will be cleaned after the testing phase. </Typography>
                 </Stack>
             </Stack>
             </>
