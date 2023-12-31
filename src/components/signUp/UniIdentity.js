@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react"
-import { Stack, Typography, Paper, TextField, Button, Link} from "@mui/material"
+import { Stack, Typography, Paper, TextField, Button, Link, useTheme} from "@mui/material"
 import MailIcon from '@mui/icons-material/Mail';
 
 import { BottomLeftSnackbar } from "../ui/snack_bar"
@@ -10,6 +10,7 @@ import { SaveLoading } from '../ui/LoadingComponents';
 const failedSend = "Failed to send the link to your email. Try again."
 
 export default function UniIdentitySite(){
+    const theme = useTheme();
 
     const [saveSpinner, startSaveSpinner] = useState(false)
     const [snackBarOpen, setSnackBarOpen] = useState(false)
@@ -21,6 +22,8 @@ export default function UniIdentitySite(){
     const [sendOk, setSendOk] = useState(false)
 
     const isIndexValid = ValidateUniIndex(index)
+
+    const modeColor = theme.palette.mode === 'dark' ? 'white' : 'black' ;
 
     const onChangeIndex = (e) => {
         const val = (e?.target?.value || "").toLowerCase()
@@ -62,14 +65,14 @@ export default function UniIdentitySite(){
     }
 
     return (
-        <Stack justifyContent={"center"} alignItems={"center"} sx={{ height: "100%" }} spacing={3}>
+        <Stack justifyContent={"center"} alignItems={"center"} sx={{ height: "100%",  bgcolor: 'background.default' }} spacing={3}>
 
             {
                saveSpinner ? <SaveLoading label={"Sending..."}/> : 
             
             <>
-            <Typography variant="h6"> Get an account creation link </Typography>
-            <Stack sx={{ width: "30%" }} spacing={4}>
+            <Typography variant="h6" color={modeColor}> Get an account creation link </Typography>
+            <Stack sx={{ width: "30%", color: modeColor }} spacing={4}>
                 <Paper sx={{ padding: "20px", display: "flex", flexDirection: "column", gap: "20px" }} elevation={4}>
                     <Typography variant="subtitle1"> Enter your university index below : </Typography>
                     <Stack spacing={2} alignItems={"center"} sx={{ width: "100%", marginBottom: "18px" }}>

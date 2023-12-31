@@ -30,9 +30,9 @@ const maxDate = dayjs(AddMonths(currentDate, 6))  // set max date as 6 months fr
 const minDate = dayjs(new Date(currentDate.getTime() + oneHour))
 
 // lengths
-const maxEventTitle = 50
-const maxEventDesc = 300
-const maxRowsDesc = 5
+const maxEventTitle = 100
+const maxEventDesc = 1000
+const maxRowsDesc = 25
 
 export default function EventCreationDialog({isCreateEventOpen, setIsCreateEventOpen}) {
 
@@ -192,7 +192,7 @@ function EventInputData({title, titleErr, description, descriptionErr, venueOrLi
     <Stack sx={{paddingLeft: 2, marginBottom: 4}} spacing={2}>
 
       <TextFieldWithCount content={title} setContent={setTitle} textErr={titleErr} setTextErr={setTitleErr} variant="standard" 
-        textFieldStyles={{width: "90%"}} maxCount={maxEventTitle} required={true} multiline={false} label={"title"} maxRows={1}/>
+        textFieldStyles={{width: "90%"}} maxCount={maxEventTitle} required={true} multiline={true} label={"title"} maxRows={2}/>
 
       <TextFieldWithCount content={description} setContent={setDescription} textErr={descriptionErr} setTextErr={setDescriptionErr}
         textFieldStyles={{width: "90%"}} maxCount={maxEventDesc} required={false} multiline={true} variant="standard" 

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Stack, Button, Typography, TextField, Link, Paper } from "@mui/material"
+import { Stack, Button, Typography, TextField, Link, Paper, useTheme } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 
 import { GetAccessToken, GetProfileInfo, accCreateLinkPath } from "../../apis/fetch"
@@ -12,6 +12,7 @@ const invalidCred = "Invalid credentials"
 
 export default function LoginSite(){
     const navigate = useNavigate();
+    const theme = useTheme();
 
     const [snackBarOpen, setSnackBarOpen] = useState(false)
 
@@ -22,6 +23,8 @@ export default function LoginSite(){
     const [passwordErr, setPasswordErr] = useState("")
 
     const [loginErr, setLoginErr] = useState("")
+
+    const modeColor = theme.palette.mode === 'dark' ? 'white' : 'black' ;
 
     const onLogin = async () => {
         if(index === ""){
@@ -77,7 +80,8 @@ export default function LoginSite(){
         if (indexErr !== "") {
             setIndexErr("")
         }
-        setIndex(e.target.value)
+        const val = (e?.target?.value || "").toLowerCase()
+        setIndex(val)
     }
 
     const onChangePassword = (e) => {
@@ -88,12 +92,12 @@ export default function LoginSite(){
     }
 
     return (
-        <Stack justifyContent={"center"} alignItems={"center"} sx={{ height: "100%" }} spacing={3}>
-            <Stack direction="row" >
-                <Typography variant="h6" > Log into Nexster </Typography>
+        <Stack justifyContent={"center"} alignItems={"center"} sx={{ height: "100%", bgcolor: 'background.default' }} spacing={3}>
+            <Stack direction="row" color={modeColor} >
+                <Typography variant="h6"  > Log into Nexster </Typography>
                 <Typography variant="caption"> [alpha] </Typography>
             </Stack>
-            <Stack sx={{ width: "30%" }} spacing={4}>
+            <Stack sx={{ width: "30%", color: modeColor }} spacing={4}>
                 <Paper sx={{ padding: "20px", display: "flex", alignItems: "center", flexDirection: "column" }} elevation={4}>
                     <Stack spacing={2} alignItems={"center"} sx={{ width: "300px" , paddingTop: "25px", marginBottom: "60px"}}>
                         <TextField 
@@ -122,7 +126,7 @@ export default function LoginSite(){
                         </Stack>
 
                         <Button variant="contained" onClick={onLogin}
-                            sx={{ textTransform: "none", width: "100px", bgcolor: "#35dbcb"}}> Login </Button>
+                            sx={{ textTransform: "none", width: "100px", bgcolor: "#35dbcb"}}> Login </Button> 
                     </Stack>
 
                     <Stack direction={"row"} spacing={2}>

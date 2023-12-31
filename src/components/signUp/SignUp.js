@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState, useEffect } from "react";
-import { Stack, Typography, Divider, Paper, Button, Avatar} from "@mui/material"
+import { Stack, Typography, Divider, Paper, Button, Avatar, useTheme } from "@mui/material"
 import ImageUploading from 'react-images-uploading';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -92,6 +92,7 @@ export default function SignUpSite() {
 
 function SignUp({indexNo, expiredAt, hmac}) {
     const navigate = useNavigate();
+    const theme = useTheme();
 
     const [saveSpinner, startSaveSpinner] = useState(false)
     const [snackBarOpen, setSnackBarOpen] = useState(false)
@@ -126,6 +127,8 @@ function SignUp({indexNo, expiredAt, hmac}) {
     const [ retypedPasswordErr, setRetypedPasswordErr ] = useState("")
 
     const [formErr, setFormErr] = useState("")
+
+    const modeColor = theme.palette.mode === 'dark' ? 'white' : 'black' ;
 
     const isPasswdNotEmpty = password.length !== 0
 
@@ -235,8 +238,8 @@ function SignUp({indexNo, expiredAt, hmac}) {
     const snackInfo =  useMemo(() => formErr === "" ? {level: "success", msg: createdOk} : {level: "error", msg: formErr}, [formErr]) 
 
     return (
-        <Stack alignItems={"center"}>
-            <Stack sx={{ width: "60%", paddingY: "15px"}}>
+        <Stack alignItems={"center"} sx={ { bgcolor: 'background.default', minHeight: "100vh" } }>
+            <Stack sx={{ width: "60%", paddingY: "15px" }}>
             
             {  saveSpinner ? <SaveLoading rootStyles={{marginTop: 10}} label={"Creating..."}/>  :
                 <Paper sx={{ paddingX: "15px", paddingBottom: "20px" }} elevation={4}>

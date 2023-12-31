@@ -17,18 +17,10 @@ import SignUpSite from './components/signUp/SignUp';
 import UniIdentitySite from './components/signUp/UniIdentity';
 import TestGround from './components/test';
 
-function Login() {
-  return (
-    <div>
-      <h1> Login Page </h1>
-    </div>
-  )
-}
-
 const theme = createTheme({
-  // palette: {
-  //   mode: "dark"
-  // },
+  palette: {
+    mode: "dark"
+  },
 
   breakpoints: {
     values: {
