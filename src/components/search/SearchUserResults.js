@@ -40,7 +40,8 @@ export default function SearchUserResults({rootStyles, keyword}){
                 {
                     resultsList.map((prof, index) => (
                         <ProfileCard key={`${index}#${prof.key}`} username={prof.username} imgUrl={prof.image_url} initFriendState={prof.friend_state} 
-                        userKey={prof.key} batch={prof.batch} facOrField={prof.faculty} friendReqId={prof.friend_req_id} rootStyle={{margin: "8px"}}/>
+                        userKey={prof.key} batch={prof.batch} facOrField={prof.faculty} friendReqId={prof.friend_req_id} rootStyle={{margin: "8px"}}
+                        indexNo={prof.indexNo} />
                     ))
                 }
             </Box>

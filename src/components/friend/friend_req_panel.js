@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { Paper , Avatar, Typography, Box, Button, Tooltip, Card, 
+import { Paper , Avatar, Typography, Box, Button, Tooltip, Card, Link,
     CardContent, List } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
+import { MkUserProfilePageLink } from '../../apis/fetch';
 
 import { TimeDiffWithNow } from "../../helper/date"
 import { AcceptFriendReq, ListFriendReqs, GetAllFriendReqsCount, LoginPath,
@@ -119,7 +120,7 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
                     reqList.map((info, index) => (
                        
                             <FriendReqCard key={`${index}#${info.user_key}`} imgUrl={info.image_url} username={info.username} faculty={info.faculty} 
-                                    field={info.field} batch={info.batch} reqDate={info.req_date} 
+                                    field={info.field} batch={info.batch} reqDate={info.req_date} indexNo={info.indexNo}
                                     friendReqId={info.req_key} reqstorId={info.user_key} onRemoveFunc={onRemove}/>
                     ))
                 }  
@@ -139,7 +140,7 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
 // lengths
 // name: 30 , facOrField: 42, batch: 
 // TODO: Add alert msgs after accept/ignore actions
-function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, friendReqId, reqstorId, onRemoveFunc}){
+function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, friendReqId, reqstorId, onRemoveFunc, indexNo}){
     const navigate = useNavigate();
     const [fId, setFId] = useState(friendReqId)
 
@@ -201,7 +202,10 @@ function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, friend
             <Box sx={{display:"flex"}}>
                 <Avatar alt="prof-img" src={imgUrl} sx={{width: 90, height: 90, marginY: "10px", marginLeft: "10px"}}/>
                 <Box sx={{marginTop: "15px", marginLeft: "10px"}}>
-                    <Typography variant="body1"> {newUsername} </Typography>
+
+                    <Link href={MkUserProfilePageLink(indexNo)} target="_blank" underline="hover" > {newUsername} </Link>
+
+                    {/* <Typography variant="body1"> {newUsername} </Typography> */}
                     <Typography variant="body2"> {newFacField} </Typography>
                     <Typography variant="body2"> {batch} Batch </Typography>
                     <Typography variant="caption"> {TimeDiffWithNow(reqDate)} </Typography>

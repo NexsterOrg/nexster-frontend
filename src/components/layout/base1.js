@@ -19,7 +19,8 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 
-const drawerWidth = "11%";
+// TODO: Set this value based on the screen size.
+const drawerWidth = "12%";
 
 const iconSize = {
     xl: 30,
@@ -198,5 +199,3 @@ export default function Base1({styles, SideComponent}){
         </Stack>
     )
 }
-
-// href={`/index/${indexNo}`}

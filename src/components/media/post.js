@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import { styled } from '@mui/material/styles';
-import {Card, CardHeader, CardMedia, CardContent, CardActions, Box,
+import {Card, CardHeader, CardMedia, CardContent, CardActions, Box, Link,
   Collapse, Avatar, IconButton, Typography} from "@mui/material"
 import { useNavigate } from 'react-router-dom';
+import { MkUserProfilePageLink } from '../../apis/fetch';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -29,7 +30,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function TimelinePost({profInfo, postInfo, reactsCnt, viewerId, viewerReaction}) {
+export default function TimelinePost({profInfo, postInfo, reactsCnt, viewerId, viewerReaction, indexNo}) {
   const [expanded, setExpanded] = useState(false);
   const [reactions, setReactions] = useState({like: viewerReaction.like, love: viewerReaction.love, laugh: viewerReaction.laugh})
   const [reactionCount, setReactionCount] = useState(reactsCnt)
@@ -121,7 +122,7 @@ export default function TimelinePost({profInfo, postInfo, reactsCnt, viewerId, v
     <Card sx={{ maxWidth: 475 }} elevation={4}>
       <CardHeader
         avatar={<Avatar src={profInfo.profUrl} aria-label={`${profInfo.name}`} />}
-        title={profInfo.name}
+        title={<Link href={MkUserProfilePageLink(indexNo)} target="_blank" underline="hover" > {profInfo.name} </Link>}
         subheader={profInfo.postDate}
       />
       {/* TODO: when click on profile picture, this should redirect to his personal profile */}

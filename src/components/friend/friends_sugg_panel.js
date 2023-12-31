@@ -101,7 +101,7 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
             <Box sx={styles.suggsBox}>
                 {
                     suggList.map((prof, index) => (
-                        <ProfileCard key={`${index}#${prof.key}`} username={prof.username} imgUrl={prof.image_url} initFriendState={prof.friend_state} 
+                        <ProfileCard key={`${index}#${prof.key}`} username={prof.username} imgUrl={prof.image_url} initFriendState={prof.friend_state} indexNo={prof.indexNo}
                         userKey={prof.key} batch={prof.batch} facOrField={prof.faculty} friendReqId={prof.friend_req_id} rootStyle={{margin: "8px"}}/>
                     ))
                 }

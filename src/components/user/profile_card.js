@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Avatar, Box, Paper, Typography, Button, Tooltip } from "@mui/material";
+import { Avatar, Box, Paper, Typography, Button, Tooltip, Link } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
+import { MkUserProfilePageLink } from '../../apis/fetch';
 
 import { SendFriendReq, IgnoreFriendReq, AcceptFriendReq, UnAuthorizedError, LoginPath } from "../../apis/fetch";
 
@@ -14,7 +15,7 @@ const pendingReqtorType = "pending#requestor"
 const pendingRecpType = "pending#recipient"
 
 // imgUrl, request OR pending, username(first name + second name), faculty or field (if Engineering), batch
-export default function ProfileCard({userKey, username, imgUrl, facOrField, batch, friendReqId, initFriendState, rootStyle}){
+export default function ProfileCard({userKey, username, imgUrl, facOrField, batch, friendReqId, initFriendState, rootStyle, indexNo}){
   const navigate = useNavigate();
   const [friendState, setFriendState] = useState(initFriendState)
   const [fReqId, setFReqId] = useState(friendReqId)
@@ -99,15 +100,15 @@ export default function ProfileCard({userKey, username, imgUrl, facOrField, batc
   }
 
   return (
-    <Paper elevation={4} sx={[styles.topContainer, rootStyle]}>
+    <Paper elevation={4} sx={[styles.topContainer, rootStyle ]}>
       <Box sx={styles.avatarContainer}>
           <Avatar src={imgUrl} aria-label="some-prof" sx={styles.avatar}/>
           {stateButn}
       </Box>
-      
-      <Typography variant="body1" sx={styles.username}> {newUsername} </Typography>
+      <Link href={MkUserProfilePageLink(indexNo)} target="_blank" underline="hover" sx={styles.username} > {newUsername} </Link>
+      {/* <Typography variant="body1" sx={styles.username}> {newUsername} </Typography> */}
       <Typography variant="body2" sx={styles.text}> {newFacField} </Typography>
-      <Typography variant="caption" sx={styles.text}> {batch} batch </Typography>
+      <Typography variant="caption" sx={styles.text} > {batch} batch </Typography>
     </Paper>
   )
 }
@@ -117,13 +118,13 @@ const styles = {
     width: 270, height: 240
   },
   avatarContainer : {
-    display: "flex", justifyContent: "flex-start", gap: "6%"
+    display: "flex", justifyContent: "flex-start", gap: "6%", marginBottom: "5px"
   },
   avatar: {
-    width: 130, height: 130, marginLeft: "4%", marginTop: "3%" 
+    width: 130, height: 130, marginLeft: "4%", marginTop: "3%"
   },
   username: {
-    marginTop: "4%", marginLeft: "4%", marginBottom: "4px"
+    marginLeft: "4%", marginBottom: "4px"
   },
   text: {
     marginLeft: "4%"

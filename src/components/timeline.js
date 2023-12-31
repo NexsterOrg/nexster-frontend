@@ -107,6 +107,7 @@ function ListTimelinePosts({userId}){
                     reactsCnt={each.reactions.like + each.reactions.love + each.reactions.laugh}
                     viewerId={userId}
                     viewerReaction={each.viewer_reaction}
+                    indexNo={each.owner.indexNo}
                     />
                 </ListItem>
                 )

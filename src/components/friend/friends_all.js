@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Avatar, Typography, Box, Divider, Paper, Button, Card } from "@mui/material"
+import { Avatar, Typography, Box, Divider, Paper, Button, Card, Link } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
@@ -8,6 +8,7 @@ import MenuButton from "../ui/menu_button"
 import { GenUniqueKeyForList, FmtUserInfo } from "../../helper/common";
 import { BottomRightSnackbar } from "../ui/snack_bar";
 import FriendsBase from "./friends_base";
+import { MkUserProfilePageLink } from '../../apis/fetch';
 
 const question = "Are you sure?"
 const nameLimit = 30
@@ -115,7 +116,8 @@ export default function AllFriendsSite({rootStyles}){
                 const {username, facOrField} = FmtUserInfo(each.name, nameLimit, each.faculty, each.field, facOrFieldLimit)
                 return (
                     <FriendProfileCard key={GenUniqueKeyForList(index, each.user_id)} userId={each.user_id} newUsername={username} newFacField={facOrField}
-                    batch={each.batch} imgUrl={each.image_url} setSnackState={setSnackState} setSnackOpen={setSnackOpen} onRemove={onFriendRemove}/>
+                    batch={each.batch} imgUrl={each.image_url} setSnackState={setSnackState} setSnackOpen={setSnackOpen} onRemove={onFriendRemove}
+                    indexNo={each.index_no} />
                 )
             })
         }
@@ -126,7 +128,7 @@ export default function AllFriendsSite({rootStyles}){
     return <FriendsBase mainComponent={comp}/>
 }
 
-function FriendProfileCard({userId, newUsername, newFacField, batch, imgUrl, setSnackState, setSnackOpen, onRemove}){
+function FriendProfileCard({userId, indexNo, newUsername, newFacField, batch, imgUrl, setSnackState, setSnackOpen, onRemove}){
     const navigate = useNavigate();
     const [userKey, setUserKey] = useState(userId)
     let content = `Pressing 'Yes' will remove ${newUsername} from your friend list. Press 'No' to cancel the action.`
@@ -161,7 +163,7 @@ function FriendProfileCard({userId, newUsername, newFacField, batch, imgUrl, set
             <Box sx={{display:"flex"}}>
                 <Avatar alt="prof-img" src={imgUrl} sx={{width: 90, height: 90, marginY: "10px", marginLeft: "10px"}}/>
                 <Box sx={{marginTop: "19px", marginLeft: "15px"}}>
-                    <Typography variant="body1"> {newUsername} </Typography>
+                    <Link href={MkUserProfilePageLink(indexNo)} target="_blank" underline="hover" > {newUsername} </Link>
                     <Typography variant="body2"> {newFacField} </Typography>
                     <Typography variant="body2"> {batch} Batch </Typography>
                 </Box>
