@@ -233,8 +233,8 @@ export async function GetFriendCount(userId){
 ///u/indexnos/:index_no
 export async function GetUserKeyByIndexNo(indexNo) {
   let respBody = await get(`${apiDomain}/u/indexnos/${indexNo}`)
-  if(respBody === null) return ""
-  return respBody.data.key
+  if(respBody === null) return {key: "", isOwner: false }
+  return { key: respBody.data?.key, isOwner: respBody.data?.isOwner || false }
 }
 
 export async function ListMediaRoleBased(imgOwnerId, page, pageSize){

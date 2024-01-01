@@ -22,12 +22,12 @@ export default function ImageSettingDialog({imageSetting, setImageSetting}){
         </ListItemButton>
         <Divider />
 
-        <ListItemButton sx={ styles.listButn }>
+        <ListItemButton sx={ styles.listButn } disabled>
             Edit
         </ListItemButton>
         <Divider />
 
-        <ListItemButton sx={ styles.listButn }>
+        <ListItemButton sx={ styles.listButn } disabled>
             Make Public
         </ListItemButton>
         <Divider />

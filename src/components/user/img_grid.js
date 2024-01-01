@@ -40,7 +40,7 @@ const ImageSrc = styled('span')({
   backgroundPosition: 'center 40%',
 });
 
-export default function ImageGrid({userId}) {
+export default function ImageGrid({userId, editEnabled}) {
   const [imgList, setImgList] = useState([])
   const [dialogInfo, setDialogInfo] = useState({open: false, key: ""})
   const navigate = useNavigate();
@@ -79,7 +79,9 @@ export default function ImageGrid({userId}) {
         </ImageButton>
       ))}
     </Box>
-    <ImageSettingDialog imageSetting={dialogInfo} setImageSetting={setDialogInfo}/>
+    {
+      editEnabled ? <ImageSettingDialog imageSetting={dialogInfo} setImageSetting={setDialogInfo}/> : null
+    }
     </>
   );
 }
