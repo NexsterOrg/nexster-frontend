@@ -173,7 +173,7 @@ export default function Base1({styles, SideComponent}){
                     }}> Logout </MenuItem>
                 </Menu>
  
-                <Typography variant="caption" sx={{position: "fixed", bottom: 10, marginLeft: "0.8%"}}> © 2023 Namal Sanjaya </Typography>
+                <Typography variant="caption" sx={{position: "fixed", bottom: 10, marginLeft: "0.8%"}}> © 2024 Namal Sanjaya </Typography>
             </Drawer>
 
             <Box
