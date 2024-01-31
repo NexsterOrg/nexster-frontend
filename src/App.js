@@ -18,6 +18,8 @@ import LoginSite from './components/login/LoginSite';
 import SignUpSite from './components/signUp/SignUp';
 import UniIdentitySite from './components/signUp/UniIdentity';
 import Banner from './components/mobile/Banner';
+import TestComponent from './BoardingFinder/Test';
+import AdListPage from './BoardingFinder/Ad/AdList';
 
 const theme = createTheme({
   palette: {
@@ -37,6 +39,16 @@ const theme = createTheme({
 
   // TODO: Need to properly add
   typography: {
+
+    h6: {
+      fontSize: '0.9rem',
+      '@media (min-width: 1300px)': { 
+        fontSize: '1.05rem'
+      },
+      '@media (min-width: 1600px)': { 
+        fontSize: '1.25rem',
+      },
+    },
 
     h5: {
       fontSize: '0.9rem',
@@ -80,6 +92,15 @@ const theme = createTheme({
       },
       '@media (min-width: 1600px)': { 
         fontSize: '0.75rem',
+      },
+    },
+    subtitle2: {
+      fontSize: '0.9rem',
+      '@media (min-width: 1300px)': { 
+        fontSize: '0.75rem'
+      },
+      '@media (min-width: 1600px)': { 
+        fontSize: '0.875rem',
       },
     },
 
@@ -128,8 +149,14 @@ function App() {
 
         <Route path="/account/reg-link" element={<UniIdentitySite />} />
 
+        {/* Boarding Finder */}
+        <Route path="/boarding/test" element={ <TestComponent /> } />
+        <Route path="/boarding/ads" element={ <AdListPage /> } />
+
+
         <Route path="/page-not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
+
       </Routes>
       </ThemeProvider>
   );
