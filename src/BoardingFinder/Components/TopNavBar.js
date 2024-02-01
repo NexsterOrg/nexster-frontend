@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Button, AppBar, Toolbar,CssBaseline, Typography, useScrollTrigger, Box, Container, Slide } from '@mui/material';
+import { Button, AppBar, Toolbar,CssBaseline, Typography, useScrollTrigger, Box, Slide } from '@mui/material';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -29,12 +29,12 @@ HideOnScroll.propTypes = {
 
 export default function TopNavBar(props) {
   return (
-    <React.Fragment>
+    <>
       <CssBaseline />
       <HideOnScroll {...props}>
         <AppBar sx={{ background: "#95D258"}}>
           <Toolbar>
-            <Typography variant="h6" component="div" sx={{ color: "black", width: "20%" }}>
+            <Typography variant="h5" component="div" sx={{ color: "black", width: "20%" }}>
               {props.title}
             </Typography>
             <Box sx={{ width: "80%", display: "flex", flexDirection: "row-reverse", gap: "50px"}}>
@@ -58,11 +58,9 @@ export default function TopNavBar(props) {
         </AppBar>
       </HideOnScroll>
       <Toolbar />
-      <Container>
-        <Box>
+      <Box sx={{ minWidth: "100%" }}>
            {props.childComponent}
-        </Box>
-      </Container>
-    </React.Fragment>
+      </Box>
+    </>
   );
 }

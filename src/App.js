@@ -24,7 +24,7 @@ import BdHomePage from './BoardingFinder/Home/Home';
 
 const theme = createTheme({
   palette: {
-    mode: "light"
+    mode: "dark"
   },
 
   breakpoints: {
