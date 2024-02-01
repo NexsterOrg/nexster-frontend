@@ -20,10 +20,11 @@ import UniIdentitySite from './components/signUp/UniIdentity';
 import Banner from './components/mobile/Banner';
 import TestComponent from './BoardingFinder/Test';
 import AdListPage from './BoardingFinder/Ad/AdList';
+import BdHomePage from './BoardingFinder/Home/Home';
 
 const theme = createTheme({
   palette: {
-    mode: "dark"
+    mode: "light"
   },
 
   breakpoints: {
@@ -152,7 +153,7 @@ function App() {
         {/* Boarding Finder */}
         <Route path="/boarding/test" element={ <TestComponent /> } />
         <Route path="/boarding/ads" element={ <AdListPage /> } />
-
+        <Route path="/boarding" element={ <BdHomePage /> } />
 
         <Route path="/page-not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />

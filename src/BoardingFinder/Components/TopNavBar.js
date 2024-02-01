@@ -59,7 +59,7 @@ export default function TopNavBar(props) {
       </HideOnScroll>
       <Toolbar />
       <Container>
-        <Box sx={{ my: 2 }}>
+        <Box>
            {props.childComponent}
         </Box>
       </Container>
