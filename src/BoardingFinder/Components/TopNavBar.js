@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Button, AppBar, Toolbar,CssBaseline, Typography, useScrollTrigger, Box, Slide } from '@mui/material';
+import { Button, AppBar, Toolbar,CssBaseline, Typography, useScrollTrigger, Box, Slide, Link } from '@mui/material';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -34,9 +34,10 @@ export default function TopNavBar(props) {
       <HideOnScroll {...props}>
         <AppBar sx={{ background: "#95D258"}}>
           <Toolbar>
-            <Typography variant="h5" component="div" sx={{ color: "black", width: "20%" }}>
+            <Link href={"/boarding"} variant="h6" underline="none" sx={{ color: "black", width: "20%" }}> {props.title} </Link>
+            {/* <Typography variant="h5" component="div" sx={{ color: "black", width: "20%" }}>
               {props.title}
-            </Typography>
+            </Typography> */}
             <Box sx={{ width: "80%", display: "flex", flexDirection: "row-reverse", gap: "50px"}}>
 
                 <Button sx={{ background: "#D9D9D9", color: "black", textTransform: "none", 

@@ -9,7 +9,7 @@ const cardHeight = {
 }
 
 
-export default function AdCard({key1, imageUrl, rent, shortAddr, beds, baths, gender, postedDate}) {
+export default function AdCard({key1, imageUrl, rent, address, beds, baths, gender, postedDate}) {
 
     return (
         <Card sx={{ display: 'flex', height: cardHeight, width: "70%" }}>
@@ -20,7 +20,7 @@ export default function AdCard({key1, imageUrl, rent, shortAddr, beds, baths, ge
                 alt={`ad-card-${key1}`}
             />
             <CardContent sx={{ width: "100%", display: "flex", flexDirection: "column", gap: "20px"} }>
-                <PriceContent price={rent} shortAddress={shortAddr}/>
+                <PriceContent price={rent} address={address}/>
                 <InfoContent noOfBeds={beds} noOfBaths={baths} gender={gender}/>
                 <PostedDate date={postedDate}/>
             </CardContent>
@@ -28,14 +28,14 @@ export default function AdCard({key1, imageUrl, rent, shortAddr, beds, baths, ge
     ) 
 }
 
-function PriceContent({price, shortAddress}){
+function PriceContent({price, address}){
     return (
         <Box>
             
-            <Typography variant="h6" sx={{ marginBottom: "4px", color: "#4dd672", fontWeight: "bold" }} > Rs {price}  
+            <Typography variant="h6" sx={{ marginBottom: "2px", color: "#4dd672", fontWeight: "bold" }} > Rs {price}  
                 <Typography variant="caption"  >  per person, month </Typography> 
             </Typography>
-            <Typography variant="subtitle2"> {shortAddress} </Typography>
+            <Typography variant="caption"> {address} </Typography>
         </Box>
     )
 }
@@ -52,7 +52,7 @@ function InfoContent({noOfBeds, noOfBaths, gender }){
 }
 
 function PostedDate({date}) {
-    const dateStr = useMemo(() => TimeDiffWithNow(date))
+    const dateStr = useMemo(() => TimeDiffWithNow(date), [])
     return (
         <Box sx={{ textAlign: "end"}}>
             <Typography variant="caption"> {dateStr} </Typography>

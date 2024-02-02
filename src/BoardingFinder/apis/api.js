@@ -55,8 +55,8 @@ export async function ListAds(page, pageSize, minRent, maxRent, maxDist, minBeds
   url = addQueryParams(url, "for", genders)
   url = addQueryParams(url, "b", bills)
   let respBody = await get(url)
-  if(respBody === null) return {data: [], resultsCount: 0}
-  return {data: respBody.data, resultsCount: respBody.resultsCount}
+  if(respBody === null) return {data: [], resultsCount: 0, total: 0}
+  return {data: respBody.data, resultsCount: respBody.resultsCount, total: respBody.total}
 }
 
 function addQueryParams(url, key, values){

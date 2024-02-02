@@ -1,6 +1,7 @@
 import { TextField, Paper, Stack, Button, Typography, Box} from "@mui/material";
 import { BasicSelect } from "../../components/ui/Select";
 import { useEffect, useState } from "react";
+import { useCallback } from "react";
 
 // sort types
 export const mostRecent = "mostRecent" // default type
@@ -24,10 +25,11 @@ export const defaultMin = 1
 export const defaultMax = 10000
 
 export default function AdFilters({sortType, setSortType, gender, setGender, setRentMin, setRentMax, 
-    setBedsMin, setBedsMax, setBathsMin, setBathsMax}){
+    setBedsMin, setBedsMax, setBathsMin, setBathsMax, setPage}){
     const [resetChange, setResetChange] = useState(false)
 
     const onReset = () => {
+        setPage(1)
         setSortType(mostRecent)
         setGender(noPrefer)
 
@@ -43,19 +45,32 @@ export default function AdFilters({sortType, setSortType, gender, setGender, set
         setResetChange((preVal) => !preVal)
     }
 
+    const setSortTypeWithPg = useCallback( (value) => {
+        setPage(1)
+        return setSortType(value)
+    }, [])
+
+    const setGenderWithPg = useCallback((value) => {
+        setPage(1)
+        return setGender(value)
+    }, [])
+
     return (
         <Paper sx={{ width: "28%", display: "flex", gap: "30px", flexDirection: "column", height: "60%",
             justifyContent: "center", paddingY: "25px", paddingLeft: "25px", margin: "2px"}} elevation={4}>
 
-            <BasicSelect value={sortType} setValue={setSortType} label={"Sort"} 
+            <BasicSelect value={sortType} setValue={setSortTypeWithPg} label={"Sort"} 
                 defaultValue={mostRecent} options={sortOptions}/>
 
-            <BasicSelect value={gender} setValue={setGender} label={"For"} 
+            <BasicSelect value={gender} setValue={setGenderWithPg} label={"For"} 
                 defaultValue={noPrefer} options={genderOptions}/>
             
-            <MinMaxFilter id={"rent"} title={"Rent"} setParentMinVal={setRentMin} setParentMaxVal={setRentMax} isChanged={resetChange}/>
-            <MinMaxFilter id={"beds"} title={"Beds"} setParentMinVal={setBedsMin} setParentMaxVal={setBedsMax} isChanged={resetChange} />
-            <MinMaxFilter id={"baths"} title={"Baths"} setParentMinVal={setBathsMin} setParentMaxVal={setBathsMax} isChanged={resetChange} />
+            <MinMaxFilter id={"rent"} title={"Rent"} setParentMinVal={setRentMin} setParentMaxVal={setRentMax} 
+                isChanged={resetChange} setPage={setPage}/>
+            <MinMaxFilter id={"beds"} title={"Beds"} setParentMinVal={setBedsMin} setParentMaxVal={setBedsMax} 
+                isChanged={resetChange} setPage={setPage} />
+            <MinMaxFilter id={"baths"} title={"Baths"} setParentMinVal={setBathsMin} setParentMaxVal={setBathsMax} 
+                isChanged={resetChange} setPage={setPage} />
 
             <Button variant="contained" 
                 sx={{ textTransform: "none", width: "20%", background: "orange"}}
@@ -68,7 +83,7 @@ export default function AdFilters({sortType, setSortType, gender, setGender, set
 
 const minMaxWidth = "32%"
 
-function MinMaxFilter({id, title, setParentMinVal, setParentMaxVal, isChanged}){
+function MinMaxFilter({id, title, setParentMinVal, setParentMaxVal, setPage, isChanged}){
 
     const [minVal, setMinVal] = useState("")
     const [maxVal, setMaxVal] = useState("")
@@ -77,6 +92,7 @@ function MinMaxFilter({id, title, setParentMinVal, setParentMaxVal, isChanged}){
         if(minVal > maxVal) return
         setParentMinVal(minVal === "" ? defaultMin: minVal)
         setParentMaxVal(maxVal === "" ? defaultMax: maxVal)
+        setPage(1)
     }
 
     useEffect( () => {
