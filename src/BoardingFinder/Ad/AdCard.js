@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import { Card, CardMedia, CardContent, Typography, Box } from "@mui/material"
 import { TimeDiffWithNow } from "../../helper/date"
+import { bdAdsPath, makeFullPath } from "../apis/api";
 
 const cardHeight = {
     xl: 210,
@@ -8,11 +9,17 @@ const cardHeight = {
     xmd: 185
 }
 
-
 export default function AdCard({key1, imageUrl, rent, address, beds, baths, gender, postedDate}) {
 
     return (
-        <Card sx={{ display: 'flex', height: cardHeight, width: "70%" }}>
+        <Card sx={{ display: 'flex', height: cardHeight, width: "70%",
+            transition: 'transform 0.3s',
+            '&:hover': {
+            cursor: 'pointer',
+            transform: 'scale(1.05)',
+            boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.3)',
+            },
+        }} onClick={() =>  window.open(makeFullPath(`${bdAdsPath}/${key1}`), '_blank') }>
             <CardMedia
                 component="img"
                 sx={{ width: "40%", height: cardHeight }}
@@ -52,7 +59,7 @@ function InfoContent({noOfBeds, noOfBaths, gender }){
 }
 
 function PostedDate({date}) {
-    const dateStr = useMemo(() => TimeDiffWithNow(date), [])
+    const dateStr = useMemo(() => TimeDiffWithNow(date), [date])
     return (
         <Box sx={{ textAlign: "end"}}>
             <Typography variant="caption"> {dateStr} </Typography>

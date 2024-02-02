@@ -63,9 +63,10 @@ function AdList(){
                 <>
                 {
                     adListInfo.ads.map( (d) => {
+                        const preparedGender = prepareGender(d.gender)
                         return <AdCard key={`ad-list-${d.key}`}
                             key1={d.key} imageUrl={d.imageUrl} rent={d.rent} address={d.address}
-                            beds={d.beds} baths={d.baths} gender={d.gender} postedDate={d.createdAt}
+                            beds={d.beds} baths={d.baths} gender={preparedGender} postedDate={d.createdAt}
                         />
                     })
                 }
@@ -106,4 +107,9 @@ function NoResultsFoundMsg(){
             <Typography> No results found </Typography>
         </Paper>
     )
+}
+
+function prepareGender(gender) {
+    if(gender === "any") return "no preference"
+    return gender
 }

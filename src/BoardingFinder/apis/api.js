@@ -11,6 +11,10 @@ const webDomain = "http://localhost:3000"
 export const bdLoginPath = "/boarding/login"
 export const bdAdsPath = "/boarding/ads"
 
+export function makeFullPath(path){
+  return `${webDomain}${path}`
+}
+
 function isNot2xxStatusCode(statusCode) {
     if(typeof(statusCode) !== "number") return false
     return statusCode < 200 || statusCode > 299;
@@ -55,7 +59,7 @@ export async function ListAds(page, pageSize, minRent, maxRent, maxDist, minBeds
   
   url = addQueryParams(url, "for", genders)
   url = addQueryParams(url, "b", bills)
-  let respBody = await get(url)
+  const respBody = await get(url)
   if(respBody === null) return {data: [], resultsCount: 0, total: 0}
   return {data: respBody.data, resultsCount: respBody.resultsCount, total: respBody.total}
 }
@@ -66,4 +70,11 @@ function addQueryParams(url, key, values){
     url = url + `&${key}=${val}`
   }
   return url
+}
+
+export async function GetAd(id){
+  const respBody = await get(`http://localhost:8005/bdfinder/ads/${id}`)
+  if(respBody === null) return {ad: null, owner: null }
+
+  return { ad: respBody.ad, owner: respBody.owner }
 }

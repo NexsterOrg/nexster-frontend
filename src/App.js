@@ -21,6 +21,7 @@ import Banner from './components/mobile/Banner';
 import TestComponent from './BoardingFinder/Test';
 import AdListPage from './BoardingFinder/Ad/AdList';
 import BdHomePage from './BoardingFinder/Home/Home';
+import BdAdMainViewPage from './BoardingFinder/Ad/AdMainView';
 
 const theme = createTheme({
   palette: {
@@ -152,6 +153,7 @@ function App() {
 
         {/* Boarding Finder */}
         <Route path="/boarding/test" element={ <TestComponent /> } />
+        <Route path="/boarding/ads/:id" element={ <BdAdMainViewPage /> } />
         <Route path="/boarding/ads" element={ <AdListPage /> } />
         <Route path="/boarding" element={ <BdHomePage /> } />
 
