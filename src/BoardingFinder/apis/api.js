@@ -3,6 +3,7 @@ import { CleanLS } from "./store"
 // const apiDomain = "https://api.nexster.xyz"  // backend nginx proxy domain
 // const webDomain = "https://nexster.xyz"  // front end Domain
 const token = "token"
+const bdOwnerConsumer = "bdOwner"
 
 const apiDomain = "http://192.168.1.101"  
 const webDomain = "http://localhost:3000"
@@ -53,6 +54,53 @@ async function get(url) {
     return await resp.json();
 }
 
+async function post(url, reqBody) {
+  let bearTkn = localStorage.getItem(token)
+  if(bearTkn === null) {
+    CleanLS()
+    throw new UnAuthorizedError("token is not existed")
+  }
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': bearTkn,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(reqBody)
+  });
+
+  if(resp.status === unAuthCode) {
+    CleanLS()
+    throw new UnAuthorizedError("Attempted to access unauthorized resources")
+  }
+  if (isNot2xxStatusCode(resp.status)) {
+    return null
+  }
+  return await resp.json();
+}
+
+// POST request without Authorization Header
+async function postWithoutAuth(url, reqBody) {
+
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(reqBody)
+  });
+
+  const status = resp.status
+
+  if( 400 <= status && status <= 499) {
+    throw new UnAuthorizedError("Attempted to access unauthorized resources")
+  }
+  if ( status <= 199 || status >= 500 ) {
+    return null
+  }
+  return await resp.json();
+}
+
 // genders and bills are []string{}
 export async function ListAds(page, pageSize, minRent, maxRent, maxDist, minBeds, maxBeds, minBaths, maxBaths, genders, bills, sortType) {
   let url = `http://localhost:8005/bdfinder/ads?mnr=${minRent}&mxr=${maxRent}&mxd=${maxDist}&mnb=${minBeds}&mxb=${maxBeds}&mnba=${minBaths}&mxba=${maxBaths}&sort=${sortType}&pg=${page}&pgSize=${pageSize}`
@@ -78,3 +126,21 @@ export async function GetAd(id){
 
   return { ad: respBody.ad, owner: respBody.owner }
 }
+
+export async function GetAccessTokenForBdOwner(phoneNo, password) {
+  let respBody = await postWithoutAuth(`${apiDomain}/p/u/auth/token`, {
+    "id": phoneNo,
+    "passwd": password,
+    "consumer": bdOwnerConsumer
+  })
+  if(respBody === null) return { access_token: "", id: "" }
+  return { access_token: respBody.data?.access_token, id: respBody.data?.id }
+}
+
+export async function ValidateBdUser(){
+  const respBody = await post(`http://localhost:8005/bdfinder/users/validate`, {})
+  if(respBody === null) return false
+
+  return true
+}
+

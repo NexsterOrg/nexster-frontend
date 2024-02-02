@@ -18,10 +18,13 @@ import LoginSite from './components/login/LoginSite';
 import SignUpSite from './components/signUp/SignUp';
 import UniIdentitySite from './components/signUp/UniIdentity';
 import Banner from './components/mobile/Banner';
+
+// Boarding Finder
 import TestComponent from './BoardingFinder/Test';
 import AdListPage from './BoardingFinder/Ad/AdList';
 import BdHomePage from './BoardingFinder/Home/Home';
 import BdAdMainViewPage from './BoardingFinder/Ad/AdMainView';
+import BdLoginPage from './BoardingFinder/Login/Login';
 
 const theme = createTheme({
   palette: {
@@ -153,6 +156,7 @@ function App() {
 
         {/* Boarding Finder */}
         <Route path="/boarding/test" element={ <TestComponent /> } />
+        <Route path="/boarding/login" element={ <BdLoginPage /> } />
         <Route path="/boarding/ads/:id" element={ <BdAdMainViewPage /> } />
         <Route path="/boarding/ads" element={ <AdListPage /> } />
         <Route path="/boarding" element={ <BdHomePage /> } />

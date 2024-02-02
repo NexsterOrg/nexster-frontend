@@ -1,12 +1,32 @@
+import { useEffect } from "react";
 import { Box, Typography, Stack, Button } from "@mui/material";
 import TopNavBar from "../Components/TopNavBar";
 import LandingPgImage from "../assets/images/bdFinder_landingPg.svg"
 import { useNavigate } from 'react-router-dom';
 
-import { bdAdsPath } from "../apis/api";
+import { bdAdsPath, bdLoginPath, ValidateBdUser, UnAuthorizedError } from "../apis/api";
+import { CleanLS } from "../apis/store";
 
 function BdHome(){
     const navigate = useNavigate();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const isValidated = await ValidateBdUser()
+                if(!isValidated){
+                    CleanLS()
+                    throw new UnAuthorizedError("User failed to authenticate")
+                }
+            } catch (err) {
+                if (err instanceof UnAuthorizedError) {
+                    navigate(bdLoginPath, { replace: true });
+                    return
+                }
+                console.error("failed to validte user: ", err)  
+            }
+        })()
+    }, [])
 
     return (
         <>

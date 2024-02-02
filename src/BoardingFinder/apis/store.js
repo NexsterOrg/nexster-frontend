@@ -31,5 +31,4 @@ export function GetUserInfoFromLS(){
 // Remove token and user data from local storage
 export function CleanLS(){
     localStorage.removeItem(token)
-    localStorage.removeItem(userDataKey)
 }

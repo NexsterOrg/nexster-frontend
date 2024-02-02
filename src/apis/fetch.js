@@ -417,8 +417,9 @@ export async function UpdatePassword(oldPassword, newPassword) {
 
 export async function GetAccessToken(indexNo, password) {
   let respBody = await postWithoutAuth(`${apiDomain}/p/u/auth/token`, {
-    "index": indexNo,
-    "passwd": password
+    "id": indexNo,
+    "passwd": password,
+    "consumer": "student"
   })
   if(respBody === null) return { access_token: "", id: "" }
   return { access_token: respBody.data?.access_token, id: respBody.data?.id }
