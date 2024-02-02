@@ -1,8 +1,12 @@
 import { Box, Typography, Stack, Button } from "@mui/material";
 import TopNavBar from "../Components/TopNavBar";
 import LandingPgImage from "../assets/images/bdFinder_landingPg.svg"
+import { useNavigate } from 'react-router-dom';
+
+import { bdAdsPath } from "../apis/api";
 
 function BdHome(){
+    const navigate = useNavigate();
 
     return (
         <>
@@ -31,6 +35,7 @@ function BdHome(){
                                 background: "#9a5ec4",
                             },
                         }}
+                        onClick={() =>  navigate(bdAdsPath) }
                     > <Typography variant="h6"> See all boardings  </Typography> </Button>
                 </Box>
             </Stack>

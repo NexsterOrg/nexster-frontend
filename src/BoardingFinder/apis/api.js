@@ -9,6 +9,7 @@ const webDomain = "http://localhost:3000"
 
 // Paths
 export const bdLoginPath = "/boarding/login"
+export const bdAdsPath = "/boarding/ads"
 
 function isNot2xxStatusCode(statusCode) {
     if(typeof(statusCode) !== "number") return false

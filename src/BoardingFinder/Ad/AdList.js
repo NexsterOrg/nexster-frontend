@@ -8,18 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { ListAds, UnAuthorizedError, bdLoginPath } from "../apis/api";
 import {mostRecent, lowestPrice, noPrefer, defaultMin, defaultMax, billTypes } from "./AdFilters"
 
-const imgUrl = "https://api.slingacademy.com/public/sample-photos/1.jpeg"
-
-const data = [
-    {key: "hello1", imageUrl: imgUrl, rent: 6500, shortAddr: "Molpe rd, temple", beds: 5, baths: 2, gender: "boys", postedDate: "2024-01-25T16:47:06Z"},
-    {key: "hello2", imageUrl: imgUrl, rent: 5500, shortAddr: "John Mw", beds: 8, baths: 4, gender: "girls", postedDate: "2024-01-09T16:00:06Z"},
-    {key: "hello3", imageUrl: imgUrl, rent: 7000, shortAddr: "1 st lane", beds: 4, baths: 1, gender: "boys", postedDate: "2024-01-14T14:45:00Z"},
-    {key: "hello4", imageUrl: imgUrl, rent: 7000, shortAddr: "1 st lane", beds: 4, baths: 1, gender: "boys", postedDate: "2024-01-14T14:45:00Z"},
-    {key: "hello5", imageUrl: imgUrl, rent: 7000, shortAddr: "1 st lane", beds: 4, baths: 1, gender: "boys", postedDate: "2024-01-14T14:45:00Z"},
-    {key: "hello6", imageUrl: imgUrl, rent: 7000, shortAddr: "1 st lane", beds: 4, baths: 1, gender: "boys", postedDate: "2024-01-14T14:45:00Z"},
-    {key: "hello7", imageUrl: imgUrl, rent: 7000, shortAddr: "1 st lane", beds: 4, baths: 1, gender: "boys", postedDate: "2024-01-14T14:45:00Z"},
-]
-
 const pgSize = 10
 const defaultMaxDistance = 100000
 
