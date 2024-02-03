@@ -1,9 +1,12 @@
 import { useState } from "react"
-import { Stack, Button, Typography, TextField, Link, Paper, useTheme } from "@mui/material"
+import { Stack, Button, Typography, TextField, Link, Paper, useTheme, useMediaQuery } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 
 import { GetAccessTokenForBdOwner, bdOwnerRegPath } from "../apis/api"
 import { SetAccessTokenInLS } from "../apis/store"
+
+import { BottomLeftSnackbar } from "../../components/ui/snack_bar";
+
 // msgs
 const failedLogin = "Failed to login. Try again"
 const invalidCred = "Invalid credentials"
@@ -11,6 +14,12 @@ const invalidCred = "Invalid credentials"
 export default function BdLoginPage(){
     const theme = useTheme();
     const navigate = useNavigate();
+
+    const isSmall = useMediaQuery('(max-width:700px)');
+    const isMedium = useMediaQuery('(min-width:701px) and (max-width:1200px)');
+    
+    const [snackBarOpen, setSnackBarOpen] = useState(false)
+
     const [phoneNo, setPhoneNo] = useState("")
     const [phoneNoErr, setPhoneNoErr] = useState("")
 
@@ -20,6 +29,7 @@ export default function BdLoginPage(){
     const [loginErr, setLoginErr] = useState("")
 
     const modeColor = theme.palette.mode === 'dark' ? 'white' : 'black' ;
+    const panelSize = isSmall ? "85%" : isMedium ? "50%": "30%";
 
     const onLogin = async () => {
         if(phoneNo === ""){
@@ -36,7 +46,7 @@ export default function BdLoginPage(){
             const info = await GetAccessTokenForBdOwner(phoneNo, password)
             if(info.access_token === ""){
                 setLoginErr(failedLogin)
-                // setSnackBarOpen(true)
+                setSnackBarOpen(true)
                 return
             }
             setLoginErr("")
@@ -51,6 +61,7 @@ export default function BdLoginPage(){
 
         } catch (err) {
             setLoginErr(invalidCred)
+            setSnackBarOpen(true)
         }
 
     }
@@ -79,7 +90,7 @@ export default function BdLoginPage(){
             <Stack color={modeColor}> 
                 <Typography> Log in as a <span style={{ color: "greenyellow" }}> boarding owner </span>  </Typography>
             </Stack>
-            <Stack sx={{ width: "82%", color: modeColor }} spacing={4}>
+            <Stack sx={{ width: panelSize, color: modeColor }} spacing={4}>
                 <Paper sx={{ padding: "20px", display: "flex", alignItems: "center", flexDirection: "column" }} elevation={4}>
                     <Stack spacing={2} alignItems={"center"} sx={{ width: "280px" , paddingTop: "25px", marginBottom: "60px"}}>
                         <TextField 
@@ -122,7 +133,7 @@ export default function BdLoginPage(){
                         boarding places for university students.</Typography>
                 </Stack>
             </Stack>
-            {/* <BottomLeftSnackbar open={snackBarOpen}  setOpen={setSnackBarOpen} level={"error"} msg={loginErr}/> */}
+            <BottomLeftSnackbar open={snackBarOpen}  setOpen={setSnackBarOpen} level={"error"} msg={loginErr}/>
         </Stack>
     )
 }
