@@ -10,7 +10,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const textTooLongErr = "input exceeds the character limit"
 
-export default function PasswordField({ maxCount, content, setContent, textErr, setTextErr, label, htmlId }){
+export default function PasswordField({ maxCount, content, setContent, textErr, setTextErr, label, htmlId, styles }){
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -35,7 +35,7 @@ export default function PasswordField({ maxCount, content, setContent, textErr, 
 
     return (
         <Box>
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+            <FormControl sx={ [{ m: 1, width: '25ch' }, styles]} variant="outlined">
             <InputLabel htmlFor={htmlId}> {label}</InputLabel>
             <OutlinedInput
                 id={htmlId}

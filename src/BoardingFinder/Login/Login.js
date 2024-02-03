@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Stack, Button, Typography, TextField, Link, Paper, useTheme } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 
-import { GetAccessTokenForBdOwner } from "../apis/api"
+import { GetAccessTokenForBdOwner, bdOwnerRegPath } from "../apis/api"
 import { SetAccessTokenInLS } from "../apis/store"
 // msgs
 const failedLogin = "Failed to login. Try again"
@@ -79,9 +79,9 @@ export default function BdLoginPage(){
             <Stack color={modeColor}> 
                 <Typography> Log in as a <span style={{ color: "greenyellow" }}> boarding owner </span>  </Typography>
             </Stack>
-            <Stack sx={{ width: "30%", color: modeColor }} spacing={4}>
+            <Stack sx={{ width: "82%", color: modeColor }} spacing={4}>
                 <Paper sx={{ padding: "20px", display: "flex", alignItems: "center", flexDirection: "column" }} elevation={4}>
-                    <Stack spacing={2} alignItems={"center"} sx={{ width: "300px" , paddingTop: "25px", marginBottom: "60px"}}>
+                    <Stack spacing={2} alignItems={"center"} sx={{ width: "280px" , paddingTop: "25px", marginBottom: "60px"}}>
                         <TextField 
                             label="Phone No"
                             fullWidth
@@ -114,7 +114,7 @@ export default function BdLoginPage(){
 
                     <Stack direction={"row"} spacing={2}>
                         <Typography> Don't have an account? </Typography>
-                        <Link href={"#link-to-Bd-account-creation"} target="_blank" underline="hover" sx={{marginTop: "2px"}}> Create an account </Link>
+                        <Link href={bdOwnerRegPath} target="_blank" underline="hover" sx={{marginTop: "2px"}}> Create an account </Link>
                     </Stack>
                 </Paper>
                 <Stack>

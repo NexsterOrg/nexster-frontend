@@ -25,6 +25,8 @@ import AdListPage from './BoardingFinder/Ad/AdList';
 import BdHomePage from './BoardingFinder/Home/Home';
 import BdAdMainViewPage from './BoardingFinder/Ad/AdMainView';
 import BdLoginPage from './BoardingFinder/Login/Login';
+import BdOwnerAccountCreation from './BoardingFinder/SignUp/BdAccountCreation';
+import AfterAccReqSubmission from './BoardingFinder/SignUp/AfterRequestSubmission';
 
 const theme = createTheme({
   palette: {
@@ -89,10 +91,10 @@ const theme = createTheme({
     },
 
     caption: {
-      fontSize: '0.1rem',
+      fontSize: '0.5rem',
       letterSpacing: "0.03333em",
       '@media (min-width: 1300px)': { 
-        fontSize: '0.6rem',
+        fontSize: '0.65rem',
         letterSpacing: "0.02em",
       },
       '@media (min-width: 1600px)': { 
@@ -121,13 +123,13 @@ const mobileTheme = createTheme({
 
 function App() {
 
-  if(isMobile) {
-    return (
-      <ThemeProvider theme={mobileTheme}>
-        <Banner />
-      </ThemeProvider>
-    )
-  }
+  // if(isMobile) {
+  //   return (
+  //     <ThemeProvider theme={mobileTheme}>
+  //       <Banner />
+  //     </ThemeProvider>
+  //   )
+  // }
 
   return (
       <ThemeProvider theme={theme}>
@@ -156,6 +158,8 @@ function App() {
 
         {/* Boarding Finder */}
         <Route path="/boarding/test" element={ <TestComponent /> } />
+        <Route path="/boarding/owner/reg" element={ <BdOwnerAccountCreation /> } />
+        <Route path="/boarding/owner/after-reg" element={ <AfterAccReqSubmission /> } />
         <Route path="/boarding/login" element={ <BdLoginPage /> } />
         <Route path="/boarding/ads/:id" element={ <BdAdMainViewPage /> } />
         <Route path="/boarding/ads" element={ <AdListPage /> } />

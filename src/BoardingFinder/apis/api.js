@@ -11,6 +11,8 @@ const webDomain = "http://localhost:3000"
 // Paths
 export const bdLoginPath = "/boarding/login"
 export const bdAdsPath = "/boarding/ads"
+export const bdOwnerRegPath = "/boarding/owner/reg"
+export const afterBdOwnerRegPath = "/boarding/owner/after-reg"
 
 export function makeFullPath(path){
   return `${webDomain}${path}`
@@ -103,7 +105,7 @@ async function postWithoutAuth(url, reqBody) {
 
 // genders and bills are []string{}
 export async function ListAds(page, pageSize, minRent, maxRent, maxDist, minBeds, maxBeds, minBaths, maxBaths, genders, bills, sortType) {
-  let url = `http://localhost:8005/bdfinder/ads?mnr=${minRent}&mxr=${maxRent}&mxd=${maxDist}&mnb=${minBeds}&mxb=${maxBeds}&mnba=${minBaths}&mxba=${maxBaths}&sort=${sortType}&pg=${page}&pgSize=${pageSize}`
+  let url = `${apiDomain}/g/bdf/ads?mnr=${minRent}&mxr=${maxRent}&mxd=${maxDist}&mnb=${minBeds}&mxb=${maxBeds}&mnba=${minBaths}&mxba=${maxBaths}&sort=${sortType}&pg=${page}&pgSize=${pageSize}`
   
   url = addQueryParams(url, "for", genders)
   url = addQueryParams(url, "b", bills)
@@ -121,7 +123,7 @@ function addQueryParams(url, key, values){
 }
 
 export async function GetAd(id){
-  const respBody = await get(`http://localhost:8005/bdfinder/ads/${id}`)
+  const respBody = await get(`${apiDomain}/g/bdf/ads/${id}`)
   if(respBody === null) return {ad: null, owner: null }
 
   return { ad: respBody.ad, owner: respBody.owner }
@@ -138,9 +140,23 @@ export async function GetAccessTokenForBdOwner(phoneNo, password) {
 }
 
 export async function ValidateBdUser(){
-  const respBody = await post(`http://localhost:8005/bdfinder/users/validate`, {})
+  const respBody = await post(`${apiDomain}/p/bdf/users/validate`, {})
   if(respBody === null) return false
 
   return true
 }
 
+export async function CreateBdOwner(name, mainContact, password, address){ 
+  const respBody = await postWithoutAuth(`${apiDomain}/p/bdf/auth/owner`, {
+    "name": name,
+    "mainContact": mainContact,
+    "otherContacts": [],
+    "email": "",
+    "password": password,
+    "imageUrl": "",
+    "address": address,
+    "location": ""
+  })
+  if(respBody === null) return false
+  return true
+}
