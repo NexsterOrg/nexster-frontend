@@ -31,6 +31,10 @@ export function MkUserProfilePageLink(indexNo){
   return `${webDomain}/index/${indexNo}`
 }
 
+export function MkFullPath(path){
+  return `${webDomain}/${path}`
+}
+
 export class UnAuthorizedError extends Error {
   constructor(message) {
     super(message);

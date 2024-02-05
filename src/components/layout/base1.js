@@ -18,6 +18,7 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 import SearchIcon from '@mui/icons-material/Search';
+import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
 
 // TODO: Set this value based on the screen size.
 const drawerWidth = "12%";
@@ -126,6 +127,15 @@ export default function Base1({styles, SideComponent}){
                     </ListItem>
 
                     <ListItem key={4} disablePadding>
+                        <ListItemButton href="/boardingFinder">
+                            <ListItemIcon sx={{minWidth: 35 , width: iconWidth}}>
+                                <ApartmentOutlinedIcon sx={{width: iconSize, height: iconSize}}/>
+                            </ListItemIcon>
+                            <ListItemText primary={"Boardings"} disableTypography sx={{fontSize: navFontSize}}/>
+                        </ListItemButton>
+                    </ListItem>
+
+                    <ListItem key={5} disablePadding>
                         <ListItemButton onClick={() => setIsCreatePostOpen(preState => !preState)} >
                             <ListItemIcon sx={{minWidth: 35 , width: iconWidth}}>
                                 <AddCircleOutlineRoundedIcon  sx={{width: iconSize, height: iconSize}}/>
@@ -137,7 +147,7 @@ export default function Base1({styles, SideComponent}){
                 </List>
                 <Divider />
 
-                <ListItem key={5} disablePadding sx={{marginTop: "15%"}}> 
+                <ListItem key={6} disablePadding sx={{marginTop: "15%"}}> 
 
                     <ListItemButton 
                         id="base-profile-menu-button"

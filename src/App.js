@@ -17,6 +17,7 @@ import SettingSite from './components/settings/Settings';
 import LoginSite from './components/login/LoginSite';
 import SignUpSite from './components/signUp/SignUp';
 import UniIdentitySite from './components/signUp/UniIdentity';
+import BoardingFinderBanner from './components/bdFinderBanner';
 import Banner from './components/mobile/Banner';
 
 // Boarding Finder
@@ -157,6 +158,8 @@ function App() {
         <Route path="/account/reg" element={<SignUpSite />} />
 
         <Route path="/account/reg-link" element={<UniIdentitySite />} />
+
+        <Route path="/boardingFinder" element={<BoardingFinderBanner />} />
 
         {/* Boarding Finder */}
         <Route path="/boarding/test" element={ <TestComponent /> } />
