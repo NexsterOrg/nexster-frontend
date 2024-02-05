@@ -81,10 +81,9 @@ export function TextFieldWithUpdateIndicator({textFieldStyles, maxCount, require
     )
 }
 
-export function TypedTextFieldWithCount({type, textFieldStyles, maxCount, required, multiline, label, maxRows, placeholder, content, setContent, 
+export function TypedTextFieldWithCount({type, textFieldStyles, maxCount, required, label, placeholder, content, setContent, 
   textErr, setTextErr, variant}){
     maxCount = maxCount || 100
-    maxRows = maxRows || 1
 
     const handleChange = (event) => {
       const curText = event.target.value || ""
@@ -103,19 +102,44 @@ export function TypedTextFieldWithCount({type, textFieldStyles, maxCount, requir
             type={type || "text"}
             error={textErr !== ""}
             helperText={textErr}
-            multiline={multiline}
+            multiline={false}
             variant={variant}
             required={required}
             label={label}
             sx={[{width: "50%"}, textFieldStyles]}
             value={content}
             onChange={handleChange}
-            maxRows={maxRows}
+            maxRows={1}
             placeholder={placeholder}
           />
           <Stack justifyContent={"flex-end"}>
             <Typography variant='caption'> {content.length}/{maxCount}</Typography>
           </Stack>
         </Stack>
+    )
+}
+
+export function TypedTextField({type, styles, required, label, placeholder, content, setContent, textErr, setTextErr, variant}){
+
+    const handleChange = (event) => {
+      setContent(event.target.value || "")
+      setTextErr("")
+    }
+    
+    return (
+          <TextField 
+            type={type || "text"}
+            error={textErr !== ""}
+            helperText={textErr}
+            multiline={false}
+            variant={variant}
+            required={required}
+            label={label}
+            sx={[{width: "50%"}, styles]}
+            value={content}
+            onChange={handleChange}
+            maxRows={1}
+            placeholder={placeholder}
+          />
     )
 }

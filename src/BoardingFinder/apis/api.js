@@ -13,6 +13,8 @@ export const bdLoginPath = "/boarding/login"
 export const bdAdsPath = "/boarding/ads"
 export const bdOwnerRegPath = "/boarding/owner/reg"
 export const afterBdOwnerRegPath = "/boarding/owner/after-reg"
+export const afterAdCreatePath = "/boarding/ads/after-create"
+export const bdAdsCreatePath = "/boarding/ads/create"
 
 export function makeFullPath(path){
   return `${webDomain}${path}`
@@ -159,4 +161,47 @@ export async function CreateBdOwner(name, mainContact, password, address){
   })
   if(respBody === null) return false
   return true
+}
+
+export async function CreateAd(description, bills, imageUrlsArr, rent, address, beds, baths, gender, addrSameAsUser) {
+  rent = parseInt(rent, 10);
+  beds = parseInt(beds, 10);
+  baths = parseInt(baths, 10);
+
+  if(isNaN(rent) || isNaN(beds) || isNaN(baths) ){
+    return false
+  }
+
+  const respBody = await post(`${apiDomain}/p/bdf/ads`, {
+    "description": description,
+    "bills": bills,
+    "imageUrls": imageUrlsArr,
+    "rent": rent,
+    "address": address,
+    "beds": beds,
+    "baths": baths,
+    "gender": gender,
+    "distance": 100,
+    "distanceUnit": "m",
+    "locationSameAsOwner": addrSameAsUser
+  })
+  if(respBody === null) return false
+
+  return true
+}
+
+export const isLogged = async (navigate) => {
+  try {
+      const isValidated = await ValidateBdUser()
+      if(!isValidated){
+          CleanLS()
+          throw new UnAuthorizedError("User failed to authenticate")
+      }
+  } catch (err) {
+      if (err instanceof UnAuthorizedError) {
+          navigate(bdLoginPath, { replace: true });
+          return
+      }
+      console.error("failed to validte user: ", err)  
+  }
 }

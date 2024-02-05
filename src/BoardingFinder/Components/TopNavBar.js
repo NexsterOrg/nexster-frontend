@@ -1,12 +1,12 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Button, AppBar, Toolbar,CssBaseline, Typography, useScrollTrigger, Box, Slide, Link } from '@mui/material';
+import { Button, AppBar, Toolbar,CssBaseline, useScrollTrigger, Box, Slide, Link } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
+import { bdAdsCreatePath } from '../apis/api';
 
 function HideOnScroll(props) {
   const { children, window } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
   const trigger = useScrollTrigger({
     target: window ? window() : undefined,
   });
@@ -20,14 +20,12 @@ function HideOnScroll(props) {
 
 HideOnScroll.propTypes = {
   children: PropTypes.element.isRequired,
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window: PropTypes.func,
 };
 
 export default function TopNavBar(props) {
+  const navigate = useNavigate();
+
   return (
     <>
       <CssBaseline />
@@ -40,19 +38,11 @@ export default function TopNavBar(props) {
             </Typography> */}
             <Box sx={{ width: "80%", display: "flex", flexDirection: "row-reverse", gap: "50px"}}>
 
-                <Button sx={{ background: "#D9D9D9", color: "black", textTransform: "none", 
-                    padding: "8px",
-                    '&:hover': {
-                        background: "#BFBFBF",
-                    },
-                }}> Profile </Button>
+                <Button sx={styles.profileButn}> Profile </Button>
 
-                <Button sx={{ background: "#e08af2", fontWeight: "bold", color: "black", textTransform: "none", 
-                    padding: "8px",
-                    '&:hover': {
-                        background: "#a76fe5",
-                    },
-                }}> Post an Ad </Button>
+                <Button onClick={() => navigate(bdAdsCreatePath)}
+                  sx={styles.postButn} 
+                > Post an Ad </Button>
 
             </Box>
           </Toolbar>
@@ -64,4 +54,21 @@ export default function TopNavBar(props) {
       </Box>
     </>
   );
+}
+
+const styles = {
+  profileButn: { 
+    background: "#D9D9D9", color: "black", textTransform: "none", 
+    padding: "8px",
+    '&:hover': {
+        background: "#BFBFBF",
+    }
+  },
+  postButn: { 
+    background: "#e08af2", fontWeight: "bold", color: "black", textTransform: "none", 
+    padding: "8px",
+    '&:hover': {
+        background: "#a76fe5",
+    }
+  }
 }

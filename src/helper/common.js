@@ -50,3 +50,9 @@ export function ValidateUniIndex(str) {
     // Check if the string matches the pattern
     return pattern.test(str);
 }
+
+export function GetImageType(mimeType){
+    if(typeof mimeType !== "string") return ""
+    const parts = mimeType.split('/');
+    return parts.length !== 2  ? "" : parts[1]
+}

@@ -44,7 +44,7 @@ export default function MenuButton({question, content, onYes, onNo, rootStyles})
   );
 }
 
-function ConfirmDialog({open, setOpen, question, content, onYes, onNo}) {
+export function ConfirmDialog({open, setOpen, question, content, onYes, onNo}) {
   // const [alert, setAlert] = useState(false) // set alert properly
   const onYesFunc = async () => {
     const isSucc = await onYes()

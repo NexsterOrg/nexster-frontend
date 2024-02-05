@@ -13,13 +13,15 @@ const sortOptions = [
 ]
 
 export const noPrefer = "noPreference"
-const genderOptions = [
+export const genderOptions = [
     {label: "Girls", value: "girls"},
     {label: "Boys", value: "boys"},
     {label: "No preference", value: noPrefer}
 ]
 
 export const billTypes = ["include", "exclude"]
+export const includeBill = "include"
+export const excludeBill = "exclude"
 
 export const defaultMin = 1
 export const defaultMax = 10000

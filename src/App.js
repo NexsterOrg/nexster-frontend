@@ -27,6 +27,8 @@ import BdAdMainViewPage from './BoardingFinder/Ad/AdMainView';
 import BdLoginPage from './BoardingFinder/Login/Login';
 import BdOwnerAccountCreation from './BoardingFinder/SignUp/BdAccountCreation';
 import AfterAccReqSubmission from './BoardingFinder/SignUp/AfterRequestSubmission';
+import AdCreatePage from './BoardingFinder/Ad/AdCreate';
+import AdCreateSuccessPage from './BoardingFinder/Ad/AdCreateSuccess';
 
 const theme = createTheme({
   palette: {
@@ -158,9 +160,14 @@ function App() {
 
         {/* Boarding Finder */}
         <Route path="/boarding/test" element={ <TestComponent /> } />
+        
         <Route path="/boarding/owner/reg" element={ <BdOwnerAccountCreation /> } />
         <Route path="/boarding/owner/after-reg" element={ <AfterAccReqSubmission /> } />
         <Route path="/boarding/login" element={ <BdLoginPage /> } />
+
+        <Route path="/boarding/ads/create" element={ <AdCreatePage /> } />
+        <Route path="/boarding/ads/after-create" element={ <AdCreateSuccessPage /> } />
+
         <Route path="/boarding/ads/:id" element={ <BdAdMainViewPage /> } />
         <Route path="/boarding/ads" element={ <AdListPage /> } />
         <Route path="/boarding" element={ <BdHomePage /> } />

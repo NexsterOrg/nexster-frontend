@@ -128,8 +128,7 @@ export default function BdOwnerAccountCreation(){
                                 textFieldStyles={{ width: "240px" }} maxCount={nameMaxCount} required={true} multiline={false} label={"Name"} maxRows={1} />
 
                             <TypedTextFieldWithCount content={phoneNo} setContent={setPhoneNo} textErr={phoneNoErr} setTextErr={setPhoneNoErr} variant="outlined" 
-                                type={"number"} textFieldStyles={{ width: "240px" }} maxCount={phoneNoMaxCount} required={true} multiline={false} label={"Phone No"} 
-                                maxRows={1} />
+                                type={"number"} textFieldStyles={{ width: "240px" }} maxCount={phoneNoMaxCount} required={true} label={"Phone No"} />
                             
                             
                             <TextFieldWithCount content={address} setContent={setAddress} textErr={addressErr} setTextErr={setAddressErr} variant="outlined" 
@@ -185,5 +184,3 @@ function BdSignUpHeader({modeColor}){
         </>
     )
 }
-
-
