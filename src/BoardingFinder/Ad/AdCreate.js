@@ -121,7 +121,8 @@ function AdCreate(){
 
         try {
             const calGender = gender === noPrefer ? "any" : gender
-            const isSucceeded = await CreateAd(description, bill, imgIds, rent, address, beds, baths, calGender, sameAsOwnerAddr)
+            const imgIdArr = imgIds.map( img => img?.backendId || "" )
+            const isSucceeded = await CreateAd(description, bill, imgIdArr, rent, address, beds, baths, calGender, sameAsOwnerAddr)
 
             if(isSucceeded){
                 setFormErr("")
@@ -190,7 +191,7 @@ function AdCreate(){
 
 
                         <Grid item xs={12}> 
-                            <ImageUploader setImgArr={setImgIds} namespace={"bdAds"} maxImgCount={5}/>
+                            <ImageUploader imgArr={imgIds} setImgArr={setImgIds} namespace={"bdAds"} maxImgCount={5}/>
                         </Grid>
 
                         <Grid item xs={12} md={10}> 

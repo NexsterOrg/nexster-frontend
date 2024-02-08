@@ -14,7 +14,7 @@ const getBase64 = (file) =>
 });
 
 
-const ImageUploader = ({setImgArr, namespace, maxImgCount}) => {
+const ImageUploader = ({imgArr, setImgArr, namespace, maxImgCount}) => {
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
@@ -45,7 +45,7 @@ const ImageUploader = ({setImgArr, namespace, maxImgCount}) => {
           const resp = await response.json()
           const imgId = resp?.data?.imageName || ""
 
-          setImgArr( (preImgs) => [...preImgs, imgId])
+          setImgArr( (preImgs) => [...preImgs, {backendId: imgId, uid: file.uid}])
 
           message.success(`${file.name}, image uploaded successfully`);
         } else {
@@ -69,11 +69,18 @@ const ImageUploader = ({setImgArr, namespace, maxImgCount}) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
+
     setPreviewImage(file.url || file.preview);
     setPreviewOpen(true);
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
   };
 
+  const onImageRemove = (file) => {
+    const newFileList = fileList.filter(item => item.uid !== file.uid);
+    const newImgArr = imgArr.filter(item => item.uid !== file.uid);
+    setFileList(newFileList);
+    setImgArr(newImgArr)
+  }
 
   return (
     <>
@@ -89,7 +96,7 @@ const ImageUploader = ({setImgArr, namespace, maxImgCount}) => {
             onPreview={handlePreview}
             name='image'
             customRequest={customRequest}
-
+            onRemove={onImageRemove}
         >
             {fileList.length < maxImgCount && <span style={{ color: "white" }}> + Upload</span>}
         </Upload>
