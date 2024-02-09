@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Button, AppBar, Toolbar,CssBaseline, useScrollTrigger, Box, Slide, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import { bdAdsCreatePath } from '../apis/api';
+import { bdAdsCreatePath, bdLoginPath } from '../apis/api';
+import { CleanLS } from "../apis/store"
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -26,6 +27,11 @@ HideOnScroll.propTypes = {
 export default function TopNavBar(props) {
   const navigate = useNavigate();
 
+  const onSignout = () => {
+    CleanLS()
+    navigate(bdLoginPath)
+  }
+
   return (
     <>
       <CssBaseline />
@@ -38,7 +44,7 @@ export default function TopNavBar(props) {
             </Typography> */}
             <Box sx={{ width: "80%", display: "flex", flexDirection: "row-reverse", gap: "50px"}}>
 
-                <Button sx={styles.profileButn}> Profile </Button>
+                <Button sx={styles.profileButn} onClick={onSignout}> Log out </Button>
 
                 <Button onClick={() => navigate(bdAdsCreatePath)}
                   sx={styles.postButn} 

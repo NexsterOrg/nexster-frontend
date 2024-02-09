@@ -24,7 +24,7 @@ export const includeBill = "include"
 export const excludeBill = "exclude"
 
 export const defaultMin = 1
-export const defaultMax = 10000
+export const defaultMax = 100000
 
 export default function AdFilters({sortType, setSortType, gender, setGender, setRentMin, setRentMax, 
     setBedsMin, setBedsMax, setBathsMin, setBathsMax, setPage}){
