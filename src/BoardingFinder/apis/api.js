@@ -1,12 +1,9 @@
 import { CleanLS } from "./store"
 
-// const apiDomain = "https://api.nexster.xyz"  // backend nginx proxy domain
-// const webDomain = "https://nexster.xyz"  // front end Domain
+const apiDomain = "https://api.nexster.xyz"  // backend nginx proxy domain
+const webDomain = "http://20.197.12.71"  // front end Domain
 const token = "token"
 const bdOwnerConsumer = "bdOwner"
-
-const apiDomain = "http://192.168.1.101"  
-const webDomain = "http://localhost:3000"
 
 // Paths
 export const bdLoginPath = "/boarding/login"
