@@ -102,7 +102,8 @@ export default function UniIdentitySite(){
                     </Stack>
                 </Paper>
                 <Stack>
-                    <Typography variant="caption"> Nexster is a student networking platform that provides solutions for university students's needs. </Typography>
+                    <Typography variant="caption"> Nexster is a student networking platform that provides solutions for university students's needs. 
+                    Only for students at the University of Moratuwa. </Typography>
                 </Stack>
             </Stack>
             </>

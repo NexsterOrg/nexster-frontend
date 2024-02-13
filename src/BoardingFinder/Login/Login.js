@@ -130,7 +130,7 @@ export default function BdLoginPage(){
                 </Paper>
                 <Stack>
                     <Typography variant="caption"> Nexster BoardingFinder is an online place to find 
-                        boarding places for university students.</Typography>
+                        boarding places for students at the University of Moratuwa. </Typography>
                 </Stack>
             </Stack>
             <BottomLeftSnackbar open={snackBarOpen}  setOpen={setSnackBarOpen} level={"error"} msg={loginErr}/>
