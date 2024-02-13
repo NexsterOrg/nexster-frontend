@@ -21,7 +21,6 @@ import BoardingFinderBanner from './components/bdFinderBanner';
 import Banner from './components/mobile/Banner';
 
 // Boarding Finder
-import TestComponent from './BoardingFinder/Test';
 import AdListPage from './BoardingFinder/Ad/AdList';
 import BdHomePage from './BoardingFinder/Home/Home';
 import BdAdMainViewPage from './BoardingFinder/Ad/AdMainView';
@@ -162,8 +161,6 @@ function App() {
         <Route path="/boardingFinder" element={<BoardingFinderBanner />} />
 
         {/* Boarding Finder */}
-        <Route path="/boarding/test" element={ <TestComponent /> } />
-        
         <Route path="/boarding/owner/reg" element={ <BdOwnerAccountCreation /> } />
         <Route path="/boarding/owner/after-reg" element={ <AfterAccReqSubmission /> } />
         <Route path="/boarding/login" element={ <BdLoginPage /> } />
