@@ -126,13 +126,13 @@ const mobileTheme = createTheme({
 
 function App() {
 
-  // if(isMobile) {
-  //   return (
-  //     <ThemeProvider theme={mobileTheme}>
-  //       <Banner />
-  //     </ThemeProvider>
-  //   )
-  // }
+  if(isMobile) {
+    return (
+      <ThemeProvider theme={mobileTheme}>
+        <Banner />
+      </ThemeProvider>
+    )
+  }
 
   return (
       <ThemeProvider theme={theme}>

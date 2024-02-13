@@ -43,8 +43,7 @@ function AdList(){
                 if (err instanceof UnAuthorizedError) {
                     navigate(bdLoginPath, { replace: true });
                     return
-                }
-                console.error("failed to list ads", err)  
+                }  
             }
         })()
 

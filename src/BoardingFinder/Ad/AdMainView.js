@@ -23,7 +23,6 @@ function AdMainView({adId}){
                     navigate(bdLoginPath, { replace: true });
                     return
                 }
-                console.error("failed to get ad", err)  
             }
         })()
 

@@ -35,7 +35,6 @@ function SideSettings({userId}) {
                     navigate(LoginPath, { replace: true });
                     return
                 } 
-                console.error('Error fetching user profile info:', err); // TODO : Remove this in production
             }
         })();
 

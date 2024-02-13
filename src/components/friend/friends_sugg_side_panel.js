@@ -25,7 +25,6 @@ export default function FriendsSuggSidePanel({argStyle, userId}){
                     navigate(LoginPath, { replace: true });
                     return
                 } 
-                console.error('Error fetching posts:', err); // TODO : Remove this in production
             }
         })();
     }, [userId])

@@ -149,7 +149,6 @@ export function EditProfile({userId, initFirstName, initSecondName, initAbout, i
                     return
                 } 
                 setUpdateSucceeded(false)
-                console.error('Error fetching user profile info:', err); // TODO : Remove this in production
             }
         })();
 

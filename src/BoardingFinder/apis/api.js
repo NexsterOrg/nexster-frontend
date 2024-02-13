@@ -199,6 +199,5 @@ export const isLogged = async (navigate) => {
           navigate(bdLoginPath, { replace: true });
           return
       }
-      console.error("failed to validte user: ", err)  
   }
 }

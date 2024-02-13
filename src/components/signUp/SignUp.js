@@ -72,7 +72,6 @@ export default function SignUpSite() {
                 return 
               }
             } catch (err) {
-                console.error('Error validating URL:', err); // TODO : Remove this in production
             }
 
             alert("Invalid account creation URL. Get a new link.")

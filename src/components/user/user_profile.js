@@ -35,7 +35,6 @@ function ProfileHeader({userId}){
                     navigate('/login', { replace: true });
                     return
                 } 
-                console.error('Error fetching posts:', err); // TODO : Remove this in production
             }
         })()
     }, [userId])
@@ -90,7 +89,6 @@ function ProfileSection({indexNo}){
                     navigate('/login', { replace: true });
                     return
                 } 
-                console.error("failed to get profile userInfo: ", err)
             }
         })()
 

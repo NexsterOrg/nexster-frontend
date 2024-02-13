@@ -52,7 +52,6 @@ export default function AllFriendsSite({rootStyles}){
                     navigate(LoginPath, { replace: true });
                     return
                 }
-                console.error("failed to list friends", err)   // TODO: consider creating different page with error info.
             }
         })()
 
@@ -80,7 +79,6 @@ export default function AllFriendsSite({rootStyles}){
                         navigate(LoginPath, { replace: true });
                         return
                     }
-                    console.error("scroll friend list: ", err)
                 }
             }
         }

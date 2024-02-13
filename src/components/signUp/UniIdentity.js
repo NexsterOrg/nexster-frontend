@@ -3,7 +3,7 @@ import { Stack, Typography, Paper, TextField, Button, Link, useTheme} from "@mui
 import MailIcon from '@mui/icons-material/Mail';
 
 import { BottomLeftSnackbar } from "../ui/snack_bar"
-import { Delay, ValidateUniIndex } from "../../helper/common"
+import { ValidateUniIndex } from "../../helper/common"
 import { LoginPath, SendAccountCreationLink } from "../../apis/fetch"
 import { SaveLoading } from '../ui/LoadingComponents';
 
@@ -43,7 +43,6 @@ export default function UniIdentitySite(){
             }
 
         } catch (error) {
-            console.error("failed to send a link to email: ", error)   
         }
         startSaveSpinner(false)
         setSendErr(failedSend)
@@ -103,11 +102,7 @@ export default function UniIdentitySite(){
                     </Stack>
                 </Paper>
                 <Stack>
-                    <Typography variant="caption"> Nexster is a student networking platform that provides tools to make students lives better. </Typography>
-                    <Typography variant="body2" sx={{ fontWeight: "bold", marginTop: "10px"}}> Note: </Typography>
-                    <Typography variant="caption"> Please be aware that this version is in its early development phase and may contain bugs or incomplete features. 
-                    Kindly avoid submitting critical information or relying on this platform for crucial data. 
-                    We recommend backing up any essential files or data since all data will be cleaned after the testing phase. </Typography>
+                    <Typography variant="caption"> Nexster is a student networking platform that provides solutions for university students's needs. </Typography>
                 </Stack>
             </Stack>
             </>

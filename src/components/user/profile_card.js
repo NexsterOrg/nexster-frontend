@@ -44,7 +44,6 @@ export default function ProfileCard({userKey, username, imgUrl, facOrField, batc
         navigate(LoginPath, { replace: true });
         return
       }
-        console.error("failed to create friend req: ", err)
     }
   }
 
@@ -58,7 +57,6 @@ export default function ProfileCard({userKey, username, imgUrl, facOrField, batc
         navigate(LoginPath, { replace: true });
         return
       }
-      console.error("failed to remove pending req: ", err)
     }
   }
 
@@ -72,7 +70,6 @@ export default function ProfileCard({userKey, username, imgUrl, facOrField, batc
         navigate(LoginPath, { replace: true });
         return
       }
-      console.error("failed to accept friend req: ", err)
     }
   }
 

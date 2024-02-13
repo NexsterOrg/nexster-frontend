@@ -36,7 +36,6 @@ export default function ListModel({open, setOpen, eventKey, reactType}) {
                 navigate(LoginPath, { replace: true });
                 return
             } 
-            console.error('Error fetching events reacted user:', err); // TODO : Remove this in production
         }
     })();
 }, [])
@@ -58,7 +57,6 @@ export default function ListModel({open, setOpen, eventKey, reactType}) {
                 navigate(LoginPath, { replace: true });
                 return
             }
-            console.error("event reacted user list: ", err)
         }
     }
     setScrollPosition(event.target.scrollTop);

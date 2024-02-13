@@ -121,9 +121,9 @@ export default function LoginSite(){
                             helperText={passwordErr}
                         />
 
-                        <Stack sx={{ width: "100%"}}>
+                        {/* <Stack sx={{ width: "100%"}}>
                             <Link href={"#not-yet-implemented"} target="_blank" underline="hover" sx={{marginTop: "2px"}}> Forgot password ? </Link>
-                        </Stack>
+                        </Stack> */}
 
                         <Button variant="contained" onClick={onLogin}
                             sx={{ textTransform: "none", width: "100px", bgcolor: "#35dbcb"}}> Login </Button> 
@@ -135,11 +135,7 @@ export default function LoginSite(){
                     </Stack>
                 </Paper>
                 <Stack>
-                    <Typography variant="caption"> Nexster is a student networking platform that provides tools to make students lives better. </Typography>
-                    <Typography variant="body2" sx={{ fontWeight: "bold", marginTop: "10px"}}> Note: </Typography>
-                    <Typography variant="caption"> Please be aware that this version is in its early development phase and may contain bugs or incomplete features. 
-                        Kindly avoid submitting critical information or relying on this platform for crucial data. 
-                        We recommend backing up any essential files or data since all data will be cleaned after the testing phase. </Typography>
+                    <Typography variant="caption"> Nexster is a student networking platform that provides solutions for university students's needs. </Typography>
                 </Stack>
             </Stack>
             <BottomLeftSnackbar open={snackBarOpen}  setOpen={setSnackBarOpen} level={"error"} msg={loginErr}/>

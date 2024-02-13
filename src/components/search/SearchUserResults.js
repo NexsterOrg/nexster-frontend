@@ -22,7 +22,6 @@ export default function SearchUserResults({rootStyles, keyword}){
                     navigate(LoginPath, { replace: true });
                     return
                 } 
-                console.error("Failed to fetch search results")
             }
         })()
     }, [keyword])

@@ -96,7 +96,7 @@ export default function Base1({styles, SideComponent}){
                 <Typography variant="h4"> 
                     Nexster
                 </Typography>
-                <Typography variant="caption"> [alpha] </Typography>
+                <Typography variant="caption"> [beta] </Typography>
             </Stack>
                 <List> 
                     <ListItem key={1} disablePadding >

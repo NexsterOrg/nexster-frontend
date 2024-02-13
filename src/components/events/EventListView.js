@@ -41,7 +41,6 @@ export function SideEventListView({isMyEvents}){
                     navigate(LoginPath, { replace: true });
                     return
                 } 
-                console.error('Error fetching events:', err); // TODO : Remove this in production
             }
         })();
     }, [])
@@ -66,7 +65,6 @@ export function SideEventListView({isMyEvents}){
                         navigate(LoginPath, { replace: true });
                         return
                     }
-                    console.error("scroll events list: ", err)
                 }
             }
         }

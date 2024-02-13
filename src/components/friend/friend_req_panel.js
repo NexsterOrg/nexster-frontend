@@ -39,7 +39,6 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
                 navigate(LoginPath, { replace: true });
                 return
             } 
-            console.error("err onRemove: ", err)   
         }
     }
 
@@ -63,7 +62,6 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
                     navigate(LoginPath, { replace: true });
                     return
                 } 
-                console.error(err)
             }
         })()
     }, [])
@@ -93,7 +91,6 @@ export default function FriendReqsPanel({rootStyles, showButton, initPageNo, ini
                         navigate(LoginPath, { replace: true });
                         return
                     } 
-                    console.error("after scroll event", err)
                 }
             }
         }
@@ -161,7 +158,6 @@ function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, friend
             const isSucceed = await AcceptFriendReq(friendReqId, {"reqstor_id": reqstorId})
             if(!isSucceed) {
                 // TODO: Display faliure alert
-                console.log("falied")
                 return
             } 
             await onRemoveFunc()
@@ -171,7 +167,6 @@ function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, friend
                 navigate(LoginPath, { replace: true });
                 return
             } 
-            console.error("failed to accept friend req: ", friendReqId, reqstorId)
         }
     }
     const onIgnore = async () => {
@@ -179,7 +174,6 @@ function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, friend
             const isSucceed = await IgnoreFriendReq(friendReqId, reqstorId)
             if(!isSucceed) {
                 // TODO: Display faliure alert
-                console.log("falied")
                 return
             } 
             await onRemoveFunc()
@@ -189,7 +183,6 @@ function FriendReqCard({imgUrl, username, faculty, field, batch, reqDate, friend
                 navigate(LoginPath, { replace: true });
                 return
             } 
-            console.error("failed to ignore friend req: ", friendReqId, reqstorId)
         }
     }
 

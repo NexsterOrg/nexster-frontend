@@ -57,7 +57,6 @@ export default function ImageGrid({userId, editEnabled}) {
           navigate('/login', { replace: true });
           return
         } 
-        console.error("failed to list images: ", err)
       }
 
     })()

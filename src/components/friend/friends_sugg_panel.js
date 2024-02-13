@@ -46,7 +46,6 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
                     navigate(LoginPath, { replace: true });
                     return
                 } 
-                console.error(err)
             }
         })()
     }, [])
@@ -76,7 +75,6 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
                         navigate(LoginPath, { replace: true });
                         return
                     }
-                    console.error(err)
                 }
             }
         }

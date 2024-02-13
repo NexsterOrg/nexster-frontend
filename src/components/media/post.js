@@ -44,77 +44,74 @@ export default function TimelinePost({profInfo, postInfo, reactsCnt, viewerId, v
     try {
       if(viewerReaction.key === ""){
         // create new link
-        let newRctKey = await CreateReaction(postInfo.mediaKey, viewerId, { ... reactions, like: !reactions.like})
+        let newRctKey = await CreateReaction(postInfo.mediaKey, viewerId, { ...reactions, like: !reactions.like})
         
         // error occuried, don't update the reaction state
         if (newRctKey === "") return
   
         viewerReaction.key = newRctKey
       } else {
-        await UpdateReactions(postInfo.mediaKey, viewerReaction.key, viewerId, { ... reactions, like: !reactions.like})
+        await UpdateReactions(postInfo.mediaKey, viewerReaction.key, viewerId, { ...reactions, like: !reactions.like})
       }
     
       // TODO: We should handle properly above API calls.(fail path)
       setReactionCount( preCount => {
         return reactions.like ? preCount-1 : preCount+1
       })
-      setReactions(preReaction => ({ ... preReaction, like: !preReaction.like}) )
+      setReactions(preReaction => ({ ...preReaction, like: !preReaction.like}) )
     } catch (err) {
       if (err instanceof UnAuthorizedError) {
         navigate('/login', { replace: true });
         return
       } 
-      console.error('Err creating OR updating reactions:', err); // TODO : Remove this in production
     }
   }
 
   const changeLove = async () => {
     try {
       if(viewerReaction.key === ""){
-        let newRctKey = await CreateReaction(postInfo.mediaKey, viewerId, { ... reactions, love: !reactions.love})
+        let newRctKey = await CreateReaction(postInfo.mediaKey, viewerId, { ...reactions, love: !reactions.love})
         
         if (newRctKey === "") return
   
         viewerReaction.key = newRctKey
       } else {
-        await UpdateReactions(postInfo.mediaKey, viewerReaction.key, viewerId, { ... reactions, love: !reactions.love})
+        await UpdateReactions(postInfo.mediaKey, viewerReaction.key, viewerId, { ...reactions, love: !reactions.love})
       }
   
       setReactionCount(preCount => {
         return reactions.love ? preCount-1 : preCount+1
       })
-      setReactions(preReaction => ({ ... preReaction, love: !preReaction.love}) )
+      setReactions(preReaction => ({ ...preReaction, love: !preReaction.love}) )
     } catch (err) {
       if (err instanceof UnAuthorizedError) {
         navigate('/login', { replace: true });
         return
       } 
-      console.error('Err creating OR updating reactions:', err); // TODO : Remove this in production
     }
   }
 
   const changeLaugh = async () => {
     try {
       if(viewerReaction.key === ""){
-        let newRctKey = await CreateReaction(postInfo.mediaKey, viewerId, { ... reactions, laugh: !reactions.laugh})
+        let newRctKey = await CreateReaction(postInfo.mediaKey, viewerId, { ...reactions, laugh: !reactions.laugh})
         
         if (newRctKey === "") return
         
         viewerReaction.key = newRctKey
       } else {
-        await UpdateReactions(postInfo.mediaKey, viewerReaction.key, viewerId, { ... reactions, laugh: !reactions.laugh})
+        await UpdateReactions(postInfo.mediaKey, viewerReaction.key, viewerId, { ...reactions, laugh: !reactions.laugh})
       }
   
       setReactionCount(preCount => {
         return reactions.laugh ? preCount-1 : preCount+1
       })
-      setReactions(preReaction => ({ ... preReaction, laugh: !preReaction.laugh}) )
+      setReactions(preReaction => ({ ...preReaction, laugh: !preReaction.laugh}) )
     } catch (err) {
       if (err instanceof UnAuthorizedError) {
         navigate('/login', { replace: true });
         return
       } 
-      console.error('Err creating OR updating reactions:', err); // TODO : Remove this in production
     }
   }
 

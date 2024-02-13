@@ -42,7 +42,6 @@ function ListTimelinePosts({userId}){
                     navigate('/login', { replace: true });
                     return
                 } 
-                console.error('Error fetching posts:', err); // TODO : Remove this in production
             }
         })();
     }, [])
@@ -75,7 +74,6 @@ function ListTimelinePosts({userId}){
                         navigate('/login', { replace: true });
                         return
                     } 
-                    console.error('Error fetching posts:', err);  // TODO : Remove this in production
                 }
             }
         };
