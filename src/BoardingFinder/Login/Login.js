@@ -115,9 +115,9 @@ export default function BdLoginPage(){
                             helperText={passwordErr}
                         />
 
-                        <Stack sx={{ width: "100%"}}>
+                        {/* <Stack sx={{ width: "100%"}}>
                             <Link href={"#not-yet-implemented"} target="_blank" underline="hover" sx={{marginTop: "2px"}}> Forgot password ? </Link>
-                        </Stack>
+                        </Stack> */}
 
                         <Button variant="contained" onClick={onLogin}
                             sx={{ textTransform: "none", width: "100px", bgcolor: "#35dbcb"}}> Login </Button> 
