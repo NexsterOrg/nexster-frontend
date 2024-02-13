@@ -14,7 +14,7 @@ function BdHome(){
     }, [])
 
     return (
-        <>
+
         <Box sx={{
             backgroundImage: `url(${LandingPgImage})`,
             backgroundSize: 'cover',
@@ -22,7 +22,7 @@ function BdHome(){
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'flex-start',
-            minHeight: '90vh',
+            minHeight: '92vh',
             minWidth: '100%'
         }}>
             <Stack sx={{ marginTop: "6%" }} direction={"column"} spacing={4}>
@@ -45,14 +45,6 @@ function BdHome(){
                 </Box>
             </Stack>
         </Box>
-        <Box sx={{ border: "1px solid red", paddingY: "15px", paddingX: "8px"}}>
-            <Typography variant="subtitle2">
-                some content about the Nexster. PUT IT HERE.
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
-                standard dummy text ever since the 1500s, when 
-            </Typography>
-        </Box>
-        </>
     );
 }
 
