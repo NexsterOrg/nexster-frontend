@@ -8,6 +8,7 @@ import { BasicSelect } from '../ui/Select';
 import { UploadImage, CreateImagePost } from '../../apis/fetch';
 import { SaveLoading } from '../ui/LoadingComponents';
 import { BottomLeftSnackbar } from '../ui/snack_bar';
+import ImageUploader from '../../antd/components/ImageUploader';
 
 const postNamespace = "post"  // namespace of post in BE
 
@@ -65,11 +66,9 @@ export default function PostCreationDialog({isCreatePostOpen, setIsCreatePostOpe
     startSaveSpinner(true)
 
     try {
-      const img = images[0]
-      const typeName = getImageType(img["file"]["type"])
-      const imageName = await UploadImage(postNamespace, typeName, img["data_url"])
+      const { backendId } = images[0]
 
-      if(imageName === "") {
+      if(!backendId) {
         startSaveSpinner(false)
         setErrMsg(uploadImageFailedErr)
         setSnackBarOpen(true)
@@ -77,7 +76,7 @@ export default function PostCreationDialog({isCreatePostOpen, setIsCreatePostOpe
       } 
   
       // submit data to create post.
-      const respData = await CreateImagePost(imageName, visibility, title, description)
+      const respData = await CreateImagePost(backendId, visibility, title, description)
       startSaveSpinner(false)
       if(respData.isErr) {
         setErrMsg(createFailed)
@@ -131,10 +130,21 @@ export default function PostCreationDialog({isCreatePostOpen, setIsCreatePostOpe
       aria-describedby="post-upload-model-description"
     > 
     {saveSpinner ? null : <Header />}
-    <Stack sx={{ width: 650, minHeight: 650, marginBottom: 2 }} >
+    <Stack sx={{ width: 650, minHeight: 500, marginBottom: 2 }} >
     { saveSpinner ?  <SaveLoading rootStyles={{marginTop: 10}} /> :
       <>
-        <PostImageUpload images={images} setImages={setImages} uploadErr={imagesErr} setUploadErr={setImagesErr}/>
+        {/* <PostImageUpload images={images} setImages={setImages} uploadErr={imagesErr} setUploadErr={setImagesErr}/> */}
+
+        
+        <Stack sx={{ paddingTop: "20px", paddingLeft: "10px" }} alignItems={"center"} spacing={2}>
+          <Typography> Upload Image </Typography>
+          <ImageUploader imgArr={images} setImgArr={setImages} namespace={postNamespace} maxImgCount={1}
+              aspectSlider={true} cropShape={"rect"}/>
+          {
+              imagesErr !== "" ? 
+              <Typography sx={{ color: "red" }} variant="caption"> {imagesErr} </Typography>  : null
+          }
+        </Stack>
         <EventInputData 
           title={title} setTitle={setTitle} titleErr={titleErr} setTitleErr={setTitleErr}
           description={description} setDescription={setDescription} descriptionErr={descriptionErr} setDescriptionErr={setDescriptionErr}

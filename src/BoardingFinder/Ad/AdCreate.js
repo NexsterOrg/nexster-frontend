@@ -191,7 +191,8 @@ function AdCreate(){
 
 
                         <Grid item xs={12}> 
-                            <ImageUploader imgArr={imgIds} setImgArr={setImgIds} namespace={"bdAds"} maxImgCount={5}/>
+                            <ImageUploader imgArr={imgIds} setImgArr={setImgIds} namespace={"bdAds"} maxImgCount={5}
+                                aspectSlider={true} cropShape={"rect"}/>
                         </Grid>
 
                         <Grid item xs={12} md={10}> 

@@ -11,6 +11,7 @@ import { UploadImage, CreateEvent } from '../../apis/fetch';
 import { SaveLoading } from '../ui/LoadingComponents';
 import { BottomLeftSnackbar } from '../ui/snack_bar';
 import { AddMonths } from '../../helper/date';
+import ImageUploader from '../../antd/components/ImageUploader';
 
 const posterNamespace = "event-posters"
 
@@ -82,10 +83,9 @@ export default function EventCreationDialog({isCreateEventOpen, setIsCreateEvent
     startSaveSpinner(true)
 
     try {
-      const img = images[0]
-      const typeName = getImageType(img["file"]["type"])
-      const imageName = await UploadImage(posterNamespace, typeName, img["data_url"])
-      if(imageName === "") {
+      const { backendId, type } = images[0]
+      
+      if( !backendId || !type ) {
         startSaveSpinner(false)
         setErrMsg(uploadNoImageErr)
         setSnackBarOpen(true)
@@ -93,7 +93,7 @@ export default function EventCreationDialog({isCreateEventOpen, setIsCreateEvent
       } 
   
       // submit data to create event.
-      const respData = await CreateEvent(imageName, typeName, title, date, description, venueOrLink, mode)
+      const respData = await CreateEvent(backendId, type, title, date, description, venueOrLink, mode)
       startSaveSpinner(false)
       if(respData.isErr) {
         setErrMsg(createFailed)
@@ -155,10 +155,19 @@ export default function EventCreationDialog({isCreateEventOpen, setIsCreateEvent
       aria-describedby="poster-upload-model-description"
     > 
     {saveSpinner ? null : <Header />}
-    <Stack sx={{ width: 650, minHeight: 650, marginBottom: 2 }} >
+    <Stack sx={{ width: 650, minHeight: 500, marginBottom: 2 }} >
     { saveSpinner ?  <SaveLoading rootStyles={{marginTop: 10}} label={"Saving..."} /> :
       <>
-        <PosterUpload images={images} setImages={setImages} uploadErr={imagesErr} setUploadErr={setImagesErr}/>
+        {/* <PosterUpload images={images} setImages={setImages} uploadErr={imagesErr} setUploadErr={setImagesErr}/> */}
+        <Stack sx={{ paddingTop: "20px", paddingLeft: "10px" }} alignItems={"center"} spacing={2}>
+          <Typography> Upload Image </Typography>
+          <ImageUploader imgArr={images} setImgArr={setImages} namespace={posterNamespace} maxImgCount={1}
+              aspectSlider={true} cropShape={"rect"}/>
+          {
+              imagesErr !== "" ? 
+              <Typography sx={{ color: "red" }} variant="caption"> {imagesErr} </Typography>  : null
+          }
+        </Stack>
         <EventInputData 
           title={title} setTitle={setTitle} titleErr={titleErr} setTitleErr={setTitleErr}
           description={description} setDescription={setDescription} descriptionErr={descriptionErr} setDescriptionErr={setDescriptionErr}

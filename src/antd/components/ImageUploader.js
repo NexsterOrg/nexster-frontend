@@ -13,8 +13,8 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
 });
 
-
-const ImageUploader = ({imgArr, setImgArr, namespace, maxImgCount}) => {
+// cropShape="rect" | "round"
+const ImageUploader = ({imgArr, setImgArr, namespace, maxImgCount, aspectSlider, cropShape}) => {
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
@@ -45,7 +45,7 @@ const ImageUploader = ({imgArr, setImgArr, namespace, maxImgCount}) => {
           const resp = await response.json()
           const imgId = resp?.data?.imageName || ""
 
-          setImgArr( (preImgs) => [...preImgs, {backendId: imgId, uid: file.uid}])
+          setImgArr( (preImgs) => [...preImgs, {backendId: imgId, uid: file.uid, type: typeName}])
 
           message.success(`${file.name}, image uploaded successfully`);
         } else {
@@ -83,11 +83,15 @@ const ImageUploader = ({imgArr, setImgArr, namespace, maxImgCount}) => {
   }
 
   return (
-    <>
+    <div>
         <ImgCrop 
-            rotationSlider
+            aspectSlider={aspectSlider}
+            showReset
             modalOk="Upload"
             quality={0.9}
+            showGrid
+            cropShape={cropShape}
+            modalProps={{ zIndex: 2000 }}
         >
         <Upload
             listType="picture-card"
@@ -98,10 +102,10 @@ const ImageUploader = ({imgArr, setImgArr, namespace, maxImgCount}) => {
             customRequest={customRequest}
             onRemove={onImageRemove}
         >
-            {fileList.length < maxImgCount && <span style={{ color: "white" }}> + Upload</span>}
+            {fileList.length < maxImgCount && <span style={{ color: "white" }}> + Upload </span>}
         </Upload>
         </ImgCrop>
-        <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+        <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel} zIndex={1900}>
         <img
           alt="uploaded-image"
           style={{
@@ -110,7 +114,7 @@ const ImageUploader = ({imgArr, setImgArr, namespace, maxImgCount}) => {
           src={previewImage}
         />
       </Modal>
-    </>
+    </div>
   );
 };
 

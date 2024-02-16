@@ -273,10 +273,14 @@ function SignUp({indexNo, email, expiredAt, hmac}) {
                     <Typography sx={{ color: "red" }} variant="caption"> {bothPasswdNotSameMsg} </Typography> : null
                 }
 
-            {/* border: "1px solid red",  */}
                 <Stack sx={{ paddingTop: "20px", paddingLeft: "10px"}} spacing={2}>
                     <Typography> Profile Image </Typography>
-                    <ImageUploader imgArr={images} setImgArr={setImages} namespace={avatarNamespace} maxImgCount={1}/>
+                    <ImageUploader imgArr={images} setImgArr={setImages} namespace={avatarNamespace} maxImgCount={1}
+                        aspectSlider={false} cropShape={"round"}/>
+                    {
+                        imagesErr !== "" ? 
+                        <Typography sx={{ color: "red" }} variant="caption"> {imagesErr} </Typography>  : null
+                    }
                 </Stack>
 
                 {/* <ProfileImageUpload 
