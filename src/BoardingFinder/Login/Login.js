@@ -3,7 +3,7 @@ import { Stack, Button, Typography, TextField, Link, Paper, useTheme, useMediaQu
 import { useNavigate } from 'react-router-dom';
 
 import { GetAccessTokenForBdOwner, bdOwnerRegPath } from "../apis/api"
-import { SetAccessTokenInLS } from "../apis/store"
+import { SetAccessTokenInLS, SetRoleInLS } from "../apis/store"
 
 import { BottomLeftSnackbar } from "../../components/ui/snack_bar";
 
@@ -56,6 +56,7 @@ export default function BdLoginPage(){
             
             // Set access token in local storage
             SetAccessTokenInLS(info.access_token)
+            SetRoleInLS()
 
             navigate("/boarding", { replace: true });
 

@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Button, AppBar, Toolbar,CssBaseline, useScrollTrigger, Box, Slide, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import { bdAdsCreatePath, bdLoginPath } from '../apis/api';
-import { CleanLS } from "../apis/store"
+import { CleanLS, GetRoleFromLS } from "../apis/store"
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -26,6 +26,7 @@ HideOnScroll.propTypes = {
 
 export default function TopNavBar(props) {
   const navigate = useNavigate();
+  const role =  useMemo(GetRoleFromLS, [])
 
   const onSignout = () => {
     CleanLS()
@@ -39,16 +40,17 @@ export default function TopNavBar(props) {
         <AppBar sx={{ background: "#95D258"}}>
           <Toolbar>
             <Link href={"/boarding"} variant="h6" underline="none" sx={{ color: "black", width: "20%" }}> {props.title} </Link>
-            {/* <Typography variant="h5" component="div" sx={{ color: "black", width: "20%" }}>
-              {props.title}
-            </Typography> */}
             <Box sx={{ width: "80%", display: "flex", flexDirection: "row-reverse", gap: "50px"}}>
 
                 <Button sx={styles.profileButn} onClick={onSignout}> Log out </Button>
 
-                <Button onClick={() => navigate(bdAdsCreatePath)}
-                  sx={styles.postButn} 
-                > Post an Ad </Button>
+                {
+                  role === "bdo" ? 
+                  <Button onClick={() => navigate(bdAdsCreatePath)}
+                    sx={styles.postButn} 
+                  > Post an Ad </Button> : null
+                }
+
 
             </Box>
           </Toolbar>
