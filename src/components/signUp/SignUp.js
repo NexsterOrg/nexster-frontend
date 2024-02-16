@@ -60,13 +60,14 @@ export default function SignUpSite() {
     const searchParams = new URLSearchParams(location.search);
 
     const index = searchParams.get('index') || "";
+    const email = searchParams.get('email') || "";
     const expAt = searchParams.get('exp') || "";
     const hmac = searchParams.get('hmac') || "";
 
     useEffect( () => {
         (async () => {
             try {
-              const isValid = await ValidateAccountCreationLink(index, expAt, hmac);
+              const isValid = await ValidateAccountCreationLink(index, email, expAt, hmac);
               if(isValid) {
                 setUrlValid(true)
                 return 
@@ -85,11 +86,11 @@ export default function SignUpSite() {
         return <>Error...</>
     }
 
-    return <SignUp indexNo={index} expiredAt={expAt} hmac={hmac}/>
+    return <SignUp indexNo={index} email={email} expiredAt={expAt} hmac={hmac}/>
     
 }
 
-function SignUp({indexNo, expiredAt, hmac}) {
+function SignUp({indexNo, email, expiredAt, hmac}) {
     const navigate = useNavigate();
     const theme = useTheme();
 
@@ -215,7 +216,7 @@ function SignUp({indexNo, expiredAt, hmac}) {
             } 
 
             const isSucceeded = await CreateUserAccount(firstName, secondName, imageName, birthday, faculty, field, batch, about, gender, password,
-                indexNo, expiredAt, hmac)
+                indexNo, email, expiredAt, hmac)
             if(isSucceeded){
                 // ok - direct to login page
                 setFormErr("")

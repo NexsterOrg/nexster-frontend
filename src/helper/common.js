@@ -44,10 +44,8 @@ export function Delay(timeInMs) {
 }
 
 export function ValidateUniIndex(str) {
-    // Regular expression pattern to match the specified format
     const pattern = /^\d{6}[a-zA-Z]$/;
   
-    // Check if the string matches the pattern
     return pattern.test(str);
 }
 
@@ -55,4 +53,18 @@ export function GetImageType(mimeType){
     if(typeof mimeType !== "string") return ""
     const parts = mimeType.split('/');
     return parts.length !== 2  ? "" : parts[1]
+}
+
+// <6 digits><alphabeticalCharacter>@uom.lk
+export function IsValidEmailV1(email) {
+    var regex = /^[0-9]{6}[a-zA-Z]@uom\.lk$/;
+
+    return regex.test(email);
+}
+
+// <name>.<batch>@uom.lk
+export function IsValidEmailV2(email) {
+    var regex = /^[a-zA-Z]+(\.[0-9]{2})?@uom\.lk$/;
+
+    return regex.test(email);
 }

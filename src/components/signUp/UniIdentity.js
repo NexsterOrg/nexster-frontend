@@ -3,11 +3,15 @@ import { Stack, Typography, Paper, TextField, Button, Link, useTheme} from "@mui
 import MailIcon from '@mui/icons-material/Mail';
 
 import { BottomLeftSnackbar } from "../ui/snack_bar"
-import { ValidateUniIndex } from "../../helper/common"
+import { ValidateUniIndex, IsValidEmailV1, IsValidEmailV2 } from "../../helper/common"
 import { LoginPath, SendAccountCreationLink } from "../../apis/fetch"
 import { SaveLoading } from '../ui/LoadingComponents';
 
 const failedSend = "Failed to send the link to your email. Try again."
+
+const validateInputs = (indexNo, email) => {
+    return ValidateUniIndex(indexNo) && ( IsValidEmailV1(email) || IsValidEmailV2(email) )
+}
 
 export default function UniIdentitySite(){
     const theme = useTheme();
@@ -18,10 +22,13 @@ export default function UniIdentitySite(){
     const [index, setIndex] = useState("")
     const [indexErr, setIndexErr] = useState("")
 
+    const [email, setEmail] = useState("")
+    const [emailErr, setEmailErr] = useState("")
+
     const [sendErr, setSendErr] = useState("")
     const [sendOk, setSendOk] = useState(false)
 
-    const isIndexValid = ValidateUniIndex(index)
+    const isValid = validateInputs(index, email)
 
     const modeColor = theme.palette.mode === 'dark' ? 'white' : 'black' ;
 
@@ -30,12 +37,17 @@ export default function UniIdentitySite(){
         setIndex(val)
     }
 
+    const onChangeEmail = (e) => {
+        const val = (e?.target?.value || "").toLowerCase()
+        setEmail(val)
+    }
+
     const sendLink = async () => {
-        if(!isIndexValid) return
+        if(!isValid) return
 
         startSaveSpinner(true)
         try {
-            const isSucceeded = await SendAccountCreationLink(index)
+            const isSucceeded = await SendAccountCreationLink(index, email)
             if(isSucceeded){
                 setSendOk(true)
                 startSaveSpinner(false)
@@ -55,7 +67,7 @@ export default function UniIdentitySite(){
         return (
             <Stack justifyContent={"center"} alignItems={"center"} sx={{ height: "100%" }} spacing={3}>
                     <MailIcon fontSize="large"/>
-                    <Typography> Account creation link has been sent to <b> {index}@uom.lk </b> <small> (might take a few minutes). </small>
+                    <Typography> Account creation link has been sent to <b> {email} </b> <small> (might take a few minutes). </small>
                         Use the link to create your Nexster account. </Typography>
 
                     <Typography variant="body2"> Link will be expired in 30 min. </Typography>
@@ -72,8 +84,8 @@ export default function UniIdentitySite(){
             <>
             <Typography variant="h6" color={modeColor}> Get an account creation link </Typography>
             <Stack sx={{ width: "30%", color: modeColor }} spacing={4}>
-                <Paper sx={{ padding: "20px", display: "flex", flexDirection: "column", gap: "20px" }} elevation={4}>
-                    <Typography variant="subtitle1"> Enter your university index below : </Typography>
+                <Paper sx={{ paddingBottom: "30px", display: "flex", flexDirection: "column", gap: "20px", paddingTop: "40px" }} elevation={4}>
+                    {/* <Typography variant="subtitle1"> Enter your university index below : </Typography> */}
                     <Stack spacing={2} alignItems={"center"} sx={{ width: "100%", marginBottom: "18px" }}>
                         <TextField 
                             label="University index"
@@ -85,13 +97,23 @@ export default function UniIdentitySite(){
                             helperText={indexErr}
                         />
 
-                        <Button variant="contained" disabled={!isIndexValid} onClick={sendLink}
+                        <TextField 
+                            label="University email"
+                            sx={{ width: "60%" }}
+                            value={email}
+                            onChange={onChangeEmail}
+                            required
+                            error={emailErr !== ""}
+                            helperText={emailErr}
+                        />
+
+                        <Button variant="contained" disabled={!isValid} onClick={sendLink}
                             sx={{ textTransform: "none", width: "100px", bgcolor: "#35dbcb"}}> Send Link </Button>
                     </Stack>
 
                     {
-                        isIndexValid ?  
-                        <Typography variant="body2" sx={{ marginBottom: "10px" }}> Account creation link will be sent to <b> {index}@uom.lk</b>. 
+                        isValid ?  
+                        <Typography variant="body2" sx={{ marginBottom: "10px", paddingX: "20px"}}> Account creation link will be sent to <b> {email} </b>. 
                         Use the link to create your Nexster account. </Typography> : null
     
                     }

@@ -429,17 +429,19 @@ export async function GetAccessToken(indexNo, password) {
   return { access_token: respBody.data?.access_token, id: respBody.data?.id }
 }
 
-export async function SendAccountCreationLink(indexNo) {
+export async function SendAccountCreationLink(indexNo, email) {
   let respBody = await postWithoutAuth(`${apiDomain}/p/u/auth/reg-link`, {
-    "index": indexNo
+    "index": indexNo,
+    "email": email
   })
   if(respBody === null) return false
   return true
 }
 
-export async function ValidateAccountCreationLink(indexNo, expiredAt, hmac) {
+export async function ValidateAccountCreationLink(indexNo, email, expiredAt, hmac) {
   let respBody = await postWithoutAuth(`${apiDomain}/p/u/auth/reg-link/validate`, {
     "index": indexNo,
+    "email": email,
     "exp": expiredAt,
     "hmac": hmac
   })
@@ -448,7 +450,7 @@ export async function ValidateAccountCreationLink(indexNo, expiredAt, hmac) {
 }
 
 export async function CreateUserAccount(firstName, secondName, imageId, birthday, faculty, field, batch, about, gender, 
-  password, indexNo, expiredAt, hmac ){
+  password, indexNo, email, expiredAt, hmac ){
   let respBody = await postWithoutAuth(`${apiDomain}/p/u/auth/reg`, {
     "firstName": firstName,
     "secondName": secondName,
@@ -461,6 +463,7 @@ export async function CreateUserAccount(firstName, secondName, imageId, birthday
     "gender": gender,
     "password": password,
     "index": indexNo,
+    "email": email,
     "exp": expiredAt,
     "hmac": hmac
 })
