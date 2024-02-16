@@ -159,8 +159,6 @@ function SignUp({indexNo, email, expiredAt, hmac}) {
         setRetypedPasswordErr("")
     }, [])
 
-    console.log("arr: ", images)
-
     const onCreate = async () => {
         if( !isPasswdNotEmpty || retypedPassword.length === 0) {
             // passwords are not duly filled
