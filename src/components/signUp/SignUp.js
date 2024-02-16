@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState, useEffect } from "react";
 import { Stack, Typography, Divider, Paper, Button, Avatar, useTheme } from "@mui/material"
-import ImageUploading from 'react-images-uploading';
-import PersonIcon from '@mui/icons-material/Person';
+// import ImageUploading from 'react-images-uploading';
+// import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 
@@ -9,6 +9,7 @@ import { TextFieldWithCount } from "../ui/TextComponents";
 import { BasicSelect } from "../ui/Select";
 import { BasicDatePicker } from '../ui/DatePicker';
 import { SaveLoading } from '../ui/LoadingComponents';
+import ImageUploader from "../../antd/components/ImageUploader";
 
 // options 
 import { FieldOptions, FacultyOptions , defaultField, defaultFaculty, BatchOptions, defaultBatch,  GenderOptions, defaultGender,
@@ -18,7 +19,7 @@ import PasswordField from "../ui/PasswordField"
 
 import { BottomLeftSnackbar } from '../ui/snack_bar';
 
-import { LoginPath, ValidateAccountCreationLink, accCreateLinkPath, UploadImage, CreateUserAccount } from "../../apis/fetch";
+import { LoginPath, ValidateAccountCreationLink, accCreateLinkPath, CreateUserAccount } from "../../apis/fetch";
 
 // namespace
 const avatarNamespace = "avatar" 
@@ -158,6 +159,8 @@ function SignUp({indexNo, email, expiredAt, hmac}) {
         setRetypedPasswordErr("")
     }, [])
 
+    console.log("arr: ", images)
+
     const onCreate = async () => {
         if( !isPasswdNotEmpty || retypedPassword.length === 0) {
             // passwords are not duly filled
@@ -204,18 +207,19 @@ function SignUp({indexNo, email, expiredAt, hmac}) {
 
         try {
 
-            const img = images[0]
-            const typeName = getImageType(img["file"]["type"])
-            const imageName = await UploadImage(avatarNamespace, typeName, img["data_url"])
+            const { backendId } = images[0]
+            
+            // const typeName = getImageType(img["file"]["type"])
+            // const imageName = await UploadImage(avatarNamespace, typeName, img["data_url"])
       
-            if(imageName === "") {
+            if(!backendId) {
               startSaveSpinner(false)
               setFormErr(uploadImageFailedErr)
               setSnackBarOpen(true)
               return
             } 
 
-            const isSucceeded = await CreateUserAccount(firstName, secondName, imageName, birthday, faculty, field, batch, about, gender, password,
+            const isSucceeded = await CreateUserAccount(firstName, secondName, backendId, birthday, faculty, field, batch, about, gender, password,
                 indexNo, email, expiredAt, hmac)
             if(isSucceeded){
                 // ok - direct to login page
@@ -271,10 +275,16 @@ function SignUp({indexNo, email, expiredAt, hmac}) {
                     <Typography sx={{ color: "red" }} variant="caption"> {bothPasswdNotSameMsg} </Typography> : null
                 }
 
-                <ProfileImageUpload 
+            {/* border: "1px solid red",  */}
+                <Stack sx={{ paddingTop: "20px", paddingLeft: "10px"}} spacing={2}>
+                    <Typography> Profile Image </Typography>
+                    <ImageUploader imgArr={images} setImgArr={setImages} namespace={avatarNamespace} maxImgCount={1}/>
+                </Stack>
+
+                {/* <ProfileImageUpload 
                     images={images} setImages={setImages} 
                     uploadErr={imagesErr} setUploadErr={setImagesErr}
-                />
+                /> */}
 
                 <Stack sx={{ paddingX: "10px", marginTop: "30px" }} spacing={3}>
                     
@@ -342,52 +352,52 @@ function SignUpHeader(){
     )
 }
 
+// Image Uploader component
+// function ProfileImageUpload({images, setImages, uploadErr, setUploadErr}){
 
-function ProfileImageUpload({images, setImages, uploadErr, setUploadErr}){
-
-    const onChange = (imageList) => {
-      setUploadErr("")
-      setImages(imageList);
-    };
+//     const onChange = (imageList) => {
+//       setUploadErr("")
+//       setImages(imageList);
+//     };
   
-    return (
-      <ImageUploading
-          value={images}
-          onChange={onChange}
-          dataURLKey="data_url"
-          acceptType={['jpg', 'png']}
-      >
-        {({
-          imageList,
-          onImageUpload
-        }) => (
-        <>
-          <Stack alignItems="center" spacing={2}>
-              <Stack sx={{width: 500, height: 300, marginTop: 2 }} justifyContent={"center"} alignItems={"center"}>
-                {
-                  imageList.length ? 
-                  imageList.map((img, index) => (
-                    <Avatar key={index} variant='square'
-                      src={img['data_url']}
-                      sx={{width: 500, height: 300 }}
-                    />
-                  )) : <> 
-                        <PersonIcon sx={{ width: 80, height: 80 }}/> 
-                        { uploadErr ? <Typography sx={{color: "red"}}> *{uploadErr} </Typography> : null }
-                      </>
-                }
+//     return (
+//       <ImageUploading
+//           value={images}
+//           onChange={onChange}
+//           dataURLKey="data_url"
+//           acceptType={['jpg', 'png']}
+//       >
+//         {({
+//           imageList,
+//           onImageUpload
+//         }) => (
+//         <>
+//           <Stack alignItems="center" spacing={2}>
+//               <Stack sx={{width: 500, height: 300, marginTop: 2 }} justifyContent={"center"} alignItems={"center"}>
+//                 {
+//                   imageList.length ? 
+//                   imageList.map((img, index) => (
+//                     <Avatar key={index} variant='square'
+//                       src={img['data_url']}
+//                       sx={{width: 500, height: 300 }}
+//                     />
+//                   )) : <> 
+//                         <PersonIcon sx={{ width: 80, height: 80 }}/> 
+//                         { uploadErr ? <Typography sx={{color: "red"}}> *{uploadErr} </Typography> : null }
+//                       </>
+//                 }
   
-              </Stack>
-              <Button variant='contained' sx={{textTransform: "none"}} onClick={onImageUpload} size='small'> Upload Profile Picture </Button>
-          </Stack>
-        </>
-        )}
-        </ImageUploading>
-    )
-  }
+//               </Stack>
+//               <Button variant='contained' sx={{textTransform: "none"}} onClick={onImageUpload} size='small'> Upload Profile Picture </Button>
+//           </Stack>
+//         </>
+//         )}
+//         </ImageUploading>
+//     )
+//   }
 
-function getImageType(mimeType){
-    if(typeof mimeType !== "string") return ""
-    const parts = mimeType.split('/');
-    return parts.length !== 2  ? "" : parts[1]
-}
+// function getImageType(mimeType){
+//     if(typeof mimeType !== "string") return ""
+//     const parts = mimeType.split('/');
+//     return parts.length !== 2  ? "" : parts[1]
+// }

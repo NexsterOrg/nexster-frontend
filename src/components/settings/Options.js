@@ -25,7 +25,8 @@ const FieldOptions = [
     {label: "Mechanical Engineering", value: "Mechanical Engineering"},
     {label: "Textile & Apparel Engineering ", value: "Textile & Apparel Engineering "},
     {label: "Transport Management & Logistic Engineering", value: "Transport Management & Logistic Engineering"},
-    {label: "Fashion Design and Product Development", value: "Fashion Design and Product Development"}
+    {label: "Fashion Design and Product Development", value: "Fashion Design and Product Development"},
+    {label: "Pre Academic", value: "Pre Academic"}
 ]
 
 const BatchOptions = [
@@ -33,7 +34,8 @@ const BatchOptions = [
     {label: "19", value: "19"},
     {label: "20", value: "20"},
     {label: "21", value: "21"},
-    {label: "22", value: "22"}
+    {label: "22", value: "22"},
+    {label: "23", value: "23"}
 ]
 
 const GenderOptions = [
