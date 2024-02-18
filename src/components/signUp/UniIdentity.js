@@ -120,7 +120,7 @@ export default function UniIdentitySite(){
 
                     <Stack direction={"row"} spacing={2} justifyContent={"center"}>
                         <Typography> Already have an account? </Typography>
-                        <Link href={LoginPath} target="_blank" underline="hover" sx={{marginTop: "2px"}}> Login </Link>
+                        <Link href={LoginPath} underline="hover" sx={{marginTop: "2px"}}> Login </Link>
                     </Stack>
                 </Paper>
                 <Stack>

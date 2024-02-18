@@ -19,6 +19,7 @@ import SignUpSite from './components/signUp/SignUp';
 import UniIdentitySite from './components/signUp/UniIdentity';
 import BoardingFinderBanner from './components/bdFinderBanner';
 import Banner from './components/mobile/Banner';
+import { SendPasswordResetLink } from './components/login/PasswordReset';
 
 // Boarding Finder
 import AdListPage from './BoardingFinder/Ad/AdList';
@@ -155,7 +156,7 @@ function App() {
         <Route path="/settings" element={<SettingSite />} />
 
         <Route path="/account/reg" element={<SignUpSite />} />
-
+        <Route path="/account/password-reset-link" element={<SendPasswordResetLink />} />
         <Route path="/account/reg-link" element={<UniIdentitySite />} />
 
         <Route path="/boardingFinder" element={<BoardingFinderBanner />} />

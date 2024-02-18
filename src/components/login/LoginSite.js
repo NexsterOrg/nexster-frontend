@@ -2,9 +2,10 @@ import { useState } from "react"
 import { Stack, Button, Typography, TextField, Link, Paper, useTheme } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 
-import { GetAccessToken, GetProfileInfo, accCreateLinkPath } from "../../apis/fetch"
+import { GetAccessToken, GetProfileInfo, accCreateLinkPath, PasswordResetLinkPath } from "../../apis/fetch"
 import { SetAccessTokenInLS, SetUserDataInLS, CleanLS } from "../../apis/store"
 import { BottomLeftSnackbar } from "../ui/snack_bar"
+import { NoticeFooter } from "../layout/Footer";
 
 // msgs
 const failedLogin = "Failed to login. Try again"
@@ -121,9 +122,9 @@ export default function LoginSite(){
                             helperText={passwordErr}
                         />
 
-                        {/* <Stack sx={{ width: "100%"}}>
-                            <Link href={"#not-yet-implemented"} target="_blank" underline="hover" sx={{marginTop: "2px"}}> Forgot password ? </Link>
-                        </Stack> */}
+                        <Stack sx={{ width: "100%"}}>
+                            <Link href={PasswordResetLinkPath} underline="hover" sx={{marginY: "6px"}}> Forgot password ? </Link>
+                        </Stack>
 
                         <Button variant="contained" onClick={onLogin}
                             sx={{ textTransform: "none", width: "100px", bgcolor: "#35dbcb"}}> Login </Button> 
@@ -131,13 +132,10 @@ export default function LoginSite(){
 
                     <Stack direction={"row"} spacing={2}>
                         <Typography> Don't have an account? </Typography>
-                        <Link href={accCreateLinkPath} target="_blank" underline="hover" sx={{marginTop: "2px"}}> Sign up </Link>
+                        <Link href={accCreateLinkPath} underline="hover" sx={{marginTop: "2px"}}> Sign up </Link>
                     </Stack>
                 </Paper>
-                <Stack>
-                    <Typography variant="caption"> Nexster is a student networking platform that provides solutions for university students's needs. 
-                    Only for students at the University of Moratuwa. </Typography>
-                </Stack>
+                <NoticeFooter />
             </Stack>
             <BottomLeftSnackbar open={snackBarOpen}  setOpen={setSnackBarOpen} level={"error"} msg={loginErr}/>
         </Stack>

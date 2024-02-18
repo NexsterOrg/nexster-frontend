@@ -16,6 +16,7 @@ export const FriendsRoute = "/friends"
 export const FriendsRequestRoute = "/friends/request"
 export const FriendSuggsRoute = "/friends/suggs"
 export const AllFriendsRoute = "/friends/my"
+export const PasswordResetLinkPath = "/account/password-reset-link"
 
 export const MyEventsListRoute = "/events/my"
 
@@ -467,6 +468,12 @@ export async function CreateUserAccount(firstName, secondName, imageId, birthday
     "exp": expiredAt,
     "hmac": hmac
 })
+  if(respBody === null) return false
+  return true
+}
+
+export async function SendPasswordResetLinkFunc(email) {
+  let respBody = await postWithoutAuth(`${apiDomain}/p/u/auth/password/reset-link`, {"email": email})
   if(respBody === null) return false
   return true
 }
