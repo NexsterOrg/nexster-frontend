@@ -1,8 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Stack, Typography, Paper, TextField, useTheme, Button, Link } from "@mui/material"
 import MailIcon from '@mui/icons-material/Mail';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import { LoginPath, SendPasswordResetLinkFunc } from "../../apis/fetch"
+import { LoginPath, SendPasswordResetLinkFunc, validatePasswordResetLink } from "../../apis/fetch"
 import { IsValidEmailV1, IsValidEmailV2 } from "../../helper/common";
 import { NoticeFooter } from "../layout/Footer";
 import { BottomLeftSnackbar } from "../ui/snack_bar"
@@ -109,6 +110,51 @@ function SendPasswordResetLink() {
     )
 }
 
+function PasswordResetSite() {
+    const [urlValid, setUrlValid] = useState(false)
+    const location = useLocation();
+    const navigate = useNavigate();
+    const searchParams = new URLSearchParams(location.search);
+
+    const email = searchParams.get('email') || "";
+    const expAt = searchParams.get('exp') || "";
+    const hmac = searchParams.get('hmac') || "";
+
+    useEffect( () => {
+        (async () => {
+            try {
+              const isValid = await validatePasswordResetLink(email, expAt, hmac);
+              if(isValid) {
+                setUrlValid(true)
+                return 
+              }
+            } catch (err) {
+            }
+
+            alert("Invalid password reset link. Get a new link")
+            navigate(LoginPath, { replace: true });
+            return;
+
+        })();
+    }, [])
+
+    if(!urlValid){
+        return <>Error...</>
+    }
+
+    return <PasswordResetComp />  
+}
+
+
+function PasswordResetComp() {
+    return (
+        <div>
+            <h1> Hello World </h1>
+        </div>
+    )
+}
+
+
 export {
-    SendPasswordResetLink
+    SendPasswordResetLink, PasswordResetSite
 }
