@@ -487,3 +487,14 @@ export async function validatePasswordResetLink(email, exp, hmac){
   if(respBody === null) return false
   return true
 }
+
+export async function resetPassword(email, exp, hmac, password){
+  let respBody = await postWithoutAuth(`${apiDomain}/p/u/auth/password/reset`, {
+    "email": email,
+    "exp": exp,
+    "hmac": hmac,
+    "password": password
+  })
+  if(respBody === null) return false
+  return true
+}
