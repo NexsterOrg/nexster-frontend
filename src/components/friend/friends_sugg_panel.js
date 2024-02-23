@@ -36,7 +36,7 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
                 const newSuggs = await ListFriendsForPool(faculty, gender, birthday, pageNo, pageSize)
                 addSuggToList(newSuggs.data)
                 setSuggCount(newSuggs.resultsCount)
-                if(newSuggs.resultsCount < pageSize){
+                if(newSuggs.resultsCount === 0){
                     setPageNo(-1)
                     return
                 }
@@ -65,7 +65,7 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
                 try {
                     const newSuggs = await ListFriendsForPool(faculty, gender, birthday, pageNo, pageSize)
                     addSuggToList(preList => preList.concat(newSuggs.data))
-                    if(newSuggs.resultsCount < pageSize){
+                    if(newSuggs.resultsCount === 0){
                         setPageNo(-1)
                         return
                     }
@@ -105,7 +105,7 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
                 }
             </Box>
             </CardContent>
-            { (suggCount >= pageSize) && showButton ? 
+            { showButton ? 
                 <Box>
                     <Button disableRipple sx={styles.seeMore} onClick={getMoreSuggs}> 
                     See More </Button>
