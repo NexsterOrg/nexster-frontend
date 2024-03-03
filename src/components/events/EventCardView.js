@@ -247,7 +247,7 @@ function ContentCard({ content }) {
   } else limitedContent = content;
   return (
     <>
-      <Typography variant="body2">
+      <Typography paragraph variant="body2" sx={{ whiteSpace: "pre-line" }}>
         {limitedContent}
 
         {isContentCutOff ? (
