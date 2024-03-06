@@ -235,11 +235,11 @@ function EventInputData({
         setTextErr={setTitleErr}
         variant="standard"
         textFieldStyles={{ width: "90%" }}
-        maxCount={100}
+        maxCount={200}
         required={true}
         multiline={true}
         label={"title"}
-        maxRows={2}
+        maxRows={5}
       />
 
       <TextFieldWithCount
@@ -248,12 +248,12 @@ function EventInputData({
         textErr={descriptionErr}
         setTextErr={setDescriptionErr}
         textFieldStyles={{ width: "90%" }}
-        maxCount={600}
+        maxCount={2000}
         required={false}
         multiline={true}
         variant="standard"
         label={"description"}
-        maxRows={15}
+        maxRows={60}
       />
 
       <Stack direction={"row"} spacing={3}>

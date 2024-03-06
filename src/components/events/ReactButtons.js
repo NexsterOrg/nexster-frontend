@@ -19,10 +19,10 @@ const butnIconSize = {
 }
 
 const butnSize = {
-    xl: 28,
-    lg: 26,
-    xmd: 25,
-    md: 22
+    xl: 26,
+    lg: 25,
+    xmd: 22,
+    md: 20
 }
 
 const postedByFontSize = {
@@ -31,6 +31,22 @@ const postedByFontSize = {
     xmd: 10,
     md: 9,
     sm: 7
+}
+
+const butnFontSize = {
+    xl: 11,
+    lg: 11,
+    xmd: 10,
+    md: 12,
+    sm: 3,
+  }
+
+const butnMargin = {
+    xl: "12px",
+    lg: "11px",
+    xmd: 9,
+    md: 8,
+    sm: 6,
 }
 
 export function ReactionButtons({isViewerLove, noOfLove, isViewerGoing, noOfGoing, author, reactionKey, eventKey, indexNo}){
@@ -94,24 +110,24 @@ export function ReactionButtons({isViewerLove, noOfLove, isViewerGoing, noOfGoin
     }
   
     return (
-        <Box >
+        <Box>
             <Box sx={{display: "flex", gap: "10px"}}>
 
                 <Button variant={isLove ? "contained" : "outlined"} 
                     disableRipple size="small"
-                    sx={{ textTransform: "none", height: butnSize}}
+                    sx={{ textTransform: "none", height: butnSize, fontSize: butnFontSize}}
                     startIcon={<FavoriteBorderOutlinedIcon sx={{ width: butnIconSize, height: butnIconSize}}/>}
                     onClick={handleLoveButnClick}
                 > Love </Button>
 
                 <Button variant={isGoing ? "contained" : "outlined"} 
                     disableRipple size="small"
-                    sx={{ textTransform: "none", height: butnSize}}
+                    sx={{ textTransform: "none", height: butnSize, fontSize: butnFontSize}}
                     startIcon={isGoing ? <CheckIcon sx={{ width: butnIconSize, height: butnIconSize}}/> : <QuestionMarkOutlinedIcon sx={{ width: butnIconSize, height: butnIconSize}}/>}
                     onClick={handleGoingButnClick}
                 > Going </Button>
             </Box>
-            <Box sx={{ marginTop: "12px",display: "flex", justifyContent: "space-between"}}>
+            <Box sx={{ marginTop: "4px",display: "flex", justifyContent: "space-between"}}>
                 <Box sx={{display: "flex", justifyContent: "flex-start"}}>
                     <Button sx={{textTransform: "none"}} disableRipple onClick={onLoveCoundClick} >
                         <Typography variant="caption"> {loveCount} loves </Typography> 

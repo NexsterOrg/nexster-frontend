@@ -38,9 +38,9 @@ const maxDate = dayjs(AddMonths(currentDate, 6)); // set max date as 6 months fr
 const minDate = dayjs(new Date(currentDate.getTime() + oneHour));
 
 // lengths
-const maxEventTitle = 100;
-const maxEventDesc = 1000;
-const maxRowsDesc = 25;
+const maxEventTitle = 200;
+const maxEventDesc = 2000;
+const maxRowsDesc = 60;
 
 export default function EventCreationDialog({
   isCreateEventOpen,
@@ -282,7 +282,7 @@ function EventInputData({
         required={true}
         multiline={true}
         label={"title"}
-        maxRows={2}
+        maxRows={4}
       />
 
       <TextFieldWithCount

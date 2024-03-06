@@ -6,6 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import { DeleteUser, LoginPath, UnAuthorizedError } from "../../apis/fetch";
 import { CleanLS } from "../../apis/store";
 
+const fontDelSizes = {
+    xl: 15,
+    lg: 13,
+    xmd: 10,
+    md: 9,
+    sm: 8
+}
+
 export function DeleteAccount(){
     const [conseqMsgOpen, setConseqMsgOpen] = useState(false)
     const [confirmOpen, setConfirmOpen] = useState(false)
@@ -23,7 +31,7 @@ export function DeleteAccount(){
                 </Typography>
 
                 <Stack alignItems={"center"}>
-                    <Button variant="outlined" sx={{ width: "16%", bgcolor: "red", color: "black", fontWeight: "bold"}}
+                    <Button variant="outlined" sx={{ width: "16%",  bgcolor: "red", fontSize: fontDelSizes, color: "black", fontWeight: "bold"}}
                     onClick={() => setConseqMsgOpen(true)}
                     > Delete this Account </Button>
                 </Stack>

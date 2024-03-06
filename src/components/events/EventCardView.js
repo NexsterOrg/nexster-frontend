@@ -20,13 +20,13 @@ import ScrollPaperDialog from "./DescriptionModel";
 import MenuButton from "../ui/menu_button";
 import { DeleteEvent } from "../../apis/fetch";
 
-const contentLimit = 220;
+const contentLimit = 200;
 const titleLimit = 75;
 
 const cardHeight = {
-  xl: 275,
+  xl: 305,
   lg: 260,
-  xmd: 230,
+  xmd: 260,
 };
 
 export default function EventCardView({
@@ -49,13 +49,12 @@ export default function EventCardView({
   isViewerGoing,
 }) {
   const isOnline = mode === "online";
-  console.log(description);
 
   return (
     <Card sx={{ display: "flex", height: cardHeight, width: "100%" }}>
       <CardMedia
         component="img"
-        sx={{ width: "22%", height: cardHeight }}
+        sx={{ width: "28%", height: cardHeight }}
         image={imgUrl}
         alt={title}
       />
@@ -65,7 +64,7 @@ export default function EventCardView({
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-around",
-          gap: "8px",
+          // gap: "2px",
           width: "100%",
         }}
       >
@@ -175,16 +174,6 @@ function OnlineCard() {
   );
 }
 
-// const marginForLocations = {
-//     top: {
-//         xl: 24,
-//         lg: 22,
-//         xmd: 20,
-//         md: 18,
-//         sm: 16
-//     }
-// }
-
 function VenueCard({ location }) {
   return (
     <Box sx={{ display: "flex", gap: "10px" }}>
@@ -192,7 +181,7 @@ function VenueCard({ location }) {
         <LocationOnOutlinedIcon sx={{ width: iconSize, height: iconSize }} />
       </Box>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Typography>
+        <Typography variant="body2">
           {" "}
           {location ? location : "Location is not provided yet."}{" "}
         </Typography>
@@ -235,6 +224,14 @@ function OnlineEventLink({ link }) {
   );
 }
 
+const readMoreButnSize = {
+  xl: 11,
+  lg: 11,
+  xmd: 10,
+  md: 12,
+  sm: 3,
+}
+
 function ContentCard({ content }) {
   const [open, setOpen] = useState(false);
 
@@ -247,14 +244,17 @@ function ContentCard({ content }) {
   } else limitedContent = content;
   return (
     <>
-      <Typography paragraph variant="body2" sx={{ whiteSpace: "pre-line" }}>
+      <Typography paragraph variant="caption" sx={{ marginBottom: "0px !important"}}>
         {limitedContent}
 
         {isContentCutOff ? (
           <Button
             variant="text"
-            sx={{ textTransform: "none" }}
+            sx={{ textTransform: "none",  
+                  fontSize: readMoreButnSize
+          }}
             onClick={() => setOpen(true)}
+            size="small"
           >
             Read More...
           </Button>
