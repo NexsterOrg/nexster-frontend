@@ -1,7 +1,7 @@
 import { CleanLS } from "./store";
 
-export const apiDomain = "http://localhost"; // backend nginx proxy domain
-const webDomain = "http://localhost:3000"; // front end Domain
+export const apiDomain = "https://api.nexster.xyz"; // backend nginx proxy domain
+const webDomain = "https://nexster.xyz"; // front end Domain
 const token = "token";
 
 // nexster paths
