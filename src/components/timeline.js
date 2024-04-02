@@ -3,53 +3,51 @@ import { List, ListItem, Typography, Card } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import TimelinePost from "./media/post";
-import { UnAuthorizedError, ListRecentPosts, LoginPath } from "../apis/fetch";
+import { UnAuthorizedError, LoginPath, GetAnyTypePostForTimeline } from "../apis/fetch";
 import Base1 from "./layout/base1";
 import { TimeDiffWithNow } from "../helper/date";
-import { CleanLS, GetUserInfoFromLS } from "../apis/store";
+import { CleanLS, GetUserInfoFromLS, GetPageNoFromLS, SetPageNoInLS} from "../apis/store";
 import VideoPost from "./media/videoPost";
 
 /**
  * gap between two post - 700
  * fetch n posts. (n-odd)
  * Gap between two fetch = (n//2)*700
+ * 
  */
-const postCnt = 3;
+const pageSize = 5
 
-const gap = Math.floor(postCnt / 2) * 700; // To fetch 5 posts. gap should be (5//2)*700
+const calGap = (noOfPosts) => {
+  return Math.floor(noOfPosts / 2) * 700;
+}
+
+let gap = calGap(pageSize); // To fetch 5 posts. gap should be (5//2)*700
 let limit = gap;
 
-function ListTimelinePosts({ userId }) {
+const youtubeBaseUrl = "https://www.youtube.com/watch?v="
+
+function ListTimelinePosts({ userId, initPageNo }) {
   const navigate = useNavigate();
-  // TODO:
-  // data array should only contain unique values. But due to some uncertainty nature, this can have
-  // same value twice. check this.
   const [postsInfo, addPostsInfo] = useState({ preLn: 0, data: [] });
   const [noData, setNoData] = useState(false);
-
-  const backend_response_video = [
-    {
-      vId: "SqcY0GlETPk&t=2805s",
-      title: "Title of the video",
-      pubAt: "2023-02-17T16:38:20Z",
-    },
-  ];
+  const [pageNo, setPageNo] = useState(initPageNo)
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
     (async () => {
       try {
-        let data = await ListRecentPosts(
-          userId,
-          new Date().toISOString(),
-          postCnt
-        );
-        if (data.length === 0) {
+        let resp = await GetAnyTypePostForTimeline(pageNo, pageSize);
+        if (resp.nextPage === -1) {
           setNoData(true);
+          setPageNo(-1)
+          SetPageNoInLS(-1)
           return;
         }
-        addPostsInfo({ preLn: data.length, data: data });
+        gap = calGap(resp.count)
+        addPostsInfo({ preLn: resp.count, data: resp.data });
+        setPageNo(initPageNo+1)
+        SetPageNoInLS(initPageNo+1)
       } catch (err) {
         if (err instanceof UnAuthorizedError) {
           navigate("/login", { replace: true });
@@ -63,28 +61,25 @@ function ListTimelinePosts({ userId }) {
     const handleScroll = async () => {
       if (window.scrollY > limit) {
         limit += gap;
-        if (postsInfo.preLn === 0) {
+        if (postsInfo.preLn === 0 || pageNo === -1) {
           // All posts have been read
           return;
         }
         try {
-          let lastObj = postsInfo.data[postsInfo.data.length - 1];
-          if (lastObj === null) {
-            return;
-          }
-          let fetchedPosts = await ListRecentPosts(
-            userId,
-            lastObj.media.created_date,
-            postCnt
-          );
-
-          if (fetchedPosts) {
+          let resp2 = await GetAnyTypePostForTimeline(pageNo, pageSize)
+          if (resp2.count !== 0 || resp2.nextPage !== -1) {
             addPostsInfo((prevPosts) => {
               return {
-                preLn: fetchedPosts.length,
-                data: prevPosts.data.concat(fetchedPosts),
+                preLn: resp2.count,
+                data: prevPosts.data.concat(resp2.data),
               };
             });
+            gap = calGap(resp2.count-2)
+            setPageNo( prevPg => prevPg + 1 )
+            SetPageNoInLS(pageNo+1)
+          } else {
+            setPageNo(-1)
+            SetPageNoInLS(-1)
           }
         } catch (err) {
           if (err instanceof UnAuthorizedError) {
@@ -125,12 +120,18 @@ function ListTimelinePosts({ userId }) {
     <div>
       <List>
         {postsInfo.data.map((each, index) => {
-          return (
-            <ListItem
-              sx={{ marginY: "5px" }}
-              key={`${index}#${each.media._key}`}
-            >
-              <TimelinePost
+          let comp = null
+          let listKey = ""
+          if(each?.type === "video") {
+            listKey = `${index}#${each.vId}`
+            comp = <VideoPost postInfo={{
+                url: youtubeBaseUrl + each.vId,
+                title: each.title,
+                postDate: TimeDiffWithNow(each.pubAt),
+              }}/>
+          } else if(each?.type === "image") {
+            listKey = `${index}#${each.media._key}`
+            comp = <TimelinePost
                 postInfo={{
                   imgUrl: each.media.link,
                   caption: each.media.title,
@@ -151,22 +152,17 @@ function ListTimelinePosts({ userId }) {
                 viewerReaction={each.viewer_reaction}
                 indexNo={each.owner.indexNo}
               />
+          }
+          return (
+            <ListItem
+              sx={{ marginY: "5px" }}
+              key={listKey}
+            >
+              {comp}
             </ListItem>
           );
         })}
       </List>
-
-      <ListItem sx={{ marginY: "5px" }}>
-        <VideoPost
-          postInfo={{
-            url:
-              "https://www.youtube.com/watch?v=" +
-              backend_response_video[0].vId,
-            title: backend_response_video[0].title,
-            postDate: TimeDiffWithNow(backend_response_video[0].pubAt),
-          }}
-        />
-      </ListItem>
     </div>
   );
 }
@@ -174,6 +170,8 @@ function ListTimelinePosts({ userId }) {
 export default function Timeline() {
   const navigate = useNavigate();
   const { userid } = useMemo(GetUserInfoFromLS, []);
+  const initPageNo =  useMemo(GetPageNoFromLS, [])
+
   if (userid === undefined) {
     CleanLS();
     navigate(LoginPath, { replace: true });
@@ -181,7 +179,7 @@ export default function Timeline() {
   return (
     <Base1
       styles={{ alignItems: "center" }}
-      SideComponent={<ListTimelinePosts userId={userid} />}
+      SideComponent={<ListTimelinePosts userId={userid} initPageNo={initPageNo}/>}
     />
   );
 }

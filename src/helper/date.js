@@ -2,6 +2,7 @@ const hrLimit = 60
 const dayLimit = 1440
 const weekLimit = 10080
 const monthLimit = 40320
+const yearLimit = 525600
 
 const monthNames = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -15,6 +16,10 @@ export function TimeDiffWithNow(timeIsoStr){
     let currentDate = new Date();
 
     let timeDiffMin = Math.floor((currentDate - givenDate)/60000);
+
+    if(timeDiffMin >= yearLimit) {
+        return `${Math.floor(timeDiffMin/yearLimit)}yr`
+    }
 
     if(timeDiffMin >= monthLimit) {
         return `${Math.floor(timeDiffMin/monthLimit)}mon`

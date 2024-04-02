@@ -23,7 +23,7 @@ const FieldOptions = [
     {label: "Electronic & Telecommunication Engineering", value: "Electronic & Telecommunication Engineering"},
     {label: "Materials Science & Engineering", value: "Materials Science & Engineering"},
     {label: "Mechanical Engineering", value: "Mechanical Engineering"},
-    {label: "Textile & Apparel Engineering ", value: "Textile & Apparel Engineering "},
+    {label: "Textile & Apparel Engineering", value: "Textile & Apparel Engineering"},
     {label: "Transport Management & Logistic Engineering", value: "Transport Management & Logistic Engineering"},
     {label: "Fashion Design and Product Development", value: "Fashion Design and Product Development"},
     {label: "Pre Academic", value: "Pre Academic"}
