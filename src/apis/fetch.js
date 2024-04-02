@@ -592,3 +592,14 @@ export async function resetPassword(email, exp, hmac, password) {
   if (respBody === null) return false;
   return true;
 }
+
+export async function GetAnyTypePostForTimeline(pageNo, pageSize) {
+  let respBody = await get(`${apiDomain}/g/t/posts/anytype?pg=${pageNo}&pgSize=${pageSize}`)
+  if(respBody === null ) return {data: [], nextPage: 1, count: 0}
+
+  return {
+    data: respBody.data,
+    nextPage: respBody.nextPg,
+    count: respBody.count
+  }
+}
