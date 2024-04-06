@@ -34,9 +34,10 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
             if(pageNo <= 0) return
             try {
                 const newSuggs = await ListFriendsForPool(faculty, gender, birthday, pageNo, pageSize)
-                addSuggToList(newSuggs.data)
-                setSuggCount(newSuggs.resultsCount)
-                if(newSuggs.resultsCount === 0){
+                const filteredNewSuggs = newSuggs.data.filter(newSugg => !suggList.some(existingSugg => existingSugg.key === newSugg.key));
+                addSuggToList(filteredNewSuggs.data)
+                setSuggCount(filteredNewSuggs.resultsCount)
+                if(filteredNewSuggs.resultsCount === 0){
                     setPageNo(-1)
                     return
                 }
@@ -64,8 +65,9 @@ export default function FriendSuggPanel({rootStyles, showButton, pageSize}){
                 }
                 try {
                     const newSuggs = await ListFriendsForPool(faculty, gender, birthday, pageNo, pageSize)
-                    addSuggToList(preList => preList.concat(newSuggs.data))
-                    if(newSuggs.resultsCount === 0){
+                    const filteredNewSuggs = newSuggs.data.filter(newSugg => !suggList.some(existingSugg => existingSugg.key === newSugg.key));
+                    addSuggToList(preList => preList.concat(filteredNewSuggs.data))
+                    if(filteredNewSuggs.resultsCount === 0){
                         setPageNo(-1)
                         return
                     }
