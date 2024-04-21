@@ -1,5 +1,7 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Routes, Route} from "react-router-dom"
+import React, { useState, useEffect, useMemo } from 'react';
+import { GetUserInfoFromLS} from "./apis/store";
 
 import { isMobile } from 'react-device-detect';
 
@@ -125,7 +127,40 @@ const mobileTheme = createTheme({
 })
 
 function App() {
+    
+  const [userTimeSpent, setUserTimeSpent] = useState(0);
+  const {userID} = useMemo(GetUserInfoFromLS, []);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setUserTimeSpent(prevTimeSpent => prevTimeSpent + 60); // Increment time by 1 minute
+    }, 60000); // Trigger every minute
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    const sendUserTimeToServer = async () => {
+      if (userTimeSpent > 0) {
+        try {
+          await fetch(`/insights/users/${userID}/screen-time`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ timeSpent: userTimeSpent })
+          });
+          console.log('Time spent sent to the backend:', userTimeSpent);
+        } catch (error) {
+          console.error('Error sending time spent data:', error);
+        }
+      }
+    };
+
+    sendUserTimeToServer();
+  }, [userTimeSpent]);
   if(isMobile) {
     return (
       <ThemeProvider theme={mobileTheme}>
